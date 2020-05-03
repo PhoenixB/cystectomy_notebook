@@ -1,0 +1,143 @@
+---
+title: "R Notebook for the cystectomy study"
+author: "Pascal Jerney"
+date: "Created 2nd May 2020"
+output:
+  bookdown::gitbook: default
+  html_notebook: default
+  pdf_document: default
+---
+
+```{r setup, echo=FALSE}
+# Load packages ----
+if (!require("pacman")) {
+  install.packages("pacman")
+}
+pacman::p_load(
+  "tidyverse",
+  "here",
+  "fs",
+  "tableone",
+  "modelr",
+  "tidybayes",
+  "gridExtra",
+  "sjPlot",
+  "htmltools"
+)
+
+# Set working directory ----
+knitr::opts_knit$set(root.dir = here::here())
+
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dev = "png",
+  dpi = 150,
+  fig.asp = 0.8,
+  fig.width = 10,
+  out.width = "100%",
+  fig.align = "center"
+)
+
+```
+
+```{r load_data, echo=FALSE,cache=FALSE}
+# Load data from 0_get_and_tidy_data ----
+tibble.oak_bleeding_tidy <-
+  read_rds(path = path(
+    'empirical',
+    '2_pipeline',
+    '0_get_and_tidy_data',
+    'out',
+    'oak_bleeding_tidy',
+    ext = 'rds'
+  ))
+
+# Filter patients with surgery before 2000 ----
+tibble.oak_bleeding_tidy <-
+  tibble.oak_bleeding_tidy %>%
+  filter(op_year >= 2000)
+
+# Load models from 1_generate_models ----
+model.intraoptransfusion_bloodlosspercent_preophb_year <-
+  read_rds(path = path(
+    'empirical',
+    '2_pipeline',
+    '1_generate_models',
+    'out',
+    'intraoptransfusion_bloodlosspercent_preophb_year',
+    ext = 'rds'
+  ))
+```
+
+# Prerequisites
+
+## Formulas
+
+  - Indexed blood volume^[Lemmens, H. J. M., Bernstein, D. P., & Brodsky, J. B. (2006). Estimating blood volume in obese and morbidly obese patients. Obesity Surgery, 16(6), 773–776. https://doi.org/10.1381/096089206777346673]: $BV_i = \frac{70}{\sqrt{\frac{BMI}{22}}}$^[$BV_i$ = Indexed blood volume, $BMI$ = Body mass index]
+  - Estimated blood volume: $BV_e = BV_i * Weight$^[$BV_e$ = Estimated blood volume]
+  - Blood loss ratio: $BL_r = \frac{BV_e}{BL_a}$^[$BL_r$ = Blood loss ratio, $BL_a$ = Absolute blood loss]
+
+# Results
+
+## Data plots
+
+```{r data_plots,echo=FALSE}
+qqplot_bloodlossratio <-
+  tibble.oak_bleeding_tidy %>%
+  drop_na(blood_loss_ratio) %>%
+  ggplot(aes(sample = blood_loss_ratio)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(title = "Q-Q-Plot for blood loss ratio", subtitle = "Normal scale", x = "Theoretical quantiles", y = "Sample quantiles") +
+  theme_light()
+
+qqplot_logbloodlossratio <-
+  tibble.oak_bleeding_tidy %>%
+  drop_na(blood_loss_ratio) %>%
+  ggplot(aes(sample = log(blood_loss_ratio))) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(title = "Q-Q-Plot for blood loss ratio", subtitle = "Natural logarithm scale", x = "Theoretical quantiles", y = "Sample quantiles") +
+  theme_light()
+
+grid.arrange(qqplot_bloodlossratio, qqplot_logbloodlossratio, ncol = 2)
+
+tibble.oak_bleeding_tidy %>%
+drop_na(blood_loss_ratio) %>%
+ggplot(aes(x = blood_loss_ratio)) +
+geom_histogram(binwidth = 0.05) +
+labs(title = "Histogram of blood loss ratio", x = "Blood loss ratio", y = "Count") +
+theme_light()
+
+tibble.oak_bleeding_tidy %>%
+drop_na(intraop_transfusion) %>%
+ggplot(aes(x = intraop_transfusion)) +
+geom_bar() +
+labs(title = "Bar chart of intraoperative transfusion", x = "Intraoperative transfusion", y = "Count") +
+theme_light()
+```
+
+## Model outputs
+
+Model with intraoperative transfusion as predictor, blood loss percentage and preoperative hemoglobin as population-level effects and operation year as group-level effect.
+
+```{r model_tables,echo=FALSE,results="asis"}
+model1 <- tab_model(model.intraoptransfusion_bloodlosspercent_preophb_year, rm.terms = c("Intercept"), pred.labels = c(blood_loss_percent = "Percent blood loss", preop_hb = "Preoperative hemoglobin"), dv.labels = c("Intraoperative transfusion"), show.ci = 0.999, use.viewer = FALSE)
+cat(model1$knitr)
+```
+
+## Model plots
+
+```{r model_plots,echo=FALSE}
+tibble.oak_bleeding_tidy %>%
+data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
+add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_year, re_formula = NA) %>%
+median_hdci(.width = c(0.95, 0.999)) %>%
+ggplot(aes(x = blood_loss_percent, y = .value)) +
+facet_wrap(vars(preop_hb)) +
+geom_lineribbon() +
+labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss ratio", y = "Probability for transfusion") +
+coord_cartesian(xlim = c(0, 100)) +
+theme_light()
+```
