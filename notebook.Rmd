@@ -15,18 +15,19 @@ if (!require("pacman")) {
 }
 pacman::p_load(
   "tidyverse",
-  "here",
+  "rprojroot",
   "fs",
   "tableone",
   "modelr",
   "tidybayes",
   "gridExtra",
   "sjPlot",
-  "htmltools"
+  "htmltools",
+  "brms"
 )
 
 # Set working directory ----
-knitr::opts_knit$set(root.dir = here::here())
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -46,8 +47,6 @@ knitr::opts_chunk$set(
 
 tibble.oak_bleeding_tidy <-
   read_rds(path = path_wd(
-    '..',
-    '..',
     'empirical',
     '2_pipeline',
     '0_get_and_tidy_data',
@@ -62,15 +61,13 @@ tibble.oak_bleeding_tidy <-
   filter(op_year >= 2000)
 
 # Load models from 1_generate_models ----
-model.intraoptransfusion_bloodlosspercent_preophb_year <-
+model.intraoptransfusion_bloodlosspercent_preophb_opyear <-
   read_rds(path = path_wd(
-    '..',
-    '..',
     'empirical',
     '2_pipeline',
     '1_generate_models',
     'out',
-    'intraoptransfusion_bloodlosspercent_preophb_year',
+    'intraoptransfusion_bloodlosspercent_preophb_opyear',
     ext = 'rds'
   ))
 ```
@@ -128,16 +125,18 @@ theme_light()
 Model with intraoperative transfusion as predictor, blood loss percentage and preoperative hemoglobin as population-level effects and operation year as group-level effect.
 
 ```{r model_tables,echo=FALSE,results="asis"}
-model1 <- tab_model(model.intraoptransfusion_bloodlosspercent_preophb_year, rm.terms = c("Intercept"), pred.labels = c(blood_loss_percent = "Percent blood loss", preop_hb = "Preoperative hemoglobin"), dv.labels = c("Intraoperative transfusion"), show.ci = 0.999, use.viewer = FALSE)
+model1 <- tab_model(model.intraoptransfusion_bloodlosspercent_preophb_opyear, rm.terms = c("Intercept"), pred.labels = c(blood_loss_percent = "Percent blood loss", preop_hb = "Preoperative hemoglobin"), dv.labels = c("Intraoperative transfusion"), show.ci = 0.999, use.viewer = FALSE)
 cat(model1$knitr)
 ```
 
 ## Model plots
 
 ```{r model_plots,echo=FALSE}
+pp_check(model.intraoptransfusion_bloodlosspercent_preophb_opyear)
+
 tibble.oak_bleeding_tidy %>%
 data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
-add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_year, re_formula = NA) %>%
+add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
 median_hdci(.width = c(0.95, 0.999)) %>%
 ggplot(aes(x = blood_loss_percent, y = .value)) +
 facet_wrap(vars(preop_hb)) +
