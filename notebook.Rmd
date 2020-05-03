@@ -3,7 +3,32 @@ title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
 date: "3rd May 2020"
 output:
-  bookdown::gitbook: default
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: subsection
+        scroll_highlight: yes
+        before: null
+        after: null
+      toolbar:
+        position: fixed
+      edit : null
+      download: ["notebook_cystectomy.pdf", "notebook_cystectomy.epub"]
+      search: yes
+      fontsettings:
+        theme: white
+        family: sans
+        size: 2
+      sharing:
+        facebook: yes
+        github: no
+        twitter: yes
+        linkedin: no
+        weibo: no
+        instapaper: no
+        vk: no
+        all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
+      info: yes
   html_notebook: default
   pdf_document: default
 ---
