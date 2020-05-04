@@ -207,3 +207,25 @@ cat(table.model2$knitr)
 ```{r model2_ppcheck,echo=FALSE}
 pp_check(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear, nsamples = 10)
 ```
+
+#### Conditional distribution plot
+
+```{r model2_conditional_plot,echo=FALSE}
+tibble(
+  oak = FALSE,
+  tcaggr = FALSE,
+  bmi = c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
+  cci = "0",
+  gender = "male",
+  p_tumor = "0",
+  p_nodes = "0"
+) %>%
+add_predicted_draws(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
+ggplot(aes(x = .prediction, colour = factor(bmi))) +
+geom_freqpoly(binwidth = 0.05) +
+labs(title = str_wrap("Distribution of blood loss ratio depending on bmi", 100), subtitle = str_wrap("Other variables held at zero", 100), x = "Blood loss ratio", y = "Count", colour = "Body mass index") +
+coord_cartesian(xlim = c(0, 1)) +
+theme_light() +
+scale_colour_viridis_d()
+
+```
