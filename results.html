@@ -208,7 +208,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </div>
 <div id="model-2" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Model 2</h3>
-<p>Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggregation inhibitors, body mass index, charleston comorbidity index, gender, tumor stadium and nodal stadium as population-level effects and operation year as group-level effect.</p>
+<p>Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggregation inhibitors, age, body mass index, charleston comorbidity index, gender, tumor stadium and nodal stadium as population-level effects and operation year as group-level effect.</p>
 <div id="coefficients-table-1" class="section level4">
 <h4><span class="header-section-number">2.2.2.1</span> Coefficients table</h4>
 <table style="border-collapse:collapse; border:none;">
@@ -236,10 +236,10 @@ CI (95%)
 Intercept
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--1.76
+-1.61
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--1.97 – -1.56
+-1.88 – -1.34
 </td>
 </tr>
 <tr>
@@ -247,10 +247,10 @@ Intercept
 Oral anticoagulation
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00
+0.00
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.16 – 0.16
+-0.15 – 0.15
 </td>
 </tr>
 <tr>
@@ -258,10 +258,21 @@ Oral anticoagulation
 Thrombocyte aggregation<br>inhibition
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.02
+0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.07 – 0.12
+-0.07 – 0.13
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Age
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00 – 0.00
 </td>
 </tr>
 <tr>
@@ -283,7 +294,7 @@ Female gender
 0.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.05 – 0.07
+-0.06 – 0.07
 </td>
 </tr>
 <tr>
@@ -291,10 +302,10 @@ Female gender
 Charleston comorbidity<br>index
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00
+0.00
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.03 – 0.02
+-0.03 – 0.03
 </td>
 </tr>
 <tr>
@@ -302,10 +313,10 @@ Charleston comorbidity<br>index
 Tumor stadium
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.02
+0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00 – 0.05
+0.00 – 0.06
 </td>
 </tr>
 <tr>
@@ -343,7 +354,7 @@ Random Effects
 ICC
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.17
+0.16
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -365,7 +376,7 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.010 / 0.131
+0.013 / 0.133
 </td>
 </tr>
 </table>
@@ -387,43 +398,49 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </tr>
 <tr class="even">
 <td align="left">b_oakTRUE</td>
-<td align="right">0.9986772</td>
+<td align="right">0.9987111</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
 <tr class="odd">
 <td align="left">b_tcaggrTRUE</td>
-<td align="right">0.8926858</td>
+<td align="right">0.8596533</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
 <tr class="even">
+<td align="left">b_age</td>
+<td align="right">0.1926581</td>
+<td align="left">fixed</td>
+<td align="left">conditional</td>
+</tr>
+<tr class="odd">
 <td align="left">b_bmi</td>
-<td align="right">0.0397845</td>
+<td align="right">0.0621820</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">b_genderfemale</td>
-<td align="right">0.9965794</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">bsp_mocci</td>
-<td align="right">0.9499758</td>
+<td align="right">0.9982902</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
 <tr class="odd">
-<td align="left">bsp_mop_tumor</td>
-<td align="right">0.1831808</td>
+<td align="left">bsp_mocci</td>
+<td align="right">0.9705645</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
 <tr class="even">
+<td align="left">bsp_mop_tumor</td>
+<td align="right">0.1495455</td>
+<td align="left">fixed</td>
+<td align="left">conditional</td>
+</tr>
+<tr class="odd">
 <td align="left">bsp_mop_nodes</td>
-<td align="right">0.9441284</td>
+<td align="right">0.9505793</td>
 <td align="left">fixed</td>
 <td align="left">conditional</td>
 </tr>
