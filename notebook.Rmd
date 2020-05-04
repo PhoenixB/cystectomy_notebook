@@ -95,6 +95,18 @@ model.intraoptransfusion_bloodlosspercent_preophb_opyear <-
     'intraoptransfusion_bloodlosspercent_preophb_opyear',
     ext = 'rds'
   ))
+
+model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear <-
+  read_rds(path = path_wd(
+    'empirical',
+    '2_pipeline',
+    '1_generate_models',
+    'out',
+    'bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear',
+    ext = 'rds'
+  ))
+
+
 ```
 
 # Prerequisites
@@ -147,21 +159,25 @@ theme_light()
 
 ## Model outputs
 
-Model with intraoperative transfusion as predictor, blood loss percentage and preoperative hemoglobin as population-level effects and operation year as group-level effect.
+### Model 1
 
-```{r model_tables,echo=FALSE,results="asis"}
-model1 <- tab_model(model.intraoptransfusion_bloodlosspercent_preophb_opyear, rm.terms = c("Intercept"), pred.labels = c(blood_loss_percent = "Percent blood loss", preop_hb = "Preoperative hemoglobin"), dv.labels = c("Intraoperative transfusion"), show.ci = 0.999, use.viewer = FALSE)
-cat(model1$knitr)
+Model with intraoperative transfusion as response, blood loss percentage and preoperative hemoglobin as population-level effects and operation year as group-level effect.
+
+#### Coefficients table
+
+```{r model1_table,echo=FALSE,results="asis"}
+table.model1 <- tab_model(model.intraoptransfusion_bloodlosspercent_preophb_opyear, rm.terms = c("Intercept"), pred.labels = c(blood_loss_percent = "Percent blood loss", preop_hb = "Preoperative hemoglobin"), dv.labels = c("Intraoperative transfusion"), show.ci = 0.999, use.viewer = FALSE)
+cat(table.model1$knitr)
 ```
 
-## Model plots
+#### Posterior predictive check plot
 
-### Posterior predictive check plot
 ```{r model1_ppcheck,echo=FALSE}
 pp_check(model.intraoptransfusion_bloodlosspercent_preophb_opyear, nsamples = 10)
 ```
 
-### Conditional probability plot
+#### Conditional probability plot
+
 ```{r model1_conditional_plot,echo=FALSE}
 tibble.oak_bleeding_tidy %>%
 data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
@@ -173,4 +189,21 @@ geom_lineribbon() +
 labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss ratio", y = "Probability for transfusion") +
 coord_cartesian(xlim = c(0, 100)) +
 theme_light()
+```
+
+### Model 2
+
+Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggregation inhibitors, body mass index, charleston comorbidity index, gender, tumor stadium and nodal stadium as population-level effects and operation year as group-level effect.
+
+#### Coefficients table
+
+```{r model2_table,echo=FALSE,results="asis"}
+table.model2 <- tab_model(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear, pred.labels = c(oakTRUE = "Oral anticoagulation", tcaggrTRUE = "Thrombocyte aggregation inhibition", bmi = "Body mass index", genderfemale = "Female gender", cci = "Charleston comorbidity index", p_tumor = "Tumor stadium", p_nodes = "Nodal stadium"), dv.labels = c("Blood loss ratio"), show.ci = 0.95, rm.terms = c("cci1", "p_tumor1", "p_nodes1"), use.viewer = FALSE)
+cat(table.model2$knitr)
+```
+
+#### Posterior predictive check plot
+
+```{r model2_ppcheck,echo=FALSE}
+pp_check(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear, nsamples = 10)
 ```
