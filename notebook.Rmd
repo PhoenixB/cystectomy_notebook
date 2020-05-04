@@ -3,6 +3,7 @@ title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
 date: "3rd May 2020"
 output:
+  html_notebook: default
   bookdown::gitbook:
     config:
       toc:
@@ -29,7 +30,6 @@ output:
         vk: no
         all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
       info: yes
-  html_notebook: default
   pdf_document: default
 ---
 
@@ -48,7 +48,8 @@ pacman::p_load(
   "gridExtra",
   "sjPlot",
   "htmltools",
-  "brms"
+  "brms",
+  "bayestestR"
 )
 
 # Set working directory ----
@@ -200,6 +201,10 @@ Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggre
 ```{r model2_table,echo=FALSE,results="asis"}
 table.model2 <- tab_model(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear, pred.labels = c(oakTRUE = "Oral anticoagulation", tcaggrTRUE = "Thrombocyte aggregation inhibition", bmi = "Body mass index", genderfemale = "Female gender", bsp_mocci = "Charleston comorbidity index", bsp_mop_tumor = "Tumor stadium", bsp_mop_nodes = "Nodal stadium"), dv.labels = c("Blood loss ratio"), show.ci = 0.95, rm.terms = c(sprintf("simo_mocci1.%d.",seq(1:9)), sprintf("simo_mop_tumor1.%d.",seq(1:4)), sprintf("simo_mop_nodes1.%d.",seq(1:3))), use.viewer = FALSE)
 cat(table.model2$knitr)
+
+p_map(model.bloodlossratio_oak_tcaggr_bmi_cci_gender_ptumor_pnodes_opyear) %>%
+as_tibble() %>%
+knitr::kable()
 ```
 
 #### Posterior predictive check plot
