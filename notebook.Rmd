@@ -110,6 +110,10 @@ model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear <-
 
 ```
 
+# Index
+
+Welcome to the notebook!
+
 # Prerequisites
 
 ## Formulas
