@@ -256,7 +256,7 @@ tibble(
   oak = FALSE,
   tcaggr = FALSE,
   z_age = median(tibble.oak_bleeding_tidy$z_age, na.rm = TRUE),
-  z_bmi = seq(from = -1, to = 2, length.out = 12), # c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
+  z_bmi = seq(from = -1, to = 2, length.out = 11), # c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
   cci = "0",
   gender = "male",
   p_tumor = "0",
