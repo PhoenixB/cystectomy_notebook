@@ -97,13 +97,13 @@ model.intraoptransfusion_bloodlosspercent_preophb_opyear <-
     ext = 'rds'
   ))
 
-model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear <-
+model.bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear <-
   read_rds(path = path_wd(
     'empirical',
     '2_pipeline',
     '1_generate_models',
     'out',
-    'bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear',
+    'bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear',
     ext = 'rds'
   ))
 
@@ -215,12 +215,12 @@ Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggre
 
 ```{r model2_table,echo=FALSE,results="asis"}
 tab_model(
-  model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear,
+  model.bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear,
   pred.labels = c(
     oakTRUE = "Oral anticoagulation",
     tcaggrTRUE = "Thrombocyte aggregation inhibition",
-    age = "Age",
-    bmi = "Body mass index",
+    z_age = "Age (standardized)",
+    z_bmi = "Body mass index (standardized)",
     genderfemale = "Female gender",
     bsp_mocci = "Charleston comorbidity index",
     bsp_mop_tumor = "Tumor stadium",
@@ -238,7 +238,7 @@ tab_model(
 .$knitr %>%
 cat(.)
 
-p_map(model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear) %>%
+p_map(model.bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear) %>%
 as_tibble() %>%
 knitr::kable()
 ```
@@ -246,7 +246,7 @@ knitr::kable()
 #### Posterior predictive check plot
 
 ```{r model2_ppcheck,echo=FALSE}
-pp_check(model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear, nsamples = 10)
+pp_check(model.bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear, nsamples = 10)
 ```
 
 #### Conditional distribution plot
@@ -255,17 +255,17 @@ pp_check(model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear
 tibble(
   oak = FALSE,
   tcaggr = FALSE,
-  age = median(tibble.oak_bleeding_tidy$age, na.rm = TRUE),
-  bmi = c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
+  z_age = median(tibble.oak_bleeding_tidy$z_age, na.rm = TRUE),
+  z_bmi = seq(from = -1, to = 2, length.out = 10), # c(10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
   cci = "0",
   gender = "male",
   p_tumor = "0",
   p_nodes = "0"
 ) %>%
-add_predicted_draws(model.bloodlossratio_oak_tcaggr_age_bmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
-ggplot(aes(x = .prediction, colour = factor(bmi))) +
+add_predicted_draws(model.bloodlossratio_oak_tcaggr_zage_zbmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
+ggplot(aes(x = .prediction, colour = factor(z_bmi))) +
 geom_freqpoly(binwidth = 0.05) +
-labs(title = str_wrap("Distribution of blood loss ratio depending on body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = "Body mass index") +
+labs(title = str_wrap("Distribution of blood loss ratio depending on standardized body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = "Body mass index (standardized)") +
 coord_cartesian(xlim = c(0, 1)) +
 theme_light() +
 scale_colour_viridis_d()
