@@ -119,8 +119,9 @@ Welcome to the notebook!
 ## Formulas
 
   - Indexed blood volume^[Lemmens, H. J. M., Bernstein, D. P., & Brodsky, J. B. (2006). Estimating blood volume in obese and morbidly obese patients. Obesity Surgery, 16(6), 773–776. https://doi.org/10.1381/096089206777346673]: $BV_i = \frac{70}{\sqrt{\frac{BMI}{22}}}$^[$BV_i$ = Indexed blood volume, $BMI$ = Body mass index]
-  - Estimated blood volume: $BV_e = BV_i * Weight$^[$BV_e$ = Estimated blood volume]
+  - Estimated blood volume: $BV_e = BV_i \cdot Weight$^[$BV_e$ = Estimated blood volume]
   - Blood loss ratio: $BL_r = \frac{BV_e}{BL_a}$^[$BL_r$ = Blood loss ratio, $BL_a$ = Absolute blood loss]
+  - Standardization method for age and bmi^[Iglewicz, B., & Hoaglin, D. C. (1993). How to detect and handle outliers. Milwaukee, Wis: ASQC Quality Press.]: $M_i = \frac{0.6745(x_i - \tilde(x))}{2 \cdot MAD}$^[$M_i$ = Modified Z-score, $\tilde(x)$ = Median of $x$, $MAD$ = Median absolute deviation]
 
 # Results
 
@@ -202,7 +203,7 @@ median_hdci(.width = c(0.95, 0.999)) %>%
 ggplot(aes(x = blood_loss_percent, y = .value)) +
 facet_wrap(vars(preop_hb)) +
 geom_lineribbon() +
-labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss ratio", y = "Probability for transfusion") +
+labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
 coord_cartesian(xlim = c(0, 100)) +
 theme_light()
 ```
@@ -252,22 +253,33 @@ pp_check(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opye
 #### Conditional distribution plot
 
 ```{r model2_conditional_plot,echo=FALSE}
+helper.bmi_med_mad <-
+  tibble.oak_bleeding_tidy %>%
+  drop_na(bmi) %>%
+  summarise(
+    bmi_median = median(bmi),
+    bmi_mad = mad(bmi)
+  )
+helper.bmi_zscores <-
+  seq(from = -1, to = 3, length.out = 9)
+helper.bmi_values <-
+  round((2 * helper.bmi_zscores * helper.bmi_med_mad$bmi_mad) / 0.6745 + helper.bmi_med_mad$bmi_median, digits = 1)
 tibble(
   oak = FALSE,
   tcaggr = FALSE,
   m_age = 0,
-  m_bmi = seq(from = -1, to = 3, length.out = 9),
+  m_bmi = helper.bmi_zscores,
   cci = "0",
   gender = "male",
   p_tumor = "0",
   p_nodes = "0"
 ) %>%
 add_predicted_draws(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
-ggplot(aes(x = .prediction, colour = factor(2 * m_bmi))) +
+ggplot(aes(x = .prediction, colour = factor(m_bmi))) +
 geom_freqpoly(binwidth = 0.05) +
-labs(title = str_wrap("Distribution of blood loss ratio depending on standardized body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = str_wrap("Body mass index (median absolute deviations)", 20)) +
+labs(title = str_wrap("Distribution of blood loss ratio depending on standardized body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = str_wrap("Body mass index", 20)) +
 coord_cartesian(xlim = c(0, 1)) +
 theme_light() +
-scale_colour_viridis_d()
+scale_colour_viridis_d(labels = helper.bmi_values)
 
 ```
