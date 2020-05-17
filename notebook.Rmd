@@ -59,7 +59,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   dev = "png",
-  dpi = 150,
+  dpi = 300,
   fig.asp = 0.8,
   fig.width = 10,
   out.width = "100%",
@@ -277,7 +277,7 @@ tibble(
 add_predicted_draws(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
 ggplot(aes(x = .prediction, colour = factor(m_bmi))) +
 geom_freqpoly(binwidth = 0.05) +
-labs(title = str_wrap("Distribution of blood loss ratio depending on standardized body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = str_wrap("Body mass index", 20)) +
+labs(title = str_wrap("Distribution of blood loss ratio depending on body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = str_wrap("Body mass index", 20)) +
 coord_cartesian(xlim = c(0, 1)) +
 theme_light() +
 scale_colour_viridis_d(labels = helper.bmi_values)
