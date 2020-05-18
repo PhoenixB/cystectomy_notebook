@@ -184,11 +184,28 @@ theme_light()
 
 #### Full model
 
+```{r model1full,echo=FALSE}
+model1_full <- models.intraoptransfusion_multivar[[1]]
+```
+
+##### Model diagnostics
+
+```{r model1full_diagnostics,echo=FALSE}
+mcmc_plot(model1_full, type = "trace")
+mcmc_plot(model1_full, type = "intervals") + geom_vline(aes(xintercept = 0))
+```
+
+##### Posterior predictive check plot
+
+```{r model1full_ppcheck,echo=FALSE}
+pp_check(model1_full, nsamples = 10)
+```
+
 ##### Coefficients table
 
-```{r model1_table,echo=FALSE,results="asis"}
+```{r model1full_table,echo=FALSE,results="asis"}
 tab_model(
-  models.intraoptransfusion_multivar[[1]],
+  model1_full,
   rm.terms = c("Intercept"),
   pred.labels = c(
     blood_loss_percent = "Percent blood loss",
@@ -202,15 +219,29 @@ tab_model(
 cat(.)
 ```
 
-##### Posterior predictive check plot
+##### Maximum a posteriori p-values
 
-```{r model1_ppcheck,echo=FALSE}
-pp_check(models.intraoptransfusion_multivar[[1]], nsamples = 10)
+```{r model1full_pmap,echo=FALSE}
+p_map(model1_full) %>%
+knitr::kable()
 ```
 
+##### Region of practical equivalence
+
+Using a ROPE range of -0.055 to 0.055 ($0.1 \cdot \frac{\sqrt{3}}{\pi}$) and a CI of 1.
+
+```{r model1full_rope,echo=FALSE}
+percentage_in_rope <-
+  rope(
+    model1_full,
+    range = c(-0.055, 0.055),
+    ci = 1
+  )
+plot(percentage_in_rope)
+```
 ##### Conditional probability plot
 
-```{r model1_conditional_plot,echo=FALSE}
+```{r model1full_conditional_plot,echo=FALSE}
 # tibble.oak_bleeding_tidy %>%
 # data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
 # add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
@@ -225,11 +256,28 @@ pp_check(models.intraoptransfusion_multivar[[1]], nsamples = 10)
 
 #### Reduced model
 
+```{r model1reduced,echo=FALSE}
+model1_reduced <- models.intraoptransfusion_multivar[[2]]
+```
+
+##### Model diagnostics
+
+```{r model1reduced_diagnostics,echo=FALSE}
+mcmc_plot(model1_reduced, type = "trace")
+mcmc_plot(model1_reduced, type = "intervals") + geom_vline(aes(xintercept = 0))
+```
+
+##### Posterior predictive check plot
+
+```{r model1reduced_ppcheck,echo=FALSE}
+pp_check(model1_reduced, nsamples = 10)
+```
+
 ##### Coefficients table
 
-```{r model2_table,echo=FALSE,results="asis"}
+```{r model1reduced_table,echo=FALSE,results="asis"}
 tab_model(
-  models.intraoptransfusion_multivar[[2]],
+  model1_reduced,
   rm.terms = c("Intercept"),
   pred.labels = c(
     blood_loss_percent = "Percent blood loss",
@@ -243,15 +291,30 @@ tab_model(
 cat(.)
 ```
 
-##### Posterior predictive check plot
+##### Maximum a posteriori p-values
 
-```{r model2_ppcheck,echo=FALSE}
-pp_check(models.intraoptransfusion_multivar[[2]], nsamples = 10)
+```{r model1reduced_pmap,echo=FALSE}
+p_map(model1_reduced) %>%
+knitr::kable()
+```
+
+##### Region of practical equivalence
+
+Using a ROPE range of -0.055 to 0.055 ($0.1 \cdot \frac{\sqrt{3}}{\pi}$) and a CI of 1.
+
+```{r model1reduced_rope,echo=FALSE}
+percentage_in_rope <-
+  rope(
+    model1_reduced,
+    range = c(-0.055, 0.055),
+    ci = 1
+  )
+plot(percentage_in_rope)
 ```
 
 ##### Conditional probability plot
 
-```{r model2_conditional_plot,echo=FALSE}
+```{r model1reduced_conditional_plot,echo=FALSE}
 # tibble.oak_bleeding_tidy %>%
 # data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
 # add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
