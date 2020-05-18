@@ -70,6 +70,7 @@ knitr::opts_chunk$set(
 
 ```{r load_data, echo=FALSE,cache=FALSE}
 # Load data from 0_get_and_tidy_data ----
+setwd(here::here())
 
 tibble.oak_bleeding_tidy <-
   read_rds(path = path_wd(
@@ -81,32 +82,46 @@ tibble.oak_bleeding_tidy <-
     ext = 'rds'
   ))
 
-# Filter patients with surgery before 2000 ----
-tibble.oak_bleeding_tidy <-
+## Set up helpers ----
+helper.drop_na <- c(
+  "blood_loss_ml",
+  "blood_loss_ratio",
+  "intraop_transfusion",
+  "oak",
+  "tcaggr",
+  "m_preop_hb",
+  "m_preop_tc",
+  "m_bmi",
+  "m_age",
+  "cci_5plus",
+  "gender",
+  "p_tumor",
+  "p_nodes",
+  "op_year",
+  "m_op_duration_min",
+  "previous_op",
+  "norepinephrine",
+  "m_crystalloids_mlkgh",
+  "neoadj_chemo"
+)
+
+## Filter patients ----
+tibble.oak_bleeding_model <-
   tibble.oak_bleeding_tidy %>%
-  filter(op_year >= 2000)
+  filter(op_year >= 2000) %>% # surgery before 2000
+  filter(bmi >= 12) %>% # bmi less than 12
+  drop_na(all_of(helper.drop_na)) # drop NA values in selected columns
 
-# Load models from 1_generate_models ----
-model.intraoptransfusion_bloodlosspercent_preophb_opyear <-
+# Load models from 1_generate_multivar_models ----
+models.intraoptransfusion_multivar <-
   read_rds(path = path_wd(
     'empirical',
     '2_pipeline',
-    '1_generate_models',
+    '1_generate_multivar_models',
     'out',
-    'intraoptransfusion_bloodlosspercent_preophb_opyear',
+    'intraoptransfusion_multivar',
     ext = 'rds'
   ))
-
-model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear <-
-  read_rds(path = path_wd(
-    'empirical',
-    '2_pipeline',
-    '1_generate_models',
-    'out',
-    'bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear',
-    ext = 'rds'
-  ))
-
 
 ```
 
@@ -165,121 +180,86 @@ theme_light()
 
 ## Model outputs
 
-### Model 1
+### Models with intraoperative transfusion as response
 
-Model with intraoperative transfusion as response, blood loss percentage and preoperative hemoglobin as population-level effects and operation year as group-level effect.
+#### Full model
 
-#### Coefficients table
+##### Coefficients table
 
 ```{r model1_table,echo=FALSE,results="asis"}
 tab_model(
-  model.intraoptransfusion_bloodlosspercent_preophb_opyear,
+  models.intraoptransfusion_multivar[[1]],
   rm.terms = c("Intercept"),
   pred.labels = c(
     blood_loss_percent = "Percent blood loss",
     preop_hb = "Preoperative hemoglobin"
   ),
   dv.labels = c("Intraoperative transfusion"),
-  show.ci = 0.999,
+  show.ci = 0.95,
   use.viewer = FALSE
 ) %>%
 .$knitr %>%
 cat(.)
 ```
 
-#### Posterior predictive check plot
+##### Posterior predictive check plot
 
 ```{r model1_ppcheck,echo=FALSE}
-pp_check(model.intraoptransfusion_bloodlosspercent_preophb_opyear, nsamples = 10)
+pp_check(models.intraoptransfusion_multivar[[1]], nsamples = 10)
 ```
 
-#### Conditional probability plot
+##### Conditional probability plot
 
 ```{r model1_conditional_plot,echo=FALSE}
-tibble.oak_bleeding_tidy %>%
-data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
-add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
-median_hdci(.width = c(0.95, 0.999)) %>%
-ggplot(aes(x = blood_loss_percent, y = .value)) +
-facet_wrap(vars(preop_hb)) +
-geom_lineribbon() +
-labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
-coord_cartesian(xlim = c(0, 100)) +
-theme_light()
+# tibble.oak_bleeding_tidy %>%
+# data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
+# add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
+# median_hdci(.width = c(0.95, 0.999)) %>%
+# ggplot(aes(x = blood_loss_percent, y = .value)) +
+# facet_wrap(vars(preop_hb)) +
+# geom_lineribbon() +
+# labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
+# coord_cartesian(xlim = c(0, 100)) +
+# theme_light()
 ```
 
-### Model 2
+#### Reduced model
 
-Model with blood loss ratio as response, oral anticoagulation, thrombocyte aggregation inhibitors, age, body mass index, charleston comorbidity index, gender, tumor stadium and nodal stadium as population-level effects and operation year as group-level effect.
-
-#### Coefficients table
+##### Coefficients table
 
 ```{r model2_table,echo=FALSE,results="asis"}
 tab_model(
-  model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear,
+  models.intraoptransfusion_multivar[[2]],
+  rm.terms = c("Intercept"),
   pred.labels = c(
-    oakTRUE = "Oral anticoagulation",
-    tcaggrTRUE = "Thrombocyte aggregation inhibition",
-    m_age = "Age (standardized)",
-    m_bmi = "Body mass index (standardized)",
-    genderfemale = "Female gender",
-    bsp_mocci = "Charleston comorbidity index",
-    bsp_mop_tumor = "Tumor stadium",
-    bsp_mop_nodes = "Nodal stadium"
+    blood_loss_percent = "Percent blood loss",
+    preop_hb = "Preoperative hemoglobin"
   ),
-  dv.labels = c("Blood loss ratio"),
+  dv.labels = c("Intraoperative transfusion"),
   show.ci = 0.95,
-  rm.terms = c(
-    sprintf("simo_mocci1.%d.", seq(1:9)),
-    sprintf("simo_mop_tumor1.%d.", seq(1:4)),
-    sprintf("simo_mop_nodes1.%d.", seq(1:3))
-  ),
   use.viewer = FALSE
 ) %>%
 .$knitr %>%
 cat(.)
-
-p_map(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear) %>%
-as_tibble() %>%
-knitr::kable()
 ```
 
-#### Posterior predictive check plot
+##### Posterior predictive check plot
 
 ```{r model2_ppcheck,echo=FALSE}
-pp_check(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear, nsamples = 10)
+pp_check(models.intraoptransfusion_multivar[[2]], nsamples = 10)
 ```
 
-#### Conditional distribution plot
+##### Conditional probability plot
 
 ```{r model2_conditional_plot,echo=FALSE}
-helper.bmi_med_mad <-
-  tibble.oak_bleeding_tidy %>%
-  drop_na(bmi) %>%
-  summarise(
-    bmi_median = median(bmi),
-    bmi_mad = mad(bmi)
-  )
-helper.bmi_zscores <-
-  seq(from = -1, to = 3, length.out = 9)
-helper.bmi_values <-
-  round((2 * helper.bmi_zscores * helper.bmi_med_mad$bmi_mad) / 0.6745 + helper.bmi_med_mad$bmi_median, digits = 1)
-tibble(
-  oak = FALSE,
-  tcaggr = FALSE,
-  m_age = 0,
-  m_bmi = helper.bmi_zscores,
-  cci = "0",
-  gender = "male",
-  p_tumor = "0",
-  p_nodes = "0"
-) %>%
-add_predicted_draws(model.bloodlossratio_oak_tcaggr_mage_mbmi_cci_gender_ptumor_pnodes_opyear, re_formula = NA) %>%
-ggplot(aes(x = .prediction, colour = factor(m_bmi))) +
-geom_freqpoly(binwidth = 0.05) +
-labs(title = str_wrap("Distribution of blood loss ratio depending on body mass index", 100), subtitle = str_wrap("Other variables held at reference level or median", 100), x = "Blood loss ratio", y = "Count", colour = str_wrap("Body mass index", 20)) +
-coord_cartesian(xlim = c(0, 1)) +
-theme_light() +
-scale_colour_viridis_d(labels = helper.bmi_values)
-
+# tibble.oak_bleeding_tidy %>%
+# data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
+# add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
+# median_hdci(.width = c(0.95, 0.999)) %>%
+# ggplot(aes(x = blood_loss_percent, y = .value)) +
+# facet_wrap(vars(preop_hb)) +
+# geom_lineribbon() +
+# labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
+# coord_cartesian(xlim = c(0, 100)) +
+# theme_light()
 ```
