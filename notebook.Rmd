@@ -3,7 +3,6 @@ title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
 date: "22nd May 2020"
 output:
-  html_notebook: default
   bookdown::gitbook:
     config:
       toc:
@@ -14,7 +13,8 @@ output:
       toolbar:
         position: fixed
       edit : null
-      download: ["notebook.pdf"]
+      download:
+        - ["notebook.pdf", "PDF"]
       search: yes
       fontsettings:
         theme: white
@@ -30,6 +30,7 @@ output:
         vk: no
         all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
       info: yes
+  html_notebook: default
   bookdown::pdf_document2:
     toc: false
     keep_tex: true
