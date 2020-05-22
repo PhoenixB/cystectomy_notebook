@@ -147,29 +147,540 @@ Welcome to the notebook!
 \hypertarget{summary}{%
 \subparagraph{Summary}\label{summary}}
 
-\begin{verbatim}
-#> # Description of Posterior Distributions
-#> 
-#> Parameter            | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
-#> ----------------------------------------------------------------------------------------------
-#> Intercept            | -2.316 | [-2.976, -1.652] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> m_blood_loss_ratio   |  4.256 | [ 3.619,  4.937] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> oakTRUE              |  0.290 | [-0.207,  1.212] | 0.987 | 0.845 | [-0.055, 0.055] |    20.600
-#> tcaggrTRUE           | -0.053 | [-0.605,  0.275] | 0.997 | 0.691 | [-0.055, 0.055] |    35.425
-#> m_preop_hb           | -3.926 | [-4.657, -3.283] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> m_preop_tc           |  0.009 | [-0.218,  0.304] | 1.000 | 0.567 | [-0.055, 0.055] |    46.200
-#> m_bmi                | -0.006 | [-0.360,  0.274] | 0.997 | 0.539 | [-0.055, 0.055] |    42.175
-#> m_age                |  1.086 | [ 0.536,  1.689] | 0.007 | 0.999 | [-0.055, 0.055] |     0.125
-#> genderfemale         |  0.135 | [-0.124,  0.574] | 0.988 | 0.824 | [-0.055, 0.055] |    27.950
-#> m_op_duration_min    |  0.040 | [-0.266,  0.486] | 0.999 | 0.655 | [-0.055, 0.055] |    37.625
-#> previous_opTRUE      |  0.015 | [-0.223,  0.310] | 0.999 | 0.590 | [-0.055, 0.055] |    46.550
-#> norepinephrineTRUE   |  0.042 | [-0.201,  0.433] | 0.999 | 0.674 | [-0.055, 0.055] |    38.925
-#> m_crystalloids_mlkgh |  0.007 | [-0.325,  0.370] | 1.000 | 0.546 | [-0.055, 0.055] |    40.975
-#> neoadj_chemoTRUE     |  0.003 | [-0.326,  0.322] | 0.996 | 0.525 | [-0.055, 0.055] |    43.350
-#> mocci_5plus          |  0.199 | [ 0.068,  0.338] | 0.000 | 1.000 | [-0.055, 0.055] |     1.550
-#> mop_tumor            |  0.209 | [ 0.032,  0.374] | 0.085 | 0.991 | [-0.055, 0.055] |     4.225
-#> mop_nodes            | -0.018 | [-0.361,  0.166] | 1.000 | 0.616 | [-0.055, 0.055] |    51.125
-\end{verbatim}
+\begin{longtable}[]{@{}cccccc@{}}
+\caption{Table continues below}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\centering
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\centering
+Median\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\centering
+CI\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+CI\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+CI\_high\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\centering
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\centering
+Median\strut
+\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\centering
+CI\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+CI\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+CI\_high\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{2}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_Intercept\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+-2.316\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-2.976\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-1.652\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{4}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_blood\_loss\_ratio\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+4.256\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+3.619\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+4.937\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{12}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_oakTRUE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.2904\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.2074\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+1.212\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{14}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_tcaggrTRUE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+-0.05321\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.6047\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.275\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{8}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_preop\_hb\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+-3.926\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-4.657\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-3.283\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{9}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_preop\_tc\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.009459\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.2185\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3044\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{5}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_bmi\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+-0.005621\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.3602\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.2736\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{3}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_age\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+1.086\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.5356\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+1.689\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{1}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_genderfemale\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.1352\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.1239\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.5736\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{7}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_op\_duration\_min\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.04048\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.2655\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.4862\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{13}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_previous\_opTRUE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.01464\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.2235\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3102\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{11}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_norepinephrineTRUE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.0425\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.2008\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.4329\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{6}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_m\_crystalloids\_mlkgh\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.006921\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.3254\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3697\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{10}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+b\_neoadj\_chemoTRUE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.003186\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.3261\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3225\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{15}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+bsp\_mocci\_5plus\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.1992\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.06772\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3381\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{17}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+bsp\_mop\_tumor\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.2094\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.03192\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.3742\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{16}\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+bsp\_mop\_nodes\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+-0.01825\strut
+\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+-0.3614\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.1658\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}ccccccc@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\centering
+p\_MAP\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\centering
+pd\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+ROPE\_CI\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\centering
+ROPE\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+ROPE\_high\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\centering
+ROPE\_Percentage\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{2}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{4}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{12}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9866\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.8448\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.206\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{14}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9974\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.6905\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.3543\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{8}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{9}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9997\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.5665\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.462\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{5}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9965\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.539\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.4218\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{3}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.006724\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.9988\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.00125\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{1}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9882\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.824\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.2795\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{7}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9992\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.6548\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.3762\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{13}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9994\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.5903\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.4655\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{11}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.999\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.674\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.3892\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{6}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9996\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.546\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.4098\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{10}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9956\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.5248\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.4335\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{15}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.0155\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{17}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.08488\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.991\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.04225\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{16}\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+0.9998\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.6158\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+0.5112\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 \hypertarget{region-of-practical-equivalence}{%
 \subparagraph{Region of practical equivalence}\label{region-of-practical-equivalence}}
@@ -216,17 +727,206 @@ Using a ROPE range of -0.055 to 0.055 (\(0.1 \cdot \frac{\sqrt{3}}{\pi}\)) and a
 \hypertarget{summary-1}{%
 \subparagraph{Summary}\label{summary-1}}
 
-\begin{verbatim}
-#> # Description of Posterior Distributions
-#> 
-#> Parameter          | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
-#> --------------------------------------------------------------------------------------------
-#> Intercept          | -1.882 | [-2.380, -1.392] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> m_blood_loss_ratio |  4.238 | [ 3.631,  4.851] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> m_preop_hb         | -4.106 | [-4.753, -3.466] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> m_age              |  1.141 | [ 0.615,  1.642] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#> mocci_5plus        |  0.189 | [ 0.062,  0.312] | 0.006 | 1.000 | [-0.055, 0.055] |     1.250
-\end{verbatim}
+\begin{longtable}[]{@{}ccccccc@{}}
+\caption{Table continues below}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.24\columnwidth}\centering
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\centering
+Median\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\centering
+CI\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+CI\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+CI\_high\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+p\_MAP\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.24\columnwidth}\centering
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\centering
+Median\strut
+\end{minipage} & \begin{minipage}[b]{0.05\columnwidth}\centering
+CI\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+CI\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+CI\_high\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+p\_MAP\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{1}\strut
+\end{minipage} & \begin{minipage}[t]{0.24\columnwidth}\centering
+b\_Intercept\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+-1.882\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+-2.38\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+-1.392\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{3}\strut
+\end{minipage} & \begin{minipage}[t]{0.24\columnwidth}\centering
+b\_m\_blood\_loss\_ratio\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+4.238\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+3.631\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+4.851\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{4}\strut
+\end{minipage} & \begin{minipage}[t]{0.24\columnwidth}\centering
+b\_m\_preop\_hb\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+-4.106\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+-4.753\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+-3.466\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{2}\strut
+\end{minipage} & \begin{minipage}[t]{0.24\columnwidth}\centering
+b\_m\_age\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+1.141\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+0.6149\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+1.642\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\centering
+\textbf{5}\strut
+\end{minipage} & \begin{minipage}[t]{0.24\columnwidth}\centering
+bsp\_mocci\_5plus\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.1888\strut
+\end{minipage} & \begin{minipage}[t]{0.05\columnwidth}\centering
+95\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+0.06218\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+0.3124\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+0.005719\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}cccccc@{}}
+\toprule
+\begin{minipage}[b]{0.10\columnwidth}\centering
+~\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\centering
+pd\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\centering
+ROPE\_CI\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+ROPE\_low\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\centering
+ROPE\_high\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\centering
+ROPE\_Percentage\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{1}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{3}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{4}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{2}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
+0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.10\columnwidth}\centering
+\textbf{5}\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\centering
+0.9998\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\centering
+100\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+-0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\centering
+0.055\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\centering
+0.0125\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 \hypertarget{region-of-practical-equivalence-1}{%
 \subparagraph{Region of practical equivalence}\label{region-of-practical-equivalence-1}}

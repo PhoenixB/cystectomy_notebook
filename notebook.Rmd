@@ -51,7 +51,7 @@ pacman::p_load(
   "glue",
   "tidybayes",
   "gridExtra",
-  "sjPlot",
+  "pander",
   "htmltools",
   "brms",
   "bayestestR",
@@ -221,7 +221,8 @@ describe_posterior(
   rope_ci = 1,
   rope_range = c(-0.055, 0.055),
   diagnostic = NULL
-)
+) %>%
+pander()
 ```
 
 ##### Region of practical equivalence
@@ -335,7 +336,8 @@ describe_posterior(
   rope_ci = 1,
   rope_range = c(-0.055, 0.055),
   diagnostic = NULL
-)
+) %>%
+pander()
 ```
 
 ##### Region of practical equivalence

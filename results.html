@@ -115,27 +115,342 @@
 </div>
 <div id="summary" class="section level5">
 <h5><span class="header-section-number">3.2.1.1.3</span> Summary</h5>
-<pre><code>#&gt; # Description of Posterior Distributions
-#&gt; 
-#&gt; Parameter            | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
-#&gt; ----------------------------------------------------------------------------------------------
-#&gt; Intercept            | -2.316 | [-2.976, -1.652] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; m_blood_loss_ratio   |  4.256 | [ 3.619,  4.937] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; oakTRUE              |  0.290 | [-0.207,  1.212] | 0.987 | 0.845 | [-0.055, 0.055] |    20.600
-#&gt; tcaggrTRUE           | -0.053 | [-0.605,  0.275] | 0.997 | 0.691 | [-0.055, 0.055] |    35.425
-#&gt; m_preop_hb           | -3.926 | [-4.657, -3.283] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; m_preop_tc           |  0.009 | [-0.218,  0.304] | 1.000 | 0.567 | [-0.055, 0.055] |    46.200
-#&gt; m_bmi                | -0.006 | [-0.360,  0.274] | 0.997 | 0.539 | [-0.055, 0.055] |    42.175
-#&gt; m_age                |  1.086 | [ 0.536,  1.689] | 0.007 | 0.999 | [-0.055, 0.055] |     0.125
-#&gt; genderfemale         |  0.135 | [-0.124,  0.574] | 0.988 | 0.824 | [-0.055, 0.055] |    27.950
-#&gt; m_op_duration_min    |  0.040 | [-0.266,  0.486] | 0.999 | 0.655 | [-0.055, 0.055] |    37.625
-#&gt; previous_opTRUE      |  0.015 | [-0.223,  0.310] | 0.999 | 0.590 | [-0.055, 0.055] |    46.550
-#&gt; norepinephrineTRUE   |  0.042 | [-0.201,  0.433] | 0.999 | 0.674 | [-0.055, 0.055] |    38.925
-#&gt; m_crystalloids_mlkgh |  0.007 | [-0.325,  0.370] | 1.000 | 0.546 | [-0.055, 0.055] |    40.975
-#&gt; neoadj_chemoTRUE     |  0.003 | [-0.326,  0.322] | 0.996 | 0.525 | [-0.055, 0.055] |    43.350
-#&gt; mocci_5plus          |  0.199 | [ 0.068,  0.338] | 0.000 | 1.000 | [-0.055, 0.055] |     1.550
-#&gt; mop_tumor            |  0.209 | [ 0.032,  0.374] | 0.085 | 0.991 | [-0.055, 0.055] |     4.225
-#&gt; mop_nodes            | -0.018 | [-0.361,  0.166] | 1.000 | 0.616 | [-0.055, 0.055] |    51.125</code></pre>
+<table style="width:99%;">
+<caption>Table continues below</caption>
+<colgroup>
+<col width="12%" />
+<col width="34%" />
+<col width="16%" />
+<col width="6%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Parameter</th>
+<th align="center">Median</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>2</strong></td>
+<td align="center">b_Intercept</td>
+<td align="center">-2.316</td>
+<td align="center">95</td>
+<td align="center">-2.976</td>
+<td align="center">-1.652</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>4</strong></td>
+<td align="center">b_m_blood_loss_ratio</td>
+<td align="center">4.256</td>
+<td align="center">95</td>
+<td align="center">3.619</td>
+<td align="center">4.937</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>12</strong></td>
+<td align="center">b_oakTRUE</td>
+<td align="center">0.2904</td>
+<td align="center">95</td>
+<td align="center">-0.2074</td>
+<td align="center">1.212</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>14</strong></td>
+<td align="center">b_tcaggrTRUE</td>
+<td align="center">-0.05321</td>
+<td align="center">95</td>
+<td align="center">-0.6047</td>
+<td align="center">0.275</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>8</strong></td>
+<td align="center">b_m_preop_hb</td>
+<td align="center">-3.926</td>
+<td align="center">95</td>
+<td align="center">-4.657</td>
+<td align="center">-3.283</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>9</strong></td>
+<td align="center">b_m_preop_tc</td>
+<td align="center">0.009459</td>
+<td align="center">95</td>
+<td align="center">-0.2185</td>
+<td align="center">0.3044</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>5</strong></td>
+<td align="center">b_m_bmi</td>
+<td align="center">-0.005621</td>
+<td align="center">95</td>
+<td align="center">-0.3602</td>
+<td align="center">0.2736</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>3</strong></td>
+<td align="center">b_m_age</td>
+<td align="center">1.086</td>
+<td align="center">95</td>
+<td align="center">0.5356</td>
+<td align="center">1.689</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1</strong></td>
+<td align="center">b_genderfemale</td>
+<td align="center">0.1352</td>
+<td align="center">95</td>
+<td align="center">-0.1239</td>
+<td align="center">0.5736</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>7</strong></td>
+<td align="center">b_m_op_duration_min</td>
+<td align="center">0.04048</td>
+<td align="center">95</td>
+<td align="center">-0.2655</td>
+<td align="center">0.4862</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>13</strong></td>
+<td align="center">b_previous_opTRUE</td>
+<td align="center">0.01464</td>
+<td align="center">95</td>
+<td align="center">-0.2235</td>
+<td align="center">0.3102</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>11</strong></td>
+<td align="center">b_norepinephrineTRUE</td>
+<td align="center">0.0425</td>
+<td align="center">95</td>
+<td align="center">-0.2008</td>
+<td align="center">0.4329</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>6</strong></td>
+<td align="center">b_m_crystalloids_mlkgh</td>
+<td align="center">0.006921</td>
+<td align="center">95</td>
+<td align="center">-0.3254</td>
+<td align="center">0.3697</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>10</strong></td>
+<td align="center">b_neoadj_chemoTRUE</td>
+<td align="center">0.003186</td>
+<td align="center">95</td>
+<td align="center">-0.3261</td>
+<td align="center">0.3225</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>15</strong></td>
+<td align="center">bsp_mocci_5plus</td>
+<td align="center">0.1992</td>
+<td align="center">95</td>
+<td align="center">0.06772</td>
+<td align="center">0.3381</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>17</strong></td>
+<td align="center">bsp_mop_tumor</td>
+<td align="center">0.2094</td>
+<td align="center">95</td>
+<td align="center">0.03192</td>
+<td align="center">0.3742</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>16</strong></td>
+<td align="center">bsp_mop_nodes</td>
+<td align="center">-0.01825</td>
+<td align="center">95</td>
+<td align="center">-0.3614</td>
+<td align="center">0.1658</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="13%" />
+<col width="11%" />
+<col width="12%" />
+<col width="13%" />
+<col width="15%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">p_MAP</th>
+<th align="center">pd</th>
+<th align="center">ROPE_CI</th>
+<th align="center">ROPE_low</th>
+<th align="center">ROPE_high</th>
+<th align="center">ROPE_Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>2</strong></td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>4</strong></td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>12</strong></td>
+<td align="center">0.9866</td>
+<td align="center">0.8448</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.206</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>14</strong></td>
+<td align="center">0.9974</td>
+<td align="center">0.6905</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.3543</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>8</strong></td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>9</strong></td>
+<td align="center">0.9997</td>
+<td align="center">0.5665</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.462</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>5</strong></td>
+<td align="center">0.9965</td>
+<td align="center">0.539</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.4218</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>3</strong></td>
+<td align="center">0.006724</td>
+<td align="center">0.9988</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.00125</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>1</strong></td>
+<td align="center">0.9882</td>
+<td align="center">0.824</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.2795</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>7</strong></td>
+<td align="center">0.9992</td>
+<td align="center">0.6548</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.3762</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>13</strong></td>
+<td align="center">0.9994</td>
+<td align="center">0.5903</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.4655</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>11</strong></td>
+<td align="center">0.999</td>
+<td align="center">0.674</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.3892</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>6</strong></td>
+<td align="center">0.9996</td>
+<td align="center">0.546</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.4098</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>10</strong></td>
+<td align="center">0.9956</td>
+<td align="center">0.5248</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.4335</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>15</strong></td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.0155</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>17</strong></td>
+<td align="center">0.08488</td>
+<td align="center">0.991</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.04225</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>16</strong></td>
+<td align="center">0.9998</td>
+<td align="center">0.6158</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.5112</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="region-of-practical-equivalence" class="section level5">
 <h5><span class="header-section-number">3.2.1.1.4</span> Region of practical equivalence</h5>
@@ -165,15 +480,138 @@
 </div>
 <div id="summary-1" class="section level5">
 <h5><span class="header-section-number">3.2.1.2.3</span> Summary</h5>
-<pre><code>#&gt; # Description of Posterior Distributions
-#&gt; 
-#&gt; Parameter          | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
-#&gt; --------------------------------------------------------------------------------------------
-#&gt; Intercept          | -1.882 | [-2.380, -1.392] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; m_blood_loss_ratio |  4.238 | [ 3.631,  4.851] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; m_preop_hb         | -4.106 | [-4.753, -3.466] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; m_age              |  1.141 | [ 0.615,  1.642] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
-#&gt; mocci_5plus        |  0.189 | [ 0.062,  0.312] | 0.006 | 1.000 | [-0.055, 0.055] |     1.250</code></pre>
+<table>
+<caption>Table continues below</caption>
+<colgroup>
+<col width="11%" />
+<col width="29%" />
+<col width="11%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Parameter</th>
+<th align="center">Median</th>
+<th align="center">CI</th>
+<th align="center">CI_low</th>
+<th align="center">CI_high</th>
+<th align="center">p_MAP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>1</strong></td>
+<td align="center">b_Intercept</td>
+<td align="center">-1.882</td>
+<td align="center">95</td>
+<td align="center">-2.38</td>
+<td align="center">-1.392</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>3</strong></td>
+<td align="center">b_m_blood_loss_ratio</td>
+<td align="center">4.238</td>
+<td align="center">95</td>
+<td align="center">3.631</td>
+<td align="center">4.851</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>4</strong></td>
+<td align="center">b_m_preop_hb</td>
+<td align="center">-4.106</td>
+<td align="center">95</td>
+<td align="center">-4.753</td>
+<td align="center">-3.466</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>2</strong></td>
+<td align="center">b_m_age</td>
+<td align="center">1.141</td>
+<td align="center">95</td>
+<td align="center">0.6149</td>
+<td align="center">1.642</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>5</strong></td>
+<td align="center">bsp_mocci_5plus</td>
+<td align="center">0.1888</td>
+<td align="center">95</td>
+<td align="center">0.06218</td>
+<td align="center">0.3124</td>
+<td align="center">0.005719</td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="13%" />
+<col width="15%" />
+<col width="16%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">pd</th>
+<th align="center">ROPE_CI</th>
+<th align="center">ROPE_low</th>
+<th align="center">ROPE_high</th>
+<th align="center">ROPE_Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>1</strong></td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>3</strong></td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>4</strong></td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>2</strong></td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>5</strong></td>
+<td align="center">0.9998</td>
+<td align="center">100</td>
+<td align="center">-0.055</td>
+<td align="center">0.055</td>
+<td align="center">0.0125</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="region-of-practical-equivalence-1" class="section level5">
 <h5><span class="header-section-number">3.2.1.2.4</span> Region of practical equivalence</h5>
