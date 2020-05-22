@@ -1,8 +1,9 @@
 ---
 title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
-date: "3rd May 2020"
+date: "22nd May 2020"
 output:
+  html_notebook: default
   bookdown::gitbook:
     config:
       toc:
@@ -13,7 +14,7 @@ output:
       toolbar:
         position: fixed
       edit : null
-      download: ["notebook_cystectomy.pdf", "notebook_cystectomy.epub"]
+      download: ["notebook.pdf"]
       search: yes
       fontsettings:
         theme: white
@@ -29,8 +30,10 @@ output:
         vk: no
         all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
       info: yes
-  html_notebook: default
-  pdf_document: default
+  bookdown::pdf_document2:
+    toc: false
+    keep_tex: true
+    latex_engine: xelatex
 ---
 
 ```{r setup, echo=FALSE}
@@ -178,7 +181,7 @@ theme_light()
 model1_full <- models.intraoptransfusion_multivar[[1]]
 ```
 
-##### Model diagnostics
+##### Diagnostics
 
 ```{r model1full_diagnostics,echo=FALSE}
 mcmc_plot(model1_full, type = "trace")
@@ -188,34 +191,36 @@ mcmc_plot(model1_full, type = "intervals") + geom_vline(aes(xintercept = 0))
 ##### Posterior predictive check plot
 
 ```{r model1full_ppcheck,echo=FALSE}
-pp_check(model1_full, nsamples = 10)
+pp_check(model1_full, type = "bars")
 ```
 
-##### Coefficients table
+##### Summary
 
-```{r model1full_table,echo=FALSE,results="asis"}
-tab_model(
+```{r model1full_table,echo=FALSE}
+#,results="asis"
+#tab_model(
+#  model1_full,
+#  rm.terms = c("Intercept"),
+#  pred.labels = c(
+#    blood_loss_percent = "Percent blood loss",
+#    preop_hb = "Preoperative hemoglobin"
+#  ),
+#  dv.labels = c("Intraoperative transfusion"),
+#  show.ci = 0.95,
+#  use.viewer = FALSE
+#) %>%
+#.$knitr %>%
+#cat(.)
+
+describe_posterior(
   model1_full,
-  rm.terms = c("Intercept"),
-  pred.labels = c(
-    blood_loss_percent = "Percent blood loss",
-    preop_hb = "Preoperative hemoglobin"
-  ),
-  dv.labels = c("Intraoperative transfusion"),
-  show.ci = 0.95,
-  use.viewer = FALSE
-) %>%
-.$knitr %>%
-cat(.)
-```
-
-##### Maximum a posteriori p-values
-
-```{r model1full_pmap,echo=FALSE}
-p_map(model1_full) %>%
-as_tibble() %>%
-arrange(p_MAP) %>%
-knitr::kable()
+  effects = "fixed",
+  test = c("p_map", "rope", "pd"),
+  ci = .95,
+  rope_ci = 1,
+  rope_range = c(-0.055, 0.055),
+  diagnostic = NULL
+)
 ```
 
 ##### Region of practical equivalence
@@ -290,7 +295,7 @@ plot(
 model1_reduced <- models.intraoptransfusion_multivar[[2]]
 ```
 
-##### Model diagnostics
+##### Diagnostics
 
 ```{r model1reduced_diagnostics,echo=FALSE}
 mcmc_plot(model1_reduced, type = "trace")
@@ -300,34 +305,36 @@ mcmc_plot(model1_reduced, type = "intervals") + geom_vline(aes(xintercept = 0))
 ##### Posterior predictive check plot
 
 ```{r model1reduced_ppcheck,echo=FALSE}
-pp_check(model1_reduced, nsamples = 10)
+pp_check(model1_reduced, type = "bars")
 ```
 
-##### Coefficients table
+##### Summary
 
-```{r model1reduced_table,echo=FALSE,results="asis"}
-tab_model(
+```{r model1reduced_table,echo=FALSE}
+#,results="asis"
+# tab_model(
+#   model1_reduced,
+#  rm.terms = c("Intercept"),
+#  pred.labels = c(
+#    blood_loss_percent = "Percent blood loss",
+#    preop_hb = "Preoperative hemoglobin"
+#  ),
+#  dv.labels = c("Intraoperative transfusion"),
+#  show.ci = 0.95,
+#  use.viewer = FALSE
+#) %>%
+#.$knitr %>%
+#cat(.)
+
+describe_posterior(
   model1_reduced,
-  rm.terms = c("Intercept"),
-  pred.labels = c(
-    blood_loss_percent = "Percent blood loss",
-    preop_hb = "Preoperative hemoglobin"
-  ),
-  dv.labels = c("Intraoperative transfusion"),
-  show.ci = 0.95,
-  use.viewer = FALSE
-) %>%
-.$knitr %>%
-cat(.)
-```
-
-##### Maximum a posteriori p-values
-
-```{r model1reduced_pmap,echo=FALSE}
-p_map(model1_reduced) %>%
-as_tibble() %>%
-arrange(p_MAP) %>%
-knitr::kable()
+  effects = "fixed",
+  test = c("p_map", "rope", "pd"),
+  ci = .95,
+  rope_ci = 1,
+  rope_range = c(-0.055, 0.055),
+  diagnostic = NULL
+)
 ```
 
 ##### Region of practical equivalence

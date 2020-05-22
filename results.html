@@ -103,777 +103,90 @@
 <h3><span class="header-section-number">3.2.1</span> Models with intraoperative transfusion as response</h3>
 <div id="full-model" class="section level4">
 <h4><span class="header-section-number">3.2.1.1</span> Full model</h4>
-<div id="model-diagnostics" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.1</span> Model diagnostics</h5>
+<div id="diagnostics" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.1</span> Diagnostics</h5>
 <pre><code>#&gt; No divergences to plot.</code></pre>
 <p><img src="notebook_files/figure-html/model1full_diagnostics-1.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/model1full_diagnostics-2.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="posterior-predictive-check-plot" class="section level5">
 <h5><span class="header-section-number">3.2.1.1.2</span> Posterior predictive check plot</h5>
+<pre><code>#&gt; Using 10 posterior samples for ppc type &#39;bars&#39; by default.</code></pre>
 <p><img src="notebook_files/figure-html/model1full_ppcheck-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="coefficients-table" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.3</span> Coefficients table</h5>
-<table style="border-collapse:collapse; border:none;">
-<tr>
-<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
- 
-</th>
-<th colspan="2" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-Intraoperative transfusion
-</th>
-</tr>
-<tr>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
-Predictors
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-Odds Ratios
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-CI (95%)
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_blood_loss_ratio
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-71.41
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-37.18 – 142.02
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-oakTRUE
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.34
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.86 – 3.71
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-tcaggrTRUE
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.95
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.52 – 1.26
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_preop_hb
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.01 – 0.04
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_preop_tc
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.80 – 1.35
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_bmi
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.00
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.70 – 1.36
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_age
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-2.96
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.71 – 5.12
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-genderfemale
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.15
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.90 – 1.81
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_op_duration_min
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.03
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.79 – 1.67
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-previous_opTRUE
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.81 – 1.37
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-norepinephrineTRUE
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.04
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.82 – 1.59
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_crystalloids_mlkgh
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.73 – 1.47
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-neoadj_chemoTRUE
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.00
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.72 – 1.40
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.22
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.08 – 1.41
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_tumor
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.24
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.04 – 1.47
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_nodes
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.98
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.66 – 1.15
-</td>
-</tr>
-<tr>
-<td colspan="3" style="simplexparts">
-Monotonic Effects
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [1]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.22
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.02 – 1.77
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [2]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.19
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.74
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [3]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.14
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.58
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [4]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.16
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.67
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [5]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.17
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.67
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_tumor1 [1]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.09
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.00 – 1.49
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_tumor1 [2]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.09
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.00 – 1.52
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_tumor1 [3]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.29
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.02 – 2.07
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_tumor1 [4]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.46
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.04 – 2.23
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_nodes1 [1]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.24
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 2.23
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_nodes1 [2]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.25
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 2.28
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-p_nodes1 [3]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.38
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.02 – 2.49
-</td>
-</tr>
-<tr>
-<td colspan="3" style="font-weight:bold; text-align:left; padding-top:.8em;">
-Random Effects
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-σ<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
--0.00
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>00</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.22
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-ICC
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
--0.01
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-N <sub>op_year</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-17
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
-Observations
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="2">
-1167
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.436 / 0.467
-</td>
-</tr>
-</table>
-</div>
-<div id="maximum-a-posteriori-p-values" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.4</span> Maximum a posteriori p-values</h5>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Parameter</th>
-<th align="right">p_MAP</th>
-<th align="left">Effects</th>
-<th align="left">Component</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">b_Intercept</td>
-<td align="right">0.0000000</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_blood_loss_ratio</td>
-<td align="right">0.0000000</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_m_preop_hb</td>
-<td align="right">0.0000000</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_age</td>
-<td align="right">0.0000000</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">bsp_mocci_5plus</td>
-<td align="right">0.0112346</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">bsp_mop_tumor</td>
-<td align="right">0.0722177</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_genderfemale</td>
-<td align="right">0.9911906</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_oakTRUE</td>
-<td align="right">0.9958163</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_norepinephrineTRUE</td>
-<td align="right">0.9975841</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_tcaggrTRUE</td>
-<td align="right">0.9980260</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_previous_opTRUE</td>
-<td align="right">0.9982588</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_preop_tc</td>
-<td align="right">0.9985435</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">bsp_mop_nodes</td>
-<td align="right">0.9986349</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_bmi</td>
-<td align="right">0.9992030</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_m_op_duration_min</td>
-<td align="right">0.9996188</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_neoadj_chemoTRUE</td>
-<td align="right">0.9998300</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_m_crystalloids_mlkgh</td>
-<td align="right">0.9998930</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-</tbody>
-</table>
+<div id="summary" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.3</span> Summary</h5>
+<pre><code>#&gt; # Description of Posterior Distributions
+#&gt; 
+#&gt; Parameter            | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
+#&gt; ----------------------------------------------------------------------------------------------
+#&gt; Intercept            | -2.316 | [-2.976, -1.652] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; m_blood_loss_ratio   |  4.256 | [ 3.619,  4.937] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; oakTRUE              |  0.290 | [-0.207,  1.212] | 0.987 | 0.845 | [-0.055, 0.055] |    20.600
+#&gt; tcaggrTRUE           | -0.053 | [-0.605,  0.275] | 0.997 | 0.691 | [-0.055, 0.055] |    35.425
+#&gt; m_preop_hb           | -3.926 | [-4.657, -3.283] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; m_preop_tc           |  0.009 | [-0.218,  0.304] | 1.000 | 0.567 | [-0.055, 0.055] |    46.200
+#&gt; m_bmi                | -0.006 | [-0.360,  0.274] | 0.997 | 0.539 | [-0.055, 0.055] |    42.175
+#&gt; m_age                |  1.086 | [ 0.536,  1.689] | 0.007 | 0.999 | [-0.055, 0.055] |     0.125
+#&gt; genderfemale         |  0.135 | [-0.124,  0.574] | 0.988 | 0.824 | [-0.055, 0.055] |    27.950
+#&gt; m_op_duration_min    |  0.040 | [-0.266,  0.486] | 0.999 | 0.655 | [-0.055, 0.055] |    37.625
+#&gt; previous_opTRUE      |  0.015 | [-0.223,  0.310] | 0.999 | 0.590 | [-0.055, 0.055] |    46.550
+#&gt; norepinephrineTRUE   |  0.042 | [-0.201,  0.433] | 0.999 | 0.674 | [-0.055, 0.055] |    38.925
+#&gt; m_crystalloids_mlkgh |  0.007 | [-0.325,  0.370] | 1.000 | 0.546 | [-0.055, 0.055] |    40.975
+#&gt; neoadj_chemoTRUE     |  0.003 | [-0.326,  0.322] | 0.996 | 0.525 | [-0.055, 0.055] |    43.350
+#&gt; mocci_5plus          |  0.199 | [ 0.068,  0.338] | 0.000 | 1.000 | [-0.055, 0.055] |     1.550
+#&gt; mop_tumor            |  0.209 | [ 0.032,  0.374] | 0.085 | 0.991 | [-0.055, 0.055] |     4.225
+#&gt; mop_nodes            | -0.018 | [-0.361,  0.166] | 1.000 | 0.616 | [-0.055, 0.055] |    51.125</code></pre>
 </div>
 <div id="region-of-practical-equivalence" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.5</span> Region of practical equivalence</h5>
+<h5><span class="header-section-number">3.2.1.1.4</span> Region of practical equivalence</h5>
 <p>Using a ROPE range of -0.055 to 0.055 (<span class="math inline">\(0.1 \cdot \frac{\sqrt{3}}{\pi}\)</span>) and a CI of 1.</p>
 <p><img src="notebook_files/figure-html/model1full_rope-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="roc-auc" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.6</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.879115132003454</code></pre>
+<h5><span class="header-section-number">3.2.1.1.5</span> ROC-AUC</h5>
+<pre><code>#&gt; AUC: 0.879159280314611</code></pre>
 <p><img src="notebook_files/figure-html/model1full_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="conditional-probability-plot" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.7</span> Conditional probability plot</h5>
+<h5><span class="header-section-number">3.2.1.1.6</span> Conditional probability plot</h5>
 </div>
 </div>
 <div id="reduced-model" class="section level4">
 <h4><span class="header-section-number">3.2.1.2</span> Reduced model</h4>
-<div id="model-diagnostics-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.1</span> Model diagnostics</h5>
+<div id="diagnostics-1" class="section level5">
+<h5><span class="header-section-number">3.2.1.2.1</span> Diagnostics</h5>
 <pre><code>#&gt; No divergences to plot.</code></pre>
 <p><img src="notebook_files/figure-html/model1reduced_diagnostics-1.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/model1reduced_diagnostics-2.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="posterior-predictive-check-plot-1" class="section level5">
 <h5><span class="header-section-number">3.2.1.2.2</span> Posterior predictive check plot</h5>
+<pre><code>#&gt; Using 10 posterior samples for ppc type &#39;bars&#39; by default.</code></pre>
 <p><img src="notebook_files/figure-html/model1reduced_ppcheck-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="coefficients-table-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.3</span> Coefficients table</h5>
-<table style="border-collapse:collapse; border:none;">
-<tr>
-<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
- 
-</th>
-<th colspan="2" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-Intraoperative transfusion
-</th>
-</tr>
-<tr>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
-Predictors
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-Odds Ratios
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-CI (95%)
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_blood_loss_ratio
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-68.61
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-37.69 – 129.75
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_preop_hb
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.01 – 0.03
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-m_age
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.14
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.89 – 5.35
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.21
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.08 – 1.39
-</td>
-</tr>
-<tr>
-<td colspan="3" style="simplexparts">
-Monotonic Effects
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [1]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.20
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.72
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [2]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.17
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.70
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [3]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.15
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.66
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [4]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.16
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.72
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-cci_5plus1 [5]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.19
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.01 – 1.75
-</td>
-</tr>
-<tr>
-<td colspan="3" style="font-weight:bold; text-align:left; padding-top:.8em;">
-Random Effects
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-σ<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
--0.00
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>00</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.22
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-ICC
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
--0.01
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-N <sub>op_year</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-17
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
-Observations
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="2">
-1167
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
-0.426 / 0.456
-</td>
-</tr>
-</table>
-</div>
-<div id="maximum-a-posteriori-p-values-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.4</span> Maximum a posteriori p-values</h5>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Parameter</th>
-<th align="right">p_MAP</th>
-<th align="left">Effects</th>
-<th align="left">Component</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">b_Intercept</td>
-<td align="right">0</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_blood_loss_ratio</td>
-<td align="right">0</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">b_m_preop_hb</td>
-<td align="right">0</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="even">
-<td align="left">b_m_age</td>
-<td align="right">0</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-<tr class="odd">
-<td align="left">bsp_mocci_5plus</td>
-<td align="right">0</td>
-<td align="left">fixed</td>
-<td align="left">conditional</td>
-</tr>
-</tbody>
-</table>
+<div id="summary-1" class="section level5">
+<h5><span class="header-section-number">3.2.1.2.3</span> Summary</h5>
+<pre><code>#&gt; # Description of Posterior Distributions
+#&gt; 
+#&gt; Parameter          | Median |           95% CI | p_MAP |    pd |       100% ROPE | % in ROPE
+#&gt; --------------------------------------------------------------------------------------------
+#&gt; Intercept          | -1.882 | [-2.380, -1.392] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; m_blood_loss_ratio |  4.238 | [ 3.631,  4.851] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; m_preop_hb         | -4.106 | [-4.753, -3.466] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; m_age              |  1.141 | [ 0.615,  1.642] | 0.000 | 1.000 | [-0.055, 0.055] |     0.000
+#&gt; mocci_5plus        |  0.189 | [ 0.062,  0.312] | 0.006 | 1.000 | [-0.055, 0.055] |     1.250</code></pre>
 </div>
 <div id="region-of-practical-equivalence-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.5</span> Region of practical equivalence</h5>
+<h5><span class="header-section-number">3.2.1.2.4</span> Region of practical equivalence</h5>
 <p>Using a ROPE range of -0.055 to 0.055 (<span class="math inline">\(0.1 \cdot \frac{\sqrt{3}}{\pi}\)</span>) and a CI of 1.</p>
 <p><img src="notebook_files/figure-html/model1reduced_rope-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="roc-auc-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.6</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.873447168055644</code></pre>
+<h5><span class="header-section-number">3.2.1.2.5</span> ROC-AUC</h5>
+<pre><code>#&gt; AUC: 0.873386039624811</code></pre>
 <p><img src="notebook_files/figure-html/model1reduced_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="conditional-probability-plot-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.7</span> Conditional probability plot</h5>
+<h5><span class="header-section-number">3.2.1.2.6</span> Conditional probability plot</h5>
 </div>
 </div>
 </div>
@@ -935,7 +248,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["notebook_cystectomy.pdf", "notebook_cystectomy.epub"],
+"download": "notebook.pdf",
 "toc": {
 "collapse": "subsection",
 "scroll_highlight": true
