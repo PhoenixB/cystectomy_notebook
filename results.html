@@ -64,7 +64,9 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Index</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Index</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#table-1"><i class="fa fa-check"></i><b>1.1</b> Table 1</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>2</b> Prerequisites</a><ul>
 <li class="chapter" data-level="2.1" data-path="prerequisites.html"><a href="prerequisites.html#formulas"><i class="fa fa-check"></i><b>2.1</b> Formulas</a></li>
 </ul></li>
@@ -115,14 +117,15 @@
 </div>
 <div id="summary" class="section level5">
 <h5><span class="header-section-number">3.2.1.1.3</span> Summary</h5>
-<table style="width:99%;">
+<table>
 <caption>Table continues below</caption>
 <colgroup>
-<col width="12%" />
-<col width="34%" />
-<col width="16%" />
-<col width="6%" />
+<col width="11%" />
+<col width="30%" />
 <col width="13%" />
+<col width="6%" />
+<col width="12%" />
+<col width="12%" />
 <col width="13%" />
 </colgroup>
 <thead>
@@ -133,161 +136,177 @@
 <th align="center">CI</th>
 <th align="center">CI_low</th>
 <th align="center">CI_high</th>
+<th align="center">p_MAP</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="center"><strong>2</strong></td>
 <td align="center">b_Intercept</td>
-<td align="center">-2.316</td>
+<td align="center">-2.301</td>
 <td align="center">95</td>
-<td align="center">-2.976</td>
-<td align="center">-1.652</td>
+<td align="center">-2.964</td>
+<td align="center">-1.682</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>4</strong></td>
 <td align="center">b_m_blood_loss_ratio</td>
-<td align="center">4.256</td>
+<td align="center">4.262</td>
 <td align="center">95</td>
-<td align="center">3.619</td>
-<td align="center">4.937</td>
+<td align="center">3.655</td>
+<td align="center">4.956</td>
+<td align="center">0</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>12</strong></td>
 <td align="center">b_oakTRUE</td>
-<td align="center">0.2904</td>
+<td align="center">0.2717</td>
 <td align="center">95</td>
-<td align="center">-0.2074</td>
-<td align="center">1.212</td>
+<td align="center">-0.2376</td>
+<td align="center">1.16</td>
+<td align="center">0.9863</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>14</strong></td>
 <td align="center">b_tcaggrTRUE</td>
-<td align="center">-0.05321</td>
+<td align="center">-0.0695</td>
 <td align="center">95</td>
-<td align="center">-0.6047</td>
-<td align="center">0.275</td>
+<td align="center">-0.5952</td>
+<td align="center">0.2448</td>
+<td align="center">0.9988</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>8</strong></td>
 <td align="center">b_m_preop_hb</td>
-<td align="center">-3.926</td>
+<td align="center">-3.92</td>
 <td align="center">95</td>
-<td align="center">-4.657</td>
-<td align="center">-3.283</td>
+<td align="center">-4.606</td>
+<td align="center">-3.27</td>
+<td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>9</strong></td>
 <td align="center">b_m_preop_tc</td>
-<td align="center">0.009459</td>
+<td align="center">0.009389</td>
 <td align="center">95</td>
-<td align="center">-0.2185</td>
-<td align="center">0.3044</td>
+<td align="center">-0.2149</td>
+<td align="center">0.3193</td>
+<td align="center">0.9989</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>5</strong></td>
 <td align="center">b_m_bmi</td>
-<td align="center">-0.005621</td>
+<td align="center">-0.00411</td>
 <td align="center">95</td>
-<td align="center">-0.3602</td>
-<td align="center">0.2736</td>
+<td align="center">-0.3153</td>
+<td align="center">0.3057</td>
+<td align="center">0.9991</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>3</strong></td>
 <td align="center">b_m_age</td>
-<td align="center">1.086</td>
+<td align="center">1.091</td>
 <td align="center">95</td>
-<td align="center">0.5356</td>
-<td align="center">1.689</td>
+<td align="center">0.4793</td>
+<td align="center">1.619</td>
+<td align="center">0.004543</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>1</strong></td>
 <td align="center">b_genderfemale</td>
-<td align="center">0.1352</td>
+<td align="center">0.1346</td>
 <td align="center">95</td>
-<td align="center">-0.1239</td>
-<td align="center">0.5736</td>
+<td align="center">-0.1196</td>
+<td align="center">0.5567</td>
+<td align="center">0.9981</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>7</strong></td>
 <td align="center">b_m_op_duration_min</td>
-<td align="center">0.04048</td>
+<td align="center">0.03895</td>
 <td align="center">95</td>
-<td align="center">-0.2655</td>
-<td align="center">0.4862</td>
+<td align="center">-0.2598</td>
+<td align="center">0.4823</td>
+<td align="center">0.9975</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>13</strong></td>
 <td align="center">b_previous_opTRUE</td>
-<td align="center">0.01464</td>
+<td align="center">0.01358</td>
 <td align="center">95</td>
-<td align="center">-0.2235</td>
-<td align="center">0.3102</td>
+<td align="center">-0.2212</td>
+<td align="center">0.3027</td>
+<td align="center">0.9989</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>11</strong></td>
 <td align="center">b_norepinephrineTRUE</td>
-<td align="center">0.0425</td>
+<td align="center">0.04088</td>
 <td align="center">95</td>
-<td align="center">-0.2008</td>
-<td align="center">0.4329</td>
+<td align="center">-0.2135</td>
+<td align="center">0.4272</td>
+<td align="center">0.9999</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>6</strong></td>
 <td align="center">b_m_crystalloids_mlkgh</td>
-<td align="center">0.006921</td>
+<td align="center">0.004561</td>
 <td align="center">95</td>
-<td align="center">-0.3254</td>
-<td align="center">0.3697</td>
+<td align="center">-0.2914</td>
+<td align="center">0.4215</td>
+<td align="center">0.999</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>10</strong></td>
 <td align="center">b_neoadj_chemoTRUE</td>
-<td align="center">0.003186</td>
+<td align="center">0.001213</td>
 <td align="center">95</td>
-<td align="center">-0.3261</td>
-<td align="center">0.3225</td>
+<td align="center">-0.345</td>
+<td align="center">0.3073</td>
+<td align="center">0.9951</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>15</strong></td>
 <td align="center">bsp_mocci_5plus</td>
-<td align="center">0.1992</td>
+<td align="center">0.1997</td>
 <td align="center">95</td>
-<td align="center">0.06772</td>
-<td align="center">0.3381</td>
+<td align="center">0.06909</td>
+<td align="center">0.3384</td>
+<td align="center">0.008479</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>17</strong></td>
 <td align="center">bsp_mop_tumor</td>
-<td align="center">0.2094</td>
+<td align="center">0.2098</td>
 <td align="center">95</td>
-<td align="center">0.03192</td>
-<td align="center">0.3742</td>
+<td align="center">0.04473</td>
+<td align="center">0.382</td>
+<td align="center">0.07025</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>16</strong></td>
 <td align="center">bsp_mop_nodes</td>
-<td align="center">-0.01825</td>
+<td align="center">-0.01791</td>
 <td align="center">95</td>
-<td align="center">-0.3614</td>
-<td align="center">0.1658</td>
+<td align="center">-0.3621</td>
+<td align="center">0.1611</td>
+<td align="center">0.9918</td>
 </tr>
 </tbody>
 </table>
-<table>
+<table style="width:96%;">
 <colgroup>
-<col width="11%" />
-<col width="13%" />
-<col width="11%" />
+<col width="12%" />
 <col width="12%" />
 <col width="13%" />
 <col width="15%" />
-<col width="22%" />
+<col width="16%" />
+<col width="25%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th align="center"> </th>
-<th align="center">p_MAP</th>
 <th align="center">pd</th>
 <th align="center">ROPE_CI</th>
 <th align="center">ROPE_low</th>
@@ -298,7 +317,6 @@
 <tbody>
 <tr class="odd">
 <td align="center"><strong>2</strong></td>
-<td align="center">0</td>
 <td align="center">1</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
@@ -307,7 +325,6 @@
 </tr>
 <tr class="even">
 <td align="center"><strong>4</strong></td>
-<td align="center">0</td>
 <td align="center">1</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
@@ -316,25 +333,22 @@
 </tr>
 <tr class="odd">
 <td align="center"><strong>12</strong></td>
-<td align="center">0.9866</td>
-<td align="center">0.8448</td>
+<td align="center">0.8315</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.206</td>
+<td align="center">0.198</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>14</strong></td>
-<td align="center">0.9974</td>
-<td align="center">0.6905</td>
+<td align="center">0.704</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.3543</td>
+<td align="center">0.318</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>8</strong></td>
-<td align="center">0</td>
 <td align="center">1</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
@@ -343,111 +357,99 @@
 </tr>
 <tr class="even">
 <td align="center"><strong>9</strong></td>
-<td align="center">0.9997</td>
-<td align="center">0.5665</td>
+<td align="center">0.5643</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.462</td>
+<td align="center">0.4695</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>5</strong></td>
-<td align="center">0.9965</td>
-<td align="center">0.539</td>
+<td align="center">0.527</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.4218</td>
+<td align="center">0.4385</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>3</strong></td>
-<td align="center">0.006724</td>
-<td align="center">0.9988</td>
+<td align="center">0.9995</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.00125</td>
+<td align="center">0.00075</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>1</strong></td>
-<td align="center">0.9882</td>
-<td align="center">0.824</td>
+<td align="center">0.8127</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.2795</td>
+<td align="center">0.2865</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>7</strong></td>
-<td align="center">0.9992</td>
-<td align="center">0.6548</td>
+<td align="center">0.6623</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.3762</td>
+<td align="center">0.3877</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>13</strong></td>
-<td align="center">0.9994</td>
-<td align="center">0.5903</td>
+<td align="center">0.5965</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.4655</td>
+<td align="center">0.4645</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>11</strong></td>
-<td align="center">0.999</td>
-<td align="center">0.674</td>
+<td align="center">0.6665</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.3892</td>
+<td align="center">0.3945</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>6</strong></td>
-<td align="center">0.9996</td>
-<td align="center">0.546</td>
+<td align="center">0.5317</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.4098</td>
+<td align="center">0.4113</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>10</strong></td>
-<td align="center">0.9956</td>
-<td align="center">0.5248</td>
+<td align="center">0.5122</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.4335</td>
+<td align="center">0.4475</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>15</strong></td>
-<td align="center">0</td>
-<td align="center">1</td>
+<td align="center">0.9992</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.0155</td>
+<td align="center">0.013</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>17</strong></td>
-<td align="center">0.08488</td>
-<td align="center">0.991</td>
+<td align="center">0.993</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.04225</td>
+<td align="center">0.04075</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>16</strong></td>
-<td align="center">0.9998</td>
-<td align="center">0.6158</td>
+<td align="center">0.6238</td>
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.5112</td>
+<td align="center">0.5</td>
 </tr>
 </tbody>
 </table>
@@ -459,11 +461,9 @@
 </div>
 <div id="roc-auc" class="section level5">
 <h5><span class="header-section-number">3.2.1.1.5</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.879159280314611</code></pre>
+<pre><code>#&gt; AUC: 0.879203428625768</code></pre>
 <p><img src="notebook_files/figure-html/model1full_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="conditional-probability-plot" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.6</span> Conditional probability plot</h5>
+<!-- ##### Conditional probability plot -->
 </div>
 </div>
 <div id="reduced-model" class="section level4">
@@ -506,47 +506,47 @@
 <tr class="odd">
 <td align="center"><strong>1</strong></td>
 <td align="center">b_Intercept</td>
-<td align="center">-1.882</td>
+<td align="center">-1.916</td>
 <td align="center">95</td>
-<td align="center">-2.38</td>
-<td align="center">-1.392</td>
+<td align="center">-2.407</td>
+<td align="center">-1.425</td>
 <td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>3</strong></td>
 <td align="center">b_m_blood_loss_ratio</td>
-<td align="center">4.238</td>
+<td align="center">4.346</td>
 <td align="center">95</td>
-<td align="center">3.631</td>
-<td align="center">4.851</td>
+<td align="center">3.738</td>
+<td align="center">4.964</td>
 <td align="center">0</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>4</strong></td>
 <td align="center">b_m_preop_hb</td>
-<td align="center">-4.106</td>
+<td align="center">-4.211</td>
 <td align="center">95</td>
-<td align="center">-4.753</td>
-<td align="center">-3.466</td>
+<td align="center">-4.859</td>
+<td align="center">-3.567</td>
 <td align="center">0</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>2</strong></td>
 <td align="center">b_m_age</td>
-<td align="center">1.141</td>
+<td align="center">1.192</td>
 <td align="center">95</td>
-<td align="center">0.6149</td>
-<td align="center">1.642</td>
+<td align="center">0.6562</td>
+<td align="center">1.711</td>
 <td align="center">0</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>5</strong></td>
 <td align="center">bsp_mocci_5plus</td>
-<td align="center">0.1888</td>
+<td align="center">0.1941</td>
 <td align="center">95</td>
-<td align="center">0.06218</td>
-<td align="center">0.3124</td>
-<td align="center">0.005719</td>
+<td align="center">0.08309</td>
+<td align="center">0.3244</td>
+<td align="center">0.004427</td>
 </tr>
 </tbody>
 </table>
@@ -608,7 +608,7 @@
 <td align="center">100</td>
 <td align="center">-0.055</td>
 <td align="center">0.055</td>
-<td align="center">0.0125</td>
+<td align="center">0.0095</td>
 </tr>
 </tbody>
 </table>
@@ -620,11 +620,9 @@
 </div>
 <div id="roc-auc-1" class="section level5">
 <h5><span class="header-section-number">3.2.1.2.5</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.873386039624811</code></pre>
+<pre><code>#&gt; AUC: 0.873518484558283</code></pre>
 <p><img src="notebook_files/figure-html/model1reduced_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="conditional-probability-plot-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.6</span> Conditional probability plot</h5>
+<!-- ##### Conditional probability plot -->
 </div>
 </div>
 </div>

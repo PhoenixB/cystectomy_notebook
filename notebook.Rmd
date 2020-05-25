@@ -117,11 +117,29 @@ models.intraoptransfusion_multivar <-
     ext = 'rds'
   ))
 
+# Load Table 1 from 1_make_table_one ----
+table.oak_bleeding_model <-
+  read_rds(path = path_wd(
+    'empirical',
+    '2_pipeline',
+    '1_make_table_one',
+    'out',
+    'oak_bleeding_model',
+    ext = 'rds'
+  ))
+
 ```
 
 # Index
 
 Welcome to the notebook!
+
+## Table 1
+
+```{r table_one,echo=FALSE}
+table.oak_bleeding_model %>%
+  knitr::kable()
+```
 
 # Prerequisites
 
@@ -276,7 +294,7 @@ plot(
 
 ```
 
-##### Conditional probability plot
+<!-- ##### Conditional probability plot -->
 
 ```{r model1full_conditional_plot,echo=FALSE}
 # tibble.oak_bleeding_tidy %>%
@@ -294,7 +312,7 @@ plot(
 #### Reduced model
 
 ```{r model1reduced,echo=FALSE}
-model1_reduced <- models.intraoptransfusion_multivar[[2]]
+model1_reduced <- models.intraoptransfusion_multivar[[3]]
 ```
 
 ##### Diagnostics
@@ -391,7 +409,7 @@ plot(
 
 ```
 
-##### Conditional probability plot
+<!-- ##### Conditional probability plot -->
 
 ```{r model1reduced_conditional_plot,echo=FALSE}
 # tibble.oak_bleeding_tidy %>%
