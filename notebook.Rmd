@@ -49,16 +49,20 @@ pacman::p_load(
   "tableone",
   "modelr",
   "glue",
-  "tidybayes",
   "gridExtra",
   "pander",
   "htmltools",
-  "brms",
-  "bayestestR",
-  "ROCR"
+  "MASS",
+  "car",
+  "recipes",
+  "ROCR",
+  "DALEX",
+  "caret"
 )
+pacman::p_unload("MASS")
 
 # Set working directory ----
+setwd(rprojroot::find_rstudio_root_file())
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 knitr::opts_chunk$set(
@@ -72,61 +76,135 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 
-```
+# Functions ----
+opt.cut <- function(perf, pred){
+    cut.ind = mapply(FUN=function(x, y, p){
+        d = (x - 0)^2 + (y-1)^2
+        ind = which(d == min(d))
+        c(sensitivity = y[[ind]], specificity = 1-x[[ind]], 
+            cutoff = p[[ind]])
+    }, perf@x.values, perf@y.values, pred@cutoffs)
+}
 
-```{r load_data, echo=FALSE,cache=FALSE}
-setwd(here::here())
+`%!in%` <- Negate(`%in%`)
+
+p_fun <-
+  function(object, newdata) {
+    predict(object, newdata = newdata, type = "prob")[,2]
+  }
 
 # Load data from 0_get_and_tidy_data ----
-tibble.oak_bleeding_tidy <-
+tibble.oak_bleeding_model <-
   read_rds(path = path_wd(
     'empirical',
     '2_pipeline',
-    '0_get_and_tidy_data',
+    '1_get_and_tidy_data',
     'out',
-    'oak_bleeding_tidy',
+    'oak_bleeding_model',
     ext = 'rds'
   ))
 
-## Set up helpers ----
-helper.drop_na <-
+# tibble.oak_bleeding_model_train <-
+#   read_rds(path = path_wd(
+#     'empirical',
+#     '2_pipeline',
+#     '1_get_and_tidy_data',
+#     'out',
+#     'oak_bleeding_model_train',
+#     ext = 'rds'
+#   ))
+# 
+# tibble.oak_bleeding_model_test <-
+#   read_rds(path = path_wd(
+#     'empirical',
+#     '2_pipeline',
+#     '1_get_and_tidy_data',
+#     'out',
+#     'oak_bleeding_model_test',
+#     ext = 'rds'
+#   ))
+
+# Load Table 1 from 2_make_table_one ----
+table.oak_bleeding_model <-
+  read_rds(path = path_wd(
+    'empirical',
+    '2_pipeline',
+    '2_make_table_one',
+    'out',
+    'oak_bleeding_model',
+    ext = 'rds'
+  ))
+
+# Load helper for variable selection ----
+helper.variable_selection <-
   read_rds(path = path_wd(
     'empirical',
     '2_pipeline',
     '0_create_helpers',
     'out',
-    'drop_na',
+    'ml_variable_selection',
     ext = 'rds'
   ))
 
-## Filter patients ----
-tibble.oak_bleeding_model <-
-  tibble.oak_bleeding_tidy %>%
-  filter(op_year >= 2000) %>% # surgery before 2000
-  filter(bmi >= 12) %>% # bmi less than 12
-  drop_na(all_of(helper.drop_na)) # drop NA values in selected columns
+# Create recipe for data preparation ----
+recipe.bleeding_model <-
+  recipe(
+    formula = as.formula(glue("intraop_transfusion ~ ", paste(helper.variable_selection, collapse = "+"))),
+    data = tibble.oak_bleeding_model
+  ) %>%
+  step_mutate_at(all_outcomes(), fn = as.numeric) %>%
+  step_num2factor(all_outcomes(), transform = function(x) x + 1, levels = c("0", "1")) %>%
+  step_corr(all_numeric()) %>%
+  step_zv(all_predictors()) %>%
+  # step_nzv(all_predictors()) %>%
+  step_lincomb(all_numeric()) %>%
+  # step_scale(all_numeric()) %>%
+  prep()
 
-# Load models from 1_generate_multivar_models ----
-models.intraoptransfusion_multivar <-
-  read_rds(path = path_wd(
-    'empirical',
-    '2_pipeline',
-    '1_generate_multivar_models',
-    'out',
-    'intraoptransfusion_multivar',
-    ext = 'rds'
-  ))
+# Bake the dataset ----
+tibble.oak_bleeding_model_clean <-
+  recipe.bleeding_model %>%
+  bake(tibble.oak_bleeding_model)
 
-# Load Table 1 from 1_make_table_one ----
-table.oak_bleeding_model <-
-  read_rds(path = path_wd(
-    'empirical',
-    '2_pipeline',
-    '1_make_table_one',
-    'out',
-    'oak_bleeding_model',
-    ext = 'rds'
-  ))
+## Create helper for partitioning ----
+helper.training_test <-
+  createDataPartition(
+    tibble.oak_bleeding_model_clean$intraop_transfusion,
+    p = 0.8,
+    list = FALSE
+  )
+
+## Partition into training and test dataset ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_train", ext = "rds"))) {
+  tibble.oak_bleeding_model_train <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_train", ext = "rds"))
+} else {
+  tibble.oak_bleeding_model_train <-
+    tibble.oak_bleeding_model_clean %>%
+    rownames_to_column() %>%
+    filter(rowname %in% helper.training_test) %>%
+    select(-rowname) %>%
+    write_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_train", ext = "rds"))
+}
+
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_test", ext = "rds"))) {
+  tibble.oak_bleeding_model_test <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_test", ext = "rds"))
+} else {
+  tibble.oak_bleeding_model_test <-
+    tibble.oak_bleeding_model_clean %>%
+    rownames_to_column() %>%
+    filter(rowname %!in% helper.training_test) %>%
+    select(-rowname) %>%
+    write_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_test", ext = "rds"))
+}
+
+## Create separate vector for the outcome variable ----
+helper.y_test <-
+  tibble.oak_bleeding_model_test %>%
+  modify_at(vars(intraop_transfusion), as.character) %>%
+  modify_at(vars(intraop_transfusion), as.numeric) %>%
+  pull(intraop_transfusion)
 
 ```
 
@@ -156,7 +234,7 @@ table.oak_bleeding_model %>%
 
 ```{r data_plots,echo=FALSE}
 qqplot_bloodlossratio <-
-  tibble.oak_bleeding_tidy %>%
+  tibble.oak_bleeding_model %>%
   drop_na(blood_loss_ratio) %>%
   ggplot(aes(sample = blood_loss_ratio)) +
   geom_qq() +
@@ -165,7 +243,7 @@ qqplot_bloodlossratio <-
   theme_light()
 
 qqplot_logbloodlossratio <-
-  tibble.oak_bleeding_tidy %>%
+  tibble.oak_bleeding_model %>%
   drop_na(blood_loss_ratio) %>%
   ggplot(aes(sample = log(blood_loss_ratio))) +
   geom_qq() +
@@ -175,14 +253,14 @@ qqplot_logbloodlossratio <-
 
 grid.arrange(qqplot_bloodlossratio, qqplot_logbloodlossratio, ncol = 2)
 
-tibble.oak_bleeding_tidy %>%
+tibble.oak_bleeding_model %>%
 drop_na(blood_loss_ratio) %>%
 ggplot(aes(x = blood_loss_ratio)) +
 geom_histogram(binwidth = 0.05) +
 labs(title = "Histogram of blood loss ratio", x = "Blood loss ratio", y = "Count") +
 theme_light()
 
-tibble.oak_bleeding_tidy %>%
+tibble.oak_bleeding_model %>%
 drop_na(intraop_transfusion) %>%
 ggplot(aes(x = intraop_transfusion)) +
 geom_bar() +
@@ -194,232 +272,429 @@ theme_light()
 
 ### Models with intraoperative transfusion as response
 
-#### Full model
+#### Stepwise backwards logistic regression without interactions
 
-```{r model1full,echo=FALSE}
-model1_full <- models.intraoptransfusion_multivar[[1]]
+```{r glm_stepwise,echo=FALSE}
+helper.variables_names <-
+  c(
+    names(tibble.oak_bleeding_model_train),
+    "I(age^2)"
+  )
+
+helper.glm_formula_full <-
+  glue("intraop_transfusion ~ ", paste(c(helper.variables_names[!helper.variables_names %in% c("intraop_transfusion")]), collapse = " + "))
+
+model.glm.intraoptransfusion_full <-
+  glm(
+    formula = helper.glm_formula_full,
+    data = tibble.oak_bleeding_model_train,
+    family = binomial()
+  ) %>%
+  MASS::stepAIC(scope = list(upper = helper.glm_formula_full, lower = ~ 1), trace = FALSE) %>%
+  write_rds(
+    path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full", ext = "rds")
+  )
+
+model.glm.intraoptransfusion_full_scaled <-
+  update(
+    model.glm.intraoptransfusion_full,
+    formula. = ~ . - blood_loss_ratio + I(blood_loss_ratio * 100) - preop_hb + I(preop_hb * 10)
+  ) %>%
+  write_rds(
+    path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full_scaled", ext = "rds")
+  )
+
+summary(model.glm.intraoptransfusion_full)
+
+summary(model.glm.intraoptransfusion_full_scaled)
+
 ```
 
-##### Diagnostics
+<!-- ##### ROC-AUC for the test dataset -->
 
-```{r model1full_diagnostics,echo=FALSE}
-mcmc_plot(model1_full, type = "trace")
-mcmc_plot(model1_full, type = "intervals") + geom_vline(aes(xintercept = 0))
+```{r glm_full_rocauc,echo=FALSE}
+# tibble.glm_full_rocauc <-
+#   tibble(
+#     predictions = predict(model.glm.intraoptransfusion_model_full, newdata = tibble.oak_bleeding_model_test, type = "response"),
+#     labels = pluck(tibble.oak_bleeding_model_test, "intraop_transfusion")
+#   )
+# 
+# prediction.glm_full <-
+#   prediction(
+#     predictions = pluck(tibble.glm_full_rocauc, "predictions"),
+#     labels = pluck(tibble.glm_full_rocauc, "labels")
+#   )
+# 
+# auc.glm_full <-
+#   performance(
+#     prediction.glm_full,
+#     measure = "auc"
+#   )
+# 
+# cat(glue("AUC: ", auc.glm_full@y.values[[1]], "\n"))
+# 
+# roc.glm_full <-
+#   performance(
+#     prediction.glm_full,
+#     measure = "tpr",
+#     x.measure = "fpr"
+#   )
+# 
+# plot(
+#   roc.glm_full,
+#   main = "ROC-AUC"
+# )
+# abline(a=0, b= 1)
+# 
+# cat("Optimal cut-off point:\n")
+# opt.cut(roc.glm_full, prediction.glm_full) %>%
+#   as_tibble_row(.name_repair = "unique") %>%
+#   rename(Sensitivity = `...1`, Specificity = `...2`, `Cut-Off` = `...3`) %>%
+#   knitr::kable()
+
 ```
 
-##### Posterior predictive check plot
+#### Stepwise backwards logistic regression with interactions
 
-```{r model1full_ppcheck,echo=FALSE}
-pp_check(model1_full, type = "bars")
+```{r glm_stepwise_inter,echo=FALSE}
+helper.variables_significant_filter <-
+  c(
+    "I(blood_loss_ratio * 100)",
+    "oak",
+    "tcaggr",
+    "norepinephrine",
+    "p_tumor",
+    "I(preop_hb * 10)",
+    "I(age^2)"
+  )
+
+helper.glm_formula_reduced_interactions <-
+  glue("intraop_transfusion ~ (", paste(helper.variables_significant_filter, collapse = " + "), ") ^ 2")
+
+model.glm.intraoptransfusion_reduced_interactions <-
+  glm(
+    formula = helper.glm_formula_reduced_interactions,
+    data = tibble.oak_bleeding_model_train,
+    family = binomial()
+  ) %>%
+  MASS::stepAIC(scope = list(upper = helper.glm_formula_reduced_interactions, lower = ~ 1), trace = FALSE)
+
+summary(model.glm.intraoptransfusion_reduced_interactions)
+
 ```
 
-##### Summary
+<!-- ##### ROC-AUC for the test dataset -->
 
-```{r model1full_table,echo=FALSE}
-#,results="asis"
-#tab_model(
-#  model1_full,
-#  rm.terms = c("Intercept"),
-#  pred.labels = c(
-#    blood_loss_percent = "Percent blood loss",
-#    preop_hb = "Preoperative hemoglobin"
-#  ),
-#  dv.labels = c("Intraoperative transfusion"),
-#  show.ci = 0.95,
-#  use.viewer = FALSE
-#) %>%
-#.$knitr %>%
-#cat(.)
+```{r glm_inter_rocauc,echo=FALSE}
+# tibble.glm_inter_rocauc <-
+#   tibble(
+#     predictions = predict(model.glm.intraoptransfusion_model_reduced_interactions, newdata = tibble.oak_bleeding_model_test, type = "response"),
+#     labels = pluck(tibble.oak_bleeding_model_test, "intraop_transfusion")
+#   )
+# 
+# prediction.glm_inter <-
+#   prediction(
+#     predictions = pluck(tibble.glm_inter_rocauc, "predictions"),
+#     labels = pluck(tibble.glm_inter_rocauc, "labels")
+#   )
+# 
+# auc.glm_inter <-
+#   performance(
+#     prediction.glm_inter,
+#     measure = "auc"
+#   )
+# 
+# cat(glue("AUC: ", auc.glm_inter@y.values[[1]], "\n"))
+# 
+# roc.glm_inter <-
+#   performance(
+#     prediction.glm_inter,
+#     measure = "tpr",
+#     x.measure = "fpr"
+#   )
+# 
+# plot(
+#   roc.glm_inter,
+#   main = "ROC-AUC"
+# )
+# abline(a=0, b= 1)
+# 
+# cat("Optimal cut-off point:\n")
+# opt.cut(roc.glm_inter, prediction.glm_inter) %>%
+#   as_tibble_row(.name_repair = "unique") %>%
+#   rename(Sensitivity = `...1`, Specificity = `...2`, `Cut-Off` = `...3`) %>%
+#   knitr::kable()
 
-describe_posterior(
-  model1_full,
-  effects = "fixed",
-  test = c("p_map", "rope", "pd"),
-  ci = .95,
-  rope_ci = 1,
-  rope_range = c(-0.055, 0.055),
-  diagnostic = NULL
+```
+
+#### Machine learning classification
+
+```{r ml_train,echo=FALSE}
+## Create helper for training control parameters ----
+helper.trainControl_rf <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    summaryFunction = twoClassSummary
+  )
+
+helper.trainControl_glm <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    summaryFunction = twoClassSummary
+  )
+
+helper.trainControl_svm <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    summaryFunction = twoClassSummary
+  )
+
+helper.trainControl_xgb <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    allowParallel = TRUE,
+    returnData = FALSE, 
+    classProbs = TRUE,
+    summaryFunction = twoClassSummary
+  )
+
+## Fit classification models ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))) {
+  model.classif_rf <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))
+} else {
+  model.classif_rf <-
+    train(
+      make.names(intraop_transfusion) ~ . ,
+      data = tibble.oak_bleeding_model_train,
+      method="rf",
+      preProcess = c("center", "scale"),
+      ntree = 100,
+      tuneLength = 10,
+      trControl = helper.trainControl_rf,
+      metric = "ROC"
+    ) %>%
+    write_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))
+}
+
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds"))) {
+  model.classif_glm <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds"))
+} else {
+  model.classif_glm <-
+    train(
+      make.names(intraop_transfusion) ~ . + I(age^2),
+      data = tibble.oak_bleeding_model_train,
+      method = "glmnet",
+      preProcess = c("center", "scale"),
+      family = "binomial",
+      tuneLength = 25,
+      trControl = helper.trainControl_glm,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds")
+    )
+}
+
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds"))) {
+  model.classif_svm <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds"))
+} else {
+  model.classif_svm <-
+    train(
+      make.names(intraop_transfusion) ~ . ,
+      data = tibble.oak_bleeding_model_train,
+      method="svmRadial",
+      preProcess = c("center", "scale"),
+      prob.model = TRUE,
+      tuneLength = 10,
+      trControl = helper.trainControl_svm,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds")
+    )
+}
+
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))) {
+  model.classif_xgb <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))
+} else {
+  model.classif_xgb <-
+    train(
+      make.names(intraop_transfusion) ~ . ,
+      data = tibble.oak_bleeding_model_train,
+      method="xgbTree",
+      preProcess = c("center", "scale"),
+      tuneLength = 10,
+      trControl = helper.trainControl_xgb,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds")
+    )
+}
+```
+
+#### Model performance
+
+```{r model_performance,echo=FALSE}
+
+## Create explainers ----
+explainer.model_glm <-
+  explain(
+    model.glm.intraoptransfusion_full_scaled,
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = function(object, newdata) {
+      predict(object, newdata = newdata, type = "response")
+    }
+  )
+
+explainer.classif_rf <-
+  explain(
+    model.classif_rf,
+    label = "Random Forest",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+explainer.classif_glm <-
+  explain(
+    model.classif_glm,
+    label = "Elastic Net Logistic Regression",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+explainer.classif_svm <-
+  explain(
+    model.classif_svm,
+    label = "Support Vector Machine",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+explainer.classif_xgb <-
+  explain(
+    model.classif_xgb,
+    label = "eXtreme Gradient Boosting",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+## Create model performance objects ----
+mp.model_glm <-
+  model_performance(explainer.model_glm)
+
+mp.classif_rf <-
+  model_performance(explainer.classif_rf)
+
+mp.classif_glm <-
+  model_performance(explainer.classif_glm)
+
+mp.classif_svm <-
+  model_performance(explainer.classif_svm)
+
+mp.classif_xgb <-
+  model_performance(explainer.classif_xgb)
+
+## Create variable importance objects ----
+vi.model_glm <-
+  variable_importance(
+    explainer.model_glm,
+    loss_function = loss_one_minus_auc,
+    label = "Logistic Regression",
+    type = "difference"
+  )
+
+vi.classif_rf <-
+  variable_importance(
+    explainer.classif_rf,
+    loss_function = loss_one_minus_auc,
+    label = "Random Forest",
+    type = "difference"
+  )
+
+vi.classif_glm <-
+  variable_importance(
+    explainer.classif_glm,
+    loss_function = loss_one_minus_auc,
+    label = "Elastic Net Logistic Regression",
+    type = "difference"
+  )
+
+vi.classif_svm <-
+  variable_importance(
+    explainer.classif_svm,
+    loss_function = loss_one_minus_auc,
+    label = "Support Vector Machine",
+    type = "difference"
+  )
+
+vi.classif_xgb <-
+  variable_importance(
+    explainer.classif_xgb,
+    loss_function = loss_one_minus_auc,
+    label = "eXtreme Gradient Boosting",
+    type = "difference"
+  )
+
+list(
+  mp.model_glm,
+  mp.classif_xgb,
+  mp.classif_glm,
+  mp.classif_rf,
+  mp.classif_svm
 ) %>%
-pander()
+map_dfr(pluck, "measures") %>%
+add_column(
+  tibble(
+    name = c(
+      "Logistic Regression",
+      "eXtreme Gradient Boosting",
+      "Elastic Net Logistic Regression",
+      "Random Forest",
+      "Support Vector Machine"
+    )
+  ),
+  .before = 1
+) %>%
+arrange(desc(auc)) %>%
+modify_at(vars(recall, precision, f1, accuracy, auc), round, 2) %>%
+knitr::kable()
+
 ```
 
-##### Region of practical equivalence
+#### Feature importance
 
-Using a ROPE range of -0.055 to 0.055 ($0.1 \cdot \frac{\sqrt{3}}{\pi}$) and a CI of 1.
-
-```{r model1full_rope,echo=FALSE}
-percentage_in_rope <-
-  rope(
-    model1_full,
-    range = c(-0.055, 0.055),
-    ci = 1
-  )
-plot(percentage_in_rope)
-```
-
-##### ROC-AUC
-
-```{r model1full_rocauc,echo=FALSE}
-predictions <-
-  tibble.oak_bleeding_model %>%
-  select(all_of(helper.drop_na)) %>%
-  add_linpred_draws(model1_full, re_formula = NA) %>%
-  median_hdci()
-
-roc.pred <-
-  prediction(
-    predictions = predictions %>% pull(.value),
-    labels = predictions %>% pull(intraop_transfusion)
-  )
-
-roc.auc <-
-  performance(
-    roc.pred,
-    measure = "auc"
-  )
-
-cat(glue("AUC: ", roc.auc@y.values[[1]]))
-
-roc.tpr_fpr <-
-  performance(
-    roc.pred,
-    measure = "tpr",
-    x.measure = "fpr"
-  )
+```{r ml_importance,echo=FALSE}
 
 plot(
-  roc.tpr_fpr,
-  main = "ROC-AUC"
+  vi.model_glm,
+  vi.classif_xgb,
+  vi.classif_glm,
+  vi.classif_rf,
+  vi.classif_svm
 )
 
-```
-
-<!-- ##### Conditional probability plot -->
-
-```{r model1full_conditional_plot,echo=FALSE}
-# tibble.oak_bleeding_tidy %>%
-# data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
-# add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
-# median_hdci(.width = c(0.95, 0.999)) %>%
-# ggplot(aes(x = blood_loss_percent, y = .value)) +
-# facet_wrap(vars(preop_hb)) +
-# geom_lineribbon() +
-# labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
-# coord_cartesian(xlim = c(0, 100)) +
-# theme_light()
-```
-
-#### Reduced model
-
-```{r model1reduced,echo=FALSE}
-model1_reduced <- models.intraoptransfusion_multivar[[3]]
-```
-
-##### Diagnostics
-
-```{r model1reduced_diagnostics,echo=FALSE}
-mcmc_plot(model1_reduced, type = "trace")
-mcmc_plot(model1_reduced, type = "intervals") + geom_vline(aes(xintercept = 0))
-```
-
-##### Posterior predictive check plot
-
-```{r model1reduced_ppcheck,echo=FALSE}
-pp_check(model1_reduced, type = "bars")
-```
-
-##### Summary
-
-```{r model1reduced_table,echo=FALSE}
-#,results="asis"
-# tab_model(
-#   model1_reduced,
-#  rm.terms = c("Intercept"),
-#  pred.labels = c(
-#    blood_loss_percent = "Percent blood loss",
-#    preop_hb = "Preoperative hemoglobin"
-#  ),
-#  dv.labels = c("Intraoperative transfusion"),
-#  show.ci = 0.95,
-#  use.viewer = FALSE
-#) %>%
-#.$knitr %>%
-#cat(.)
-
-describe_posterior(
-  model1_reduced,
-  effects = "fixed",
-  test = c("p_map", "rope", "pd"),
-  ci = .95,
-  rope_ci = 1,
-  rope_range = c(-0.055, 0.055),
-  diagnostic = NULL
-) %>%
-pander()
-```
-
-##### Region of practical equivalence
-
-Using a ROPE range of -0.055 to 0.055 ($0.1 \cdot \frac{\sqrt{3}}{\pi}$) and a CI of 1.
-
-```{r model1reduced_rope,echo=FALSE}
-percentage_in_rope <-
-  rope(
-    model1_reduced,
-    range = c(-0.055, 0.055),
-    ci = 1
-  )
-plot(percentage_in_rope)
-```
-
-##### ROC-AUC
-
-```{r model1reduced_rocauc,echo=FALSE}
-predictions <-
-  tibble.oak_bleeding_model %>%
-  select(all_of(helper.drop_na)) %>%
-  add_linpred_draws(model1_reduced, re_formula = NA) %>%
-  median_hdci()
-
-roc.pred <-
-  prediction(
-    predictions = predictions %>% pull(.value),
-    labels = predictions %>% pull(intraop_transfusion)
-  )
-
-roc.auc <-
-  performance(
-    roc.pred,
-    measure = "auc"
-  )
-
-cat(glue("AUC: ", roc.auc@y.values[[1]]))
-
-roc.tpr_fpr <-
-  performance(
-    roc.pred,
-    measure = "tpr",
-    x.measure = "fpr"
-  )
-
-plot(
-  roc.tpr_fpr,
-  main = "ROC-AUC"
-)
-
-```
-
-<!-- ##### Conditional probability plot -->
-
-```{r model1reduced_conditional_plot,echo=FALSE}
-# tibble.oak_bleeding_tidy %>%
-# data_grid(blood_loss_percent = seq_range(blood_loss_percent, by = 1, pretty = TRUE), preop_hb = seq_range(preop_hb, by = 20, pretty = TRUE)) %>%
-# add_linpred_draws(model.intraoptransfusion_bloodlosspercent_preophb_opyear, re_formula = NA) %>%
-# median_hdci(.width = c(0.95, 0.999)) %>%
-# ggplot(aes(x = blood_loss_percent, y = .value)) +
-# facet_wrap(vars(preop_hb)) +
-# geom_lineribbon() +
-# labs(title = str_wrap("Probability for transfusion depending on preoperative hemoglobin and blood loss percentage", 100), subtitle = "Preoperative Hb", x = "Blood loss percent", y = "Probability for transfusion") +
-# coord_cartesian(xlim = c(0, 100)) +
-# theme_light()
 ```

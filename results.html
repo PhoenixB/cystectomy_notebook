@@ -49,6 +49,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -103,527 +104,406 @@
 <h2><span class="header-section-number">3.2</span> Model outputs</h2>
 <div id="models-with-intraoperative-transfusion-as-response" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Models with intraoperative transfusion as response</h3>
-<div id="full-model" class="section level4">
-<h4><span class="header-section-number">3.2.1.1</span> Full model</h4>
-<div id="diagnostics" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.1</span> Diagnostics</h5>
-<pre><code>#&gt; No divergences to plot.</code></pre>
-<p><img src="notebook_files/figure-html/model1full_diagnostics-1.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/model1full_diagnostics-2.png" width="100%" style="display: block; margin: auto;" /></p>
+<div id="stepwise-backwards-logistic-regression-without-interactions" class="section level4">
+<h4><span class="header-section-number">3.2.1.1</span> Stepwise backwards logistic regression without interactions</h4>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; glm(formula = intraop_transfusion ~ blood_loss_ratio + oak + 
+#&gt;     preop_hb + p_tumor + norepinephrine + I(age^2), family = binomial(), 
+#&gt;     data = tibble.oak_bleeding_model_train)
+#&gt; 
+#&gt; Deviance Residuals: 
+#&gt;     Min       1Q   Median       3Q      Max  
+#&gt; -2.5714  -0.6094  -0.2959   0.4135   2.8660  
+#&gt; 
+#&gt; Coefficients:
+#&gt;                      Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept)         2.938e+00  7.754e-01   3.789 0.000151 ***
+#&gt; blood_loss_ratio    1.258e+01  1.001e+00  12.561  &lt; 2e-16 ***
+#&gt; oakTRUE             9.673e-01  4.435e-01   2.181 0.029174 *  
+#&gt; preop_hb           -6.450e-02  6.071e-03 -10.625  &lt; 2e-16 ***
+#&gt; p_tumor.L           7.405e-01  2.393e-01   3.095 0.001970 ** 
+#&gt; p_tumor.Q           3.668e-01  2.286e-01   1.604 0.108671    
+#&gt; p_tumor.C           2.279e-01  2.289e-01   0.996 0.319417    
+#&gt; p_tumor^4          -2.019e-01  2.122e-01  -0.952 0.341170    
+#&gt; norepinephrineTRUE -3.257e-01  1.953e-01  -1.668 0.095408 .  
+#&gt; I(age^2)            2.828e-04  6.523e-05   4.336 1.45e-05 ***
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 1167.37  on 934  degrees of freedom
+#&gt; Residual deviance:  726.51  on 925  degrees of freedom
+#&gt; AIC: 746.51
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 6
+#&gt; 
+#&gt; Call:
+#&gt; glm(formula = intraop_transfusion ~ oak + p_tumor + norepinephrine + 
+#&gt;     I(age^2) + I(blood_loss_ratio * 100) + I(preop_hb * 10), 
+#&gt;     family = binomial(), data = tibble.oak_bleeding_model_train)
+#&gt; 
+#&gt; Deviance Residuals: 
+#&gt;     Min       1Q   Median       3Q      Max  
+#&gt; -2.5714  -0.6094  -0.2959   0.4135   2.8660  
+#&gt; 
+#&gt; Coefficients:
+#&gt;                             Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept)                2.938e+00  7.754e-01   3.789 0.000151 ***
+#&gt; oakTRUE                    9.673e-01  4.435e-01   2.181 0.029174 *  
+#&gt; p_tumor.L                  7.405e-01  2.393e-01   3.095 0.001970 ** 
+#&gt; p_tumor.Q                  3.668e-01  2.286e-01   1.604 0.108671    
+#&gt; p_tumor.C                  2.279e-01  2.289e-01   0.996 0.319417    
+#&gt; p_tumor^4                 -2.019e-01  2.122e-01  -0.952 0.341170    
+#&gt; norepinephrineTRUE        -3.257e-01  1.953e-01  -1.668 0.095408 .  
+#&gt; I(age^2)                   2.828e-04  6.523e-05   4.336 1.45e-05 ***
+#&gt; I(blood_loss_ratio * 100)  1.258e-01  1.001e-02  12.561  &lt; 2e-16 ***
+#&gt; I(preop_hb * 10)          -6.450e-03  6.071e-04 -10.625  &lt; 2e-16 ***
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 1167.37  on 934  degrees of freedom
+#&gt; Residual deviance:  726.51  on 925  degrees of freedom
+#&gt; AIC: 746.51
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 6</code></pre>
+<!-- ##### ROC-AUC for the test dataset -->
 </div>
-<div id="posterior-predictive-check-plot" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.2</span> Posterior predictive check plot</h5>
-<pre><code>#&gt; Using 10 posterior samples for ppc type &#39;bars&#39; by default.</code></pre>
-<p><img src="notebook_files/figure-html/model1full_ppcheck-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<div id="stepwise-backwards-logistic-regression-with-interactions" class="section level4">
+<h4><span class="header-section-number">3.2.1.2</span> Stepwise backwards logistic regression with interactions</h4>
+<pre><code>#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+#&gt; 
+#&gt; Call:
+#&gt; glm(formula = intraop_transfusion ~ I(blood_loss_ratio * 100) + 
+#&gt;     oak + tcaggr + norepinephrine + p_tumor + I(preop_hb * 10) + 
+#&gt;     I(age^2) + I(blood_loss_ratio * 100):norepinephrine + tcaggr:norepinephrine + 
+#&gt;     norepinephrine:p_tumor + I(preop_hb * 10):I(age^2), family = binomial(), 
+#&gt;     data = tibble.oak_bleeding_model_train)
+#&gt; 
+#&gt; Deviance Residuals: 
+#&gt;     Min       1Q   Median       3Q      Max  
+#&gt; -2.4626  -0.6136  -0.2749   0.3730   3.0500  
+#&gt; 
+#&gt; Coefficients:
+#&gt;                                                Estimate Std. Error z value
+#&gt; (Intercept)                                   6.400e+00  2.350e+00   2.724
+#&gt; I(blood_loss_ratio * 100)                     1.466e-01  1.525e-02   9.614
+#&gt; oakTRUE                                       8.525e-01  4.448e-01   1.917
+#&gt; tcaggrTRUE                                    5.218e-01  6.069e-01   0.860
+#&gt; norepinephrineTRUE                            5.965e-01  5.464e-01   1.092
+#&gt; p_tumor.L                                     9.261e-01  4.200e-01   2.205
+#&gt; p_tumor.Q                                     8.587e-01  3.919e-01   2.191
+#&gt; p_tumor.C                                    -2.213e-01  3.799e-01  -0.583
+#&gt; p_tumor^4                                    -5.561e-01  3.399e-01  -1.636
+#&gt; I(preop_hb * 10)                             -9.822e-03  1.950e-03  -5.038
+#&gt; I(age^2)                                     -4.939e-04  4.656e-04  -1.061
+#&gt; I(blood_loss_ratio * 100):norepinephrineTRUE -2.804e-02  1.884e-02  -1.488
+#&gt; tcaggrTRUE:norepinephrineTRUE                -1.148e+00  7.042e-01  -1.630
+#&gt; norepinephrineTRUE:p_tumor.L                 -3.128e-01  5.124e-01  -0.610
+#&gt; norepinephrineTRUE:p_tumor.Q                 -8.475e-01  4.862e-01  -1.743
+#&gt; norepinephrineTRUE:p_tumor.C                  7.335e-01  4.836e-01   1.517
+#&gt; norepinephrineTRUE:p_tumor^4                  5.427e-01  4.412e-01   1.230
+#&gt; I(preop_hb * 10):I(age^2)                     6.444e-07  3.768e-07   1.710
+#&gt;                                              Pr(&gt;|z|)    
+#&gt; (Intercept)                                   0.00645 ** 
+#&gt; I(blood_loss_ratio * 100)                     &lt; 2e-16 ***
+#&gt; oakTRUE                                       0.05529 .  
+#&gt; tcaggrTRUE                                    0.38994    
+#&gt; norepinephrineTRUE                            0.27498    
+#&gt; p_tumor.L                                     0.02743 *  
+#&gt; p_tumor.Q                                     0.02844 *  
+#&gt; p_tumor.C                                     0.56022    
+#&gt; p_tumor^4                                     0.10184    
+#&gt; I(preop_hb * 10)                             4.71e-07 ***
+#&gt; I(age^2)                                      0.28886    
+#&gt; I(blood_loss_ratio * 100):norepinephrineTRUE  0.13675    
+#&gt; tcaggrTRUE:norepinephrineTRUE                 0.10317    
+#&gt; norepinephrineTRUE:p_tumor.L                  0.54156    
+#&gt; norepinephrineTRUE:p_tumor.Q                  0.08130 .  
+#&gt; norepinephrineTRUE:p_tumor.C                  0.12933    
+#&gt; norepinephrineTRUE:p_tumor^4                  0.21865    
+#&gt; I(preop_hb * 10):I(age^2)                     0.08725 .  
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 
+#&gt; (Dispersion parameter for binomial family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 1167.37  on 934  degrees of freedom
+#&gt; Residual deviance:  709.09  on 917  degrees of freedom
+#&gt; AIC: 745.09
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 6</code></pre>
+<!-- ##### ROC-AUC for the test dataset -->
 </div>
-<div id="summary" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.3</span> Summary</h5>
+<div id="machine-learning-classification" class="section level4">
+<h4><span class="header-section-number">3.2.1.3</span> Machine learning classification</h4>
+</div>
+<div id="model-performance" class="section level4">
+<h4><span class="header-section-number">3.2.1.4</span> Model performance</h4>
+<pre><code>#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  lm  ( [33m default [39m )
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package stats , ver. 3.6.1 , task classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  function(object, newdata) {     predict(object, newdata = newdata, type = &quot;response&quot;) } 
+#&gt;   -&gt; predicted values  :  numerical, min =  0.001462956 , mean =  0.3019045 , max =  0.9982294  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.977456 , mean =  0.01275069 , max =  0.9696249  
+#&gt;  [32m A new explainer has been created! [39m
+#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  Random Forest 
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package caret , ver. 6.0.86 , task Classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  p_fun 
+#&gt;   -&gt; predicted values  :  numerical, min =  0 , mean =  0.2938793 , max =  0.96  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.92 , mean =  0.02077586 , max =  0.98  
+#&gt;  [32m A new explainer has been created! [39m
+#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  Elastic Net Logistic Regression 
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package caret , ver. 6.0.86 , task Classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  p_fun 
+#&gt;   -&gt; predicted values  :  numerical, min =  0.01095371 , mean =  0.2996897 , max =  0.9777987  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.9032304 , mean =  0.01496552 , max =  0.9303534  
+#&gt;  [32m A new explainer has been created! [39m
+#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  Support Vector Machine 
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package caret , ver. 6.0.86 , task Classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  p_fun 
+#&gt;   -&gt; predicted values  :  numerical, min =  0.007386549 , mean =  0.2962761 , max =  0.9907738  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.9440916 , mean =  0.01837911 , max =  0.9683094  
+#&gt;  [32m A new explainer has been created! [39m
+#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  eXtreme Gradient Boosting 
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package caret , ver. 6.0.86 , task Classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  p_fun 
+#&gt;   -&gt; predicted values  :  numerical, min =  0.005238354 , mean =  0.3006026 , max =  0.9944625  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.9523564 , mean =  0.0140526 , max =  0.935866  
+#&gt;  [32m A new explainer has been created! [39m</code></pre>
 <table>
-<caption>Table continues below</caption>
-<colgroup>
-<col width="11%" />
-<col width="30%" />
-<col width="13%" />
-<col width="6%" />
-<col width="12%" />
-<col width="12%" />
-<col width="13%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th align="center"> </th>
-<th align="center">Parameter</th>
-<th align="center">Median</th>
-<th align="center">CI</th>
-<th align="center">CI_low</th>
-<th align="center">CI_high</th>
-<th align="center">p_MAP</th>
+<th align="left">name</th>
+<th align="right">recall</th>
+<th align="right">precision</th>
+<th align="right">f1</th>
+<th align="right">accuracy</th>
+<th align="right">auc</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center"><strong>2</strong></td>
-<td align="center">b_Intercept</td>
-<td align="center">-2.301</td>
-<td align="center">95</td>
-<td align="center">-2.964</td>
-<td align="center">-1.682</td>
-<td align="center">0</td>
+<td align="left">Elastic Net Logistic Regression</td>
+<td align="right">0.56</td>
+<td align="right">0.79</td>
+<td align="right">0.66</td>
+<td align="right">0.81</td>
+<td align="right">0.87</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>4</strong></td>
-<td align="center">b_m_blood_loss_ratio</td>
-<td align="center">4.262</td>
-<td align="center">95</td>
-<td align="center">3.655</td>
-<td align="center">4.956</td>
-<td align="center">0</td>
+<td align="left">Logistic Regression</td>
+<td align="right">0.62</td>
+<td align="right">0.76</td>
+<td align="right">0.68</td>
+<td align="right">0.82</td>
+<td align="right">0.87</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>12</strong></td>
-<td align="center">b_oakTRUE</td>
-<td align="center">0.2717</td>
-<td align="center">95</td>
-<td align="center">-0.2376</td>
-<td align="center">1.16</td>
-<td align="center">0.9863</td>
+<td align="left">eXtreme Gradient Boosting</td>
+<td align="right">0.58</td>
+<td align="right">0.75</td>
+<td align="right">0.65</td>
+<td align="right">0.81</td>
+<td align="right">0.87</td>
 </tr>
 <tr class="even">
-<td align="center"><strong>14</strong></td>
-<td align="center">b_tcaggrTRUE</td>
-<td align="center">-0.0695</td>
-<td align="center">95</td>
-<td align="center">-0.5952</td>
-<td align="center">0.2448</td>
-<td align="center">0.9988</td>
+<td align="left">Support Vector Machine</td>
+<td align="right">0.53</td>
+<td align="right">0.85</td>
+<td align="right">0.66</td>
+<td align="right">0.82</td>
+<td align="right">0.85</td>
 </tr>
 <tr class="odd">
-<td align="center"><strong>8</strong></td>
-<td align="center">b_m_preop_hb</td>
-<td align="center">-3.92</td>
-<td align="center">95</td>
-<td align="center">-4.606</td>
-<td align="center">-3.27</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>9</strong></td>
-<td align="center">b_m_preop_tc</td>
-<td align="center">0.009389</td>
-<td align="center">95</td>
-<td align="center">-0.2149</td>
-<td align="center">0.3193</td>
-<td align="center">0.9989</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>5</strong></td>
-<td align="center">b_m_bmi</td>
-<td align="center">-0.00411</td>
-<td align="center">95</td>
-<td align="center">-0.3153</td>
-<td align="center">0.3057</td>
-<td align="center">0.9991</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>3</strong></td>
-<td align="center">b_m_age</td>
-<td align="center">1.091</td>
-<td align="center">95</td>
-<td align="center">0.4793</td>
-<td align="center">1.619</td>
-<td align="center">0.004543</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>1</strong></td>
-<td align="center">b_genderfemale</td>
-<td align="center">0.1346</td>
-<td align="center">95</td>
-<td align="center">-0.1196</td>
-<td align="center">0.5567</td>
-<td align="center">0.9981</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>7</strong></td>
-<td align="center">b_m_op_duration_min</td>
-<td align="center">0.03895</td>
-<td align="center">95</td>
-<td align="center">-0.2598</td>
-<td align="center">0.4823</td>
-<td align="center">0.9975</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>13</strong></td>
-<td align="center">b_previous_opTRUE</td>
-<td align="center">0.01358</td>
-<td align="center">95</td>
-<td align="center">-0.2212</td>
-<td align="center">0.3027</td>
-<td align="center">0.9989</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>11</strong></td>
-<td align="center">b_norepinephrineTRUE</td>
-<td align="center">0.04088</td>
-<td align="center">95</td>
-<td align="center">-0.2135</td>
-<td align="center">0.4272</td>
-<td align="center">0.9999</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>6</strong></td>
-<td align="center">b_m_crystalloids_mlkgh</td>
-<td align="center">0.004561</td>
-<td align="center">95</td>
-<td align="center">-0.2914</td>
-<td align="center">0.4215</td>
-<td align="center">0.999</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>10</strong></td>
-<td align="center">b_neoadj_chemoTRUE</td>
-<td align="center">0.001213</td>
-<td align="center">95</td>
-<td align="center">-0.345</td>
-<td align="center">0.3073</td>
-<td align="center">0.9951</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>15</strong></td>
-<td align="center">bsp_mocci_5plus</td>
-<td align="center">0.1997</td>
-<td align="center">95</td>
-<td align="center">0.06909</td>
-<td align="center">0.3384</td>
-<td align="center">0.008479</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>17</strong></td>
-<td align="center">bsp_mop_tumor</td>
-<td align="center">0.2098</td>
-<td align="center">95</td>
-<td align="center">0.04473</td>
-<td align="center">0.382</td>
-<td align="center">0.07025</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>16</strong></td>
-<td align="center">bsp_mop_nodes</td>
-<td align="center">-0.01791</td>
-<td align="center">95</td>
-<td align="center">-0.3621</td>
-<td align="center">0.1611</td>
-<td align="center">0.9918</td>
-</tr>
-</tbody>
-</table>
-<table style="width:96%;">
-<colgroup>
-<col width="12%" />
-<col width="12%" />
-<col width="13%" />
-<col width="15%" />
-<col width="16%" />
-<col width="25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center"> </th>
-<th align="center">pd</th>
-<th align="center">ROPE_CI</th>
-<th align="center">ROPE_low</th>
-<th align="center">ROPE_high</th>
-<th align="center">ROPE_Percentage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center"><strong>2</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>4</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>12</strong></td>
-<td align="center">0.8315</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.198</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>14</strong></td>
-<td align="center">0.704</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.318</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>8</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>9</strong></td>
-<td align="center">0.5643</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.4695</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>5</strong></td>
-<td align="center">0.527</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.4385</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>3</strong></td>
-<td align="center">0.9995</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.00075</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>1</strong></td>
-<td align="center">0.8127</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.2865</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>7</strong></td>
-<td align="center">0.6623</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.3877</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>13</strong></td>
-<td align="center">0.5965</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.4645</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>11</strong></td>
-<td align="center">0.6665</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.3945</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>6</strong></td>
-<td align="center">0.5317</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.4113</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>10</strong></td>
-<td align="center">0.5122</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.4475</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>15</strong></td>
-<td align="center">0.9992</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.013</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>17</strong></td>
-<td align="center">0.993</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.04075</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>16</strong></td>
-<td align="center">0.6238</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.5</td>
+<td align="left">Random Forest</td>
+<td align="right">0.49</td>
+<td align="right">0.77</td>
+<td align="right">0.60</td>
+<td align="right">0.79</td>
+<td align="right">0.85</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="region-of-practical-equivalence" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.4</span> Region of practical equivalence</h5>
-<p>Using a ROPE range of -0.055 to 0.055 (<span class="math inline">\(0.1 \cdot \frac{\sqrt{3}}{\pi}\)</span>) and a CI of 1.</p>
-<p><img src="notebook_files/figure-html/model1full_rope-1.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="roc-auc" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.5</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.879203428625768</code></pre>
-<p><img src="notebook_files/figure-html/model1full_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<!-- ##### Conditional probability plot -->
-</div>
-</div>
-<div id="reduced-model" class="section level4">
-<h4><span class="header-section-number">3.2.1.2</span> Reduced model</h4>
-<div id="diagnostics-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.1</span> Diagnostics</h5>
-<pre><code>#&gt; No divergences to plot.</code></pre>
-<p><img src="notebook_files/figure-html/model1reduced_diagnostics-1.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/model1reduced_diagnostics-2.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="posterior-predictive-check-plot-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.2</span> Posterior predictive check plot</h5>
-<pre><code>#&gt; Using 10 posterior samples for ppc type &#39;bars&#39; by default.</code></pre>
-<p><img src="notebook_files/figure-html/model1reduced_ppcheck-1.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="summary-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.3</span> Summary</h5>
-<table>
-<caption>Table continues below</caption>
-<colgroup>
-<col width="11%" />
-<col width="29%" />
-<col width="11%" />
-<col width="6%" />
-<col width="12%" />
-<col width="12%" />
-<col width="14%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center"> </th>
-<th align="center">Parameter</th>
-<th align="center">Median</th>
-<th align="center">CI</th>
-<th align="center">CI_low</th>
-<th align="center">CI_high</th>
-<th align="center">p_MAP</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center"><strong>1</strong></td>
-<td align="center">b_Intercept</td>
-<td align="center">-1.916</td>
-<td align="center">95</td>
-<td align="center">-2.407</td>
-<td align="center">-1.425</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>3</strong></td>
-<td align="center">b_m_blood_loss_ratio</td>
-<td align="center">4.346</td>
-<td align="center">95</td>
-<td align="center">3.738</td>
-<td align="center">4.964</td>
-<td align="center">0</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>4</strong></td>
-<td align="center">b_m_preop_hb</td>
-<td align="center">-4.211</td>
-<td align="center">95</td>
-<td align="center">-4.859</td>
-<td align="center">-3.567</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>2</strong></td>
-<td align="center">b_m_age</td>
-<td align="center">1.192</td>
-<td align="center">95</td>
-<td align="center">0.6562</td>
-<td align="center">1.711</td>
-<td align="center">0</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>5</strong></td>
-<td align="center">bsp_mocci_5plus</td>
-<td align="center">0.1941</td>
-<td align="center">95</td>
-<td align="center">0.08309</td>
-<td align="center">0.3244</td>
-<td align="center">0.004427</td>
-</tr>
-</tbody>
-</table>
-<table style="width:96%;">
-<colgroup>
-<col width="12%" />
-<col width="12%" />
-<col width="13%" />
-<col width="15%" />
-<col width="16%" />
-<col width="25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center"> </th>
-<th align="center">pd</th>
-<th align="center">ROPE_CI</th>
-<th align="center">ROPE_low</th>
-<th align="center">ROPE_high</th>
-<th align="center">ROPE_Percentage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center"><strong>1</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>3</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>4</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="even">
-<td align="center"><strong>2</strong></td>
-<td align="center">1</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0</td>
-</tr>
-<tr class="odd">
-<td align="center"><strong>5</strong></td>
-<td align="center">0.9998</td>
-<td align="center">100</td>
-<td align="center">-0.055</td>
-<td align="center">0.055</td>
-<td align="center">0.0095</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="region-of-practical-equivalence-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.4</span> Region of practical equivalence</h5>
-<p>Using a ROPE range of -0.055 to 0.055 (<span class="math inline">\(0.1 \cdot \frac{\sqrt{3}}{\pi}\)</span>) and a CI of 1.</p>
-<p><img src="notebook_files/figure-html/model1reduced_rope-1.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="roc-auc-1" class="section level5">
-<h5><span class="header-section-number">3.2.1.2.5</span> ROC-AUC</h5>
-<pre><code>#&gt; AUC: 0.873518484558283</code></pre>
-<p><img src="notebook_files/figure-html/model1reduced_rocauc-1.png" width="100%" style="display: block; margin: auto;" /></p>
-<!-- ##### Conditional probability plot -->
-</div>
+<div id="feature-importance" class="section level4">
+<h4><span class="header-section-number">3.2.1.5</span> Feature importance</h4>
+<p><img src="notebook_files/figure-html/ml_importance-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
