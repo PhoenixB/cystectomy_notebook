@@ -93,6 +93,22 @@ p_fun <-
     predict(object, newdata = newdata, type = "prob")[,2]
   }
 
+fourStats <- function (data, lev = levels(data$obs), model = NULL) {
+  ## This code will get use the area under the ROC curve and the
+  ## sensitivity and specificity values using the current candidate
+  ## value of the probability threshold.
+  out <- c(twoClassSummary(data, lev = levels(data$obs), model = NULL))
+ 
+  ## The best possible model has sensitivity of 1 and specifity of 1. 
+  ## How far are we from that value?
+  coords <- matrix(c(1, 1, out["Spec"], out["Sens"]), 
+                   ncol = 2, 
+                   byrow = TRUE)
+  colnames(coords) <- c("Spec", "Sens")
+  rownames(coords) <- c("Best", "Current")
+  c(out, Dist = dist(coords)[1])
+}
+
 # Load data from 0_get_and_tidy_data ----
 tibble.oak_bleeding_model <-
   read_rds(path = path_wd(
@@ -104,47 +120,96 @@ tibble.oak_bleeding_model <-
     ext = 'rds'
   ))
 
-# tibble.oak_bleeding_model_train <-
-#   read_rds(path = path_wd(
-#     'empirical',
-#     '2_pipeline',
-#     '1_get_and_tidy_data',
-#     'out',
-#     'oak_bleeding_model_train',
-#     ext = 'rds'
-#   ))
-# 
-# tibble.oak_bleeding_model_test <-
-#   read_rds(path = path_wd(
-#     'empirical',
-#     '2_pipeline',
-#     '1_get_and_tidy_data',
-#     'out',
-#     'oak_bleeding_model_test',
-#     ext = 'rds'
-#   ))
+# Create helper for Table 1 ----
+helper.tableone <- c(
+  "blood_loss_ml",
+  "blood_loss_ratio",
+  "oak",
+  "tcaggr",
+  "preop_hb",
+  "preop_tc",
+  "bmi",
+  "age",
+  "cci_5plus",
+  "gender",
+  "p_tumor",
+  "p_node_pos",
+  # "op_year",
+  "op_duration_min",
+  "previous_op",
+  "norepinephrine",
+  "crystalloids_mlkgh",
+  "neoadj_chemo"
+)
 
-# Load Table 1 from 2_make_table_one ----
+# Create Table 1 ----
 table.oak_bleeding_model <-
-  read_rds(path = path_wd(
-    'empirical',
-    '2_pipeline',
-    '2_make_table_one',
-    'out',
-    'oak_bleeding_model',
-    ext = 'rds'
-  ))
+  tibble.oak_bleeding_model %>%
+  CreateTableOne(
+    vars = helper.tableone,
+    strata = c("intraop_transfusion"),
+    data = .,
+    test = TRUE
+  ) %>%
+  print(., nonnormal = c(
+    "blood_loss_ml",
+    "blood_loss_ratio",
+    "preop_hb",
+    "preop_tc",
+    "bmi",
+    "age",
+    "op_duration_min",
+    "crystalloids_mlkgh"
+  ), printToggle = FALSE, noSpaces = TRUE)
 
 # Load helper for variable selection ----
-helper.variable_selection <-
-  read_rds(path = path_wd(
-    'empirical',
-    '2_pipeline',
-    '0_create_helpers',
-    'out',
-    'ml_variable_selection',
-    ext = 'rds'
-  ))
+helper.variable_selection <- c(
+  "blood_loss_ratio",
+  "oak",
+  "tcaggr",
+  "preop_hb",
+  "preop_tc",
+  "bmi",
+  "age",
+  "cci_5plus",
+  "gender",
+  "p_tumor",
+  "p_node_pos",
+  "op_duration_min",
+  "previous_op",
+  "norepinephrine",
+  "crystalloids_mlkgh",
+  "neoadj_chemo"
+)
+
+# Create variable name helper for model formula generation ----
+helper.variables_names <- c(
+  "poly(blood_loss_ratio, 2)",
+  "oak",
+  "tcaggr",
+  "poly(preop_hb, 2)",
+  "preop_tc",
+  "bmi",
+  "poly(age, 2)",
+  "cci_5plus",
+  "gender",
+  "p_tumor",
+  "p_node_pos",
+  "op_duration_min",
+  "previous_op",
+  "norepinephrine",
+  "crystalloids_mlkgh",
+  "neoadj_chemo"
+)
+
+# Create formula helper for models ----
+helper.model_formula <-
+  as.formula(
+    glue(
+      "as.factor(intraop_transfusion) ~ ",
+      paste(c(helper.variables_names[!helper.variables_names %in% c("intraop_transfusion")]), collapse = " + ")
+    )
+  )
 
 # Create recipe for data preparation ----
 recipe.bleeding_model <-
@@ -153,12 +218,12 @@ recipe.bleeding_model <-
     data = tibble.oak_bleeding_model
   ) %>%
   step_mutate_at(all_outcomes(), fn = as.numeric) %>%
-  step_num2factor(all_outcomes(), transform = function(x) x + 1, levels = c("0", "1")) %>%
+  step_num2factor(all_outcomes(), transform = function(x) x + 1, levels = c("no", "yes")) %>%
+  # step_relevel(all_outcomes(), ref_level = "no") %>%
   step_corr(all_numeric()) %>%
   step_zv(all_predictors()) %>%
   # step_nzv(all_predictors()) %>%
   step_lincomb(all_numeric()) %>%
-  # step_scale(all_numeric()) %>%
   prep()
 
 # Bake the dataset ----
@@ -166,7 +231,7 @@ tibble.oak_bleeding_model_clean <-
   recipe.bleeding_model %>%
   bake(tibble.oak_bleeding_model)
 
-## Create helper for partitioning ----
+# Create helper for partitioning ----
 helper.training_test <-
   createDataPartition(
     tibble.oak_bleeding_model_clean$intraop_transfusion,
@@ -174,7 +239,7 @@ helper.training_test <-
     list = FALSE
   )
 
-## Partition into training and test dataset ----
+# Partition into training and test dataset ----
 if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_train", ext = "rds"))) {
   tibble.oak_bleeding_model_train <-
     read_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_train", ext = "rds"))
@@ -199,11 +264,12 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "data", "ti
     write_rds(path = path_wd("paper", "notebook", "notebook_files", "data", "tibble.oak_bleeding_model_test", ext = "rds"))
 }
 
-## Create separate vector for the outcome variable ----
+# Create separate vector for the outcome variable ----
 helper.y_test <-
   tibble.oak_bleeding_model_test %>%
-  modify_at(vars(intraop_transfusion), as.character) %>%
+  # modify_at(vars(intraop_transfusion), as.character) %>%
   modify_at(vars(intraop_transfusion), as.numeric) %>%
+  mutate(intraop_transfusion = intraop_transfusion - 1) %>%
   pull(intraop_transfusion)
 
 ```
@@ -215,8 +281,11 @@ Welcome to the notebook!
 ## Table 1
 
 ```{r table_one,echo=FALSE}
+
+# Print Table 1 ----
 table.oak_bleeding_model %>%
   knitr::kable()
+
 ```
 
 # Prerequisites
@@ -233,6 +302,8 @@ table.oak_bleeding_model %>%
 ## Data plots
 
 ```{r data_plots,echo=FALSE}
+
+# Print QQ plots ----
 qqplot_bloodlossratio <-
   tibble.oak_bleeding_model %>%
   drop_na(blood_loss_ratio) %>%
@@ -253,6 +324,7 @@ qqplot_logbloodlossratio <-
 
 grid.arrange(qqplot_bloodlossratio, qqplot_logbloodlossratio, ncol = 2)
 
+# Print histogram of blood_loss_ratio ----
 tibble.oak_bleeding_model %>%
 drop_na(blood_loss_ratio) %>%
 ggplot(aes(x = blood_loss_ratio)) +
@@ -260,6 +332,7 @@ geom_histogram(binwidth = 0.05) +
 labs(title = "Histogram of blood loss ratio", x = "Blood loss ratio", y = "Count") +
 theme_light()
 
+# Print bar chart of intraop_transfusion ----
 tibble.oak_bleeding_model %>%
 drop_na(intraop_transfusion) %>%
 ggplot(aes(x = intraop_transfusion)) +
@@ -272,165 +345,106 @@ theme_light()
 
 ### Models with intraoperative transfusion as response
 
-#### Stepwise backwards logistic regression without interactions
+#### Stepwise Logistic Regression
 
 ```{r glm_stepwise,echo=FALSE}
-helper.variables_names <-
-  c(
-    names(tibble.oak_bleeding_model_train),
-    "I(age^2)"
+
+# Create trainControl helper ----
+helper.trainControl_glmstep <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    savePredictions = "all",
+    summaryFunction = twoClassSummary
   )
 
-helper.glm_formula_full <-
-  glue("intraop_transfusion ~ ", paste(c(helper.variables_names[!helper.variables_names %in% c("intraop_transfusion")]), collapse = " + "))
+# Load model, otherwise create it ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmstep", ext = "rds"))) {
+  model.classif_glmstep <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmstep", ext = "rds"))
+} else {
+  model.classif_glmstep <-
+    train(
+      helper.model_formula,
+      data = tibble.oak_bleeding_model_train,
+      method = "glmStepAIC",
+      preProcess = c("center", "scale"),
+      family = "binomial",
+      trControl = helper.trainControl_glmstep,
+      metric = "ROC",
+      trace = FALSE,
+      direction = "both"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmstep", ext = "rds")
+    )
+}
 
-model.glm.intraoptransfusion_full <-
-  glm(
-    formula = helper.glm_formula_full,
-    data = tibble.oak_bleeding_model_train,
-    family = binomial()
-  ) %>%
-  MASS::stepAIC(scope = list(upper = helper.glm_formula_full, lower = ~ 1), trace = FALSE) %>%
-  write_rds(
-    path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full", ext = "rds")
+# Create explainer ----
+explainer.classif_glmstep <-
+  explain(
+    model.classif_glmstep,
+    label = "Stepwise Logistic Regression",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
   )
 
-model.glm.intraoptransfusion_full_scaled <-
-  update(
-    model.glm.intraoptransfusion_full,
-    formula. = ~ . - blood_loss_ratio + I(blood_loss_ratio * 100) - preop_hb + I(preop_hb * 10)
-  ) %>%
-  write_rds(
-    path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full_scaled", ext = "rds")
+# Create model performance object ----
+mp.classif_glmstep <-
+  model_performance(explainer.classif_glmstep)
+
+# Create variable importance object ----
+vi.classif_glmstep <-
+  variable_importance(
+    explainer.classif_glmstep,
+    loss_function = loss_one_minus_auc,
+    label = "Stepwise Logistic Regression",
+    type = "difference"
   )
 
-summary(model.glm.intraoptransfusion_full)
+# Create resamples for cut-off
+resample.classif_glmstep <-
+  thresholder(
+    model.classif_glmstep,
+    threshold = seq(0, 1, 0.01),
+    final = TRUE
+  )
 
-summary(model.glm.intraoptransfusion_full_scaled)
+# model.glm.intraoptransfusion_full <-
+#   glm(
+#     formula = helper.glm_formula_full,
+#     data = tibble.oak_bleeding_model_train,
+#     family = binomial()
+#   ) %>%
+#   MASS::stepAIC(scope = list(upper = helper.glm_formula_full, lower = ~ 1), trace = FALSE) %>%
+#   write_rds(
+#     path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full", ext = "rds")
+#   )
+# 
+# model.glm.intraoptransfusion_full_scaled <-
+#   update(
+#     model.glm.intraoptransfusion_full,
+#     formula. = ~ . - blood_loss_ratio + I(blood_loss_ratio * 100) - preop_hb + I(preop_hb * 10)
+#   ) %>%
+#   write_rds(
+#     path = path_wd("paper", "notebook", "notebook_files", "models", "model.glm_intraoptransfusion_full_scaled", ext = "rds")
+#   )
+# 
+# summary(model.glm.intraoptransfusion_full)
+# 
+# summary(model.glm.intraoptransfusion_full_scaled)
 
 ```
 
-<!-- ##### ROC-AUC for the test dataset -->
+#### Random Forest
 
-```{r glm_full_rocauc,echo=FALSE}
-# tibble.glm_full_rocauc <-
-#   tibble(
-#     predictions = predict(model.glm.intraoptransfusion_model_full, newdata = tibble.oak_bleeding_model_test, type = "response"),
-#     labels = pluck(tibble.oak_bleeding_model_test, "intraop_transfusion")
-#   )
-# 
-# prediction.glm_full <-
-#   prediction(
-#     predictions = pluck(tibble.glm_full_rocauc, "predictions"),
-#     labels = pluck(tibble.glm_full_rocauc, "labels")
-#   )
-# 
-# auc.glm_full <-
-#   performance(
-#     prediction.glm_full,
-#     measure = "auc"
-#   )
-# 
-# cat(glue("AUC: ", auc.glm_full@y.values[[1]], "\n"))
-# 
-# roc.glm_full <-
-#   performance(
-#     prediction.glm_full,
-#     measure = "tpr",
-#     x.measure = "fpr"
-#   )
-# 
-# plot(
-#   roc.glm_full,
-#   main = "ROC-AUC"
-# )
-# abline(a=0, b= 1)
-# 
-# cat("Optimal cut-off point:\n")
-# opt.cut(roc.glm_full, prediction.glm_full) %>%
-#   as_tibble_row(.name_repair = "unique") %>%
-#   rename(Sensitivity = `...1`, Specificity = `...2`, `Cut-Off` = `...3`) %>%
-#   knitr::kable()
+```{r ml_randomforest,echo=FALSE}
 
-```
-
-#### Stepwise backwards logistic regression with interactions
-
-```{r glm_stepwise_inter,echo=FALSE}
-helper.variables_significant_filter <-
-  c(
-    "I(blood_loss_ratio * 100)",
-    "oak",
-    "tcaggr",
-    "norepinephrine",
-    "p_tumor",
-    "I(preop_hb * 10)",
-    "I(age^2)"
-  )
-
-helper.glm_formula_reduced_interactions <-
-  glue("intraop_transfusion ~ (", paste(helper.variables_significant_filter, collapse = " + "), ") ^ 2")
-
-model.glm.intraoptransfusion_reduced_interactions <-
-  glm(
-    formula = helper.glm_formula_reduced_interactions,
-    data = tibble.oak_bleeding_model_train,
-    family = binomial()
-  ) %>%
-  MASS::stepAIC(scope = list(upper = helper.glm_formula_reduced_interactions, lower = ~ 1), trace = FALSE)
-
-summary(model.glm.intraoptransfusion_reduced_interactions)
-
-```
-
-<!-- ##### ROC-AUC for the test dataset -->
-
-```{r glm_inter_rocauc,echo=FALSE}
-# tibble.glm_inter_rocauc <-
-#   tibble(
-#     predictions = predict(model.glm.intraoptransfusion_model_reduced_interactions, newdata = tibble.oak_bleeding_model_test, type = "response"),
-#     labels = pluck(tibble.oak_bleeding_model_test, "intraop_transfusion")
-#   )
-# 
-# prediction.glm_inter <-
-#   prediction(
-#     predictions = pluck(tibble.glm_inter_rocauc, "predictions"),
-#     labels = pluck(tibble.glm_inter_rocauc, "labels")
-#   )
-# 
-# auc.glm_inter <-
-#   performance(
-#     prediction.glm_inter,
-#     measure = "auc"
-#   )
-# 
-# cat(glue("AUC: ", auc.glm_inter@y.values[[1]], "\n"))
-# 
-# roc.glm_inter <-
-#   performance(
-#     prediction.glm_inter,
-#     measure = "tpr",
-#     x.measure = "fpr"
-#   )
-# 
-# plot(
-#   roc.glm_inter,
-#   main = "ROC-AUC"
-# )
-# abline(a=0, b= 1)
-# 
-# cat("Optimal cut-off point:\n")
-# opt.cut(roc.glm_inter, prediction.glm_inter) %>%
-#   as_tibble_row(.name_repair = "unique") %>%
-#   rename(Sensitivity = `...1`, Specificity = `...2`, `Cut-Off` = `...3`) %>%
-#   knitr::kable()
-
-```
-
-#### Machine learning classification
-
-```{r ml_train,echo=FALSE}
-## Create helper for training control parameters ----
+# Create trainControl helper ----
 helper.trainControl_rf <-
   trainControl(
     method = "repeatedcv",
@@ -438,134 +452,30 @@ helper.trainControl_rf <-
     repeats = 10,
     returnData = FALSE,
     classProbs = TRUE,
+    savePredictions = "all",
     summaryFunction = twoClassSummary
   )
 
-helper.trainControl_glm <-
-  trainControl(
-    method = "repeatedcv",
-    number = 10,
-    repeats = 10,
-    returnData = FALSE,
-    classProbs = TRUE,
-    summaryFunction = twoClassSummary
-  )
-
-helper.trainControl_svm <-
-  trainControl(
-    method = "repeatedcv",
-    number = 10,
-    repeats = 10,
-    returnData = FALSE,
-    classProbs = TRUE,
-    summaryFunction = twoClassSummary
-  )
-
-helper.trainControl_xgb <-
-  trainControl(
-    method = "repeatedcv",
-    number = 10,
-    repeats = 10,
-    allowParallel = TRUE,
-    returnData = FALSE, 
-    classProbs = TRUE,
-    summaryFunction = twoClassSummary
-  )
-
-## Fit classification models ----
+# Load model, otherwise create it ----
 if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))) {
   model.classif_rf <-
     read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))
 } else {
   model.classif_rf <-
     train(
-      make.names(intraop_transfusion) ~ . ,
+      helper.model_formula,
       data = tibble.oak_bleeding_model_train,
-      method="rf",
+      method = "rf",
       preProcess = c("center", "scale"),
-      ntree = 100,
-      tuneLength = 10,
+      ntree = 501,
+      tuneLength = 25,
       trControl = helper.trainControl_rf,
       metric = "ROC"
     ) %>%
     write_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_rf", ext = "rds"))
 }
 
-if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds"))) {
-  model.classif_glm <-
-    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds"))
-} else {
-  model.classif_glm <-
-    train(
-      make.names(intraop_transfusion) ~ . + I(age^2),
-      data = tibble.oak_bleeding_model_train,
-      method = "glmnet",
-      preProcess = c("center", "scale"),
-      family = "binomial",
-      tuneLength = 25,
-      trControl = helper.trainControl_glm,
-      metric = "ROC"
-    ) %>%
-    write_rds(
-      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glm", ext = "rds")
-    )
-}
-
-if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds"))) {
-  model.classif_svm <-
-    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds"))
-} else {
-  model.classif_svm <-
-    train(
-      make.names(intraop_transfusion) ~ . ,
-      data = tibble.oak_bleeding_model_train,
-      method="svmRadial",
-      preProcess = c("center", "scale"),
-      prob.model = TRUE,
-      tuneLength = 10,
-      trControl = helper.trainControl_svm,
-      metric = "ROC"
-    ) %>%
-    write_rds(
-      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svm", ext = "rds")
-    )
-}
-
-if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))) {
-  model.classif_xgb <-
-    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))
-} else {
-  model.classif_xgb <-
-    train(
-      make.names(intraop_transfusion) ~ . ,
-      data = tibble.oak_bleeding_model_train,
-      method="xgbTree",
-      preProcess = c("center", "scale"),
-      tuneLength = 10,
-      trControl = helper.trainControl_xgb,
-      metric = "ROC"
-    ) %>%
-    write_rds(
-      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds")
-    )
-}
-```
-
-#### Model performance
-
-```{r model_performance,echo=FALSE}
-
-## Create explainers ----
-explainer.model_glm <-
-  explain(
-    model.glm.intraoptransfusion_full_scaled,
-    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
-    y = helper.y_test,
-    predict_function = function(object, newdata) {
-      predict(object, newdata = newdata, type = "response")
-    }
-  )
-
+# Create explainer ----
 explainer.classif_rf <-
   explain(
     model.classif_rf,
@@ -575,58 +485,11 @@ explainer.classif_rf <-
     predict_function = p_fun
   )
 
-explainer.classif_glm <-
-  explain(
-    model.classif_glm,
-    label = "Elastic Net Logistic Regression",
-    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
-    y = helper.y_test,
-    predict_function = p_fun
-  )
-
-explainer.classif_svm <-
-  explain(
-    model.classif_svm,
-    label = "Support Vector Machine",
-    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
-    y = helper.y_test,
-    predict_function = p_fun
-  )
-
-explainer.classif_xgb <-
-  explain(
-    model.classif_xgb,
-    label = "eXtreme Gradient Boosting",
-    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
-    y = helper.y_test,
-    predict_function = p_fun
-  )
-
-## Create model performance objects ----
-mp.model_glm <-
-  model_performance(explainer.model_glm)
-
+# Create model performance object ----
 mp.classif_rf <-
   model_performance(explainer.classif_rf)
 
-mp.classif_glm <-
-  model_performance(explainer.classif_glm)
-
-mp.classif_svm <-
-  model_performance(explainer.classif_svm)
-
-mp.classif_xgb <-
-  model_performance(explainer.classif_xgb)
-
-## Create variable importance objects ----
-vi.model_glm <-
-  variable_importance(
-    explainer.model_glm,
-    loss_function = loss_one_minus_auc,
-    label = "Logistic Regression",
-    type = "difference"
-  )
-
+# Create variable importance object ----
 vi.classif_rf <-
   variable_importance(
     explainer.classif_rf,
@@ -635,46 +498,246 @@ vi.classif_rf <-
     type = "difference"
   )
 
-vi.classif_glm <-
+# Create resamples for cut-off
+resample.classif_rf <-
+  thresholder(
+    model.classif_rf,
+    threshold = seq(0, 1, 0.01),
+    final = TRUE
+  )
+
+```
+
+#### Elastic Net Logistic Regression
+
+```{r ml_elasticnet,echo=FALSE}
+
+# Create trainControl helper ----
+helper.trainControl_glmnet <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    savePredictions = "all",
+    summaryFunction = twoClassSummary
+  )
+
+# Load model, otherwise create it ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmnet", ext = "rds"))) {
+  model.classif_glmnet <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmnet", ext = "rds"))
+} else {
+  model.classif_glmnet <-
+    train(
+      helper.model_formula,
+      data = tibble.oak_bleeding_model_train,
+      method = "glmnet",
+      preProcess = c("center", "scale"),
+      family = "binomial",
+      tuneLength = 25,
+      trControl = helper.trainControl_glmnet,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_glmnet", ext = "rds")
+    )
+}
+
+# Create explainer ----
+explainer.classif_glmnet <-
+  explain(
+    model.classif_glmnet,
+    label = "Elastic Net Logistic Regression",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+# Create model performance object ----
+mp.classif_glmnet <-
+  model_performance(explainer.classif_glmnet)
+
+# Create variable importance object ----
+vi.classif_glmnet <-
   variable_importance(
-    explainer.classif_glm,
+    explainer.classif_glmnet,
     loss_function = loss_one_minus_auc,
     label = "Elastic Net Logistic Regression",
     type = "difference"
   )
 
-vi.classif_svm <-
+# Create resamples for cut-off
+resample.classif_glmnet <-
+  thresholder(
+    model.classif_glmnet,
+    threshold = seq(0, 1, 0.01),
+    final = TRUE
+  )
+
+```
+
+#### Support Vector Machine (RBF)
+
+```{r ml_svmradial,echo=FALSE}
+
+# Create trainControl helper ----
+helper.trainControl_svmradial <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    returnData = FALSE,
+    classProbs = TRUE,
+    savePredictions = "all",
+    summaryFunction = twoClassSummary
+  )
+
+# Load model, otherwise create it ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svmradial", ext = "rds"))) {
+  model.classif_svmradial <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svmradial", ext = "rds"))
+} else {
+  model.classif_svmradial <-
+    train(
+      helper.model_formula,
+      data = tibble.oak_bleeding_model_train,
+      method="svmRadial",
+      preProcess = c("center", "scale"),
+      prob.model = TRUE,
+      tuneLength = 10,
+      trControl = helper.trainControl_svmradial,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_svmradial", ext = "rds")
+    )
+}
+
+# Create explainer ----
+explainer.classif_svmradial <-
+  explain(
+    model.classif_svmradial,
+    label = "Support Vector Machine",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+# Create model performance object ----
+mp.classif_svmradial <-
+  model_performance(explainer.classif_svmradial)
+
+# Create variable importance object ----
+vi.classif_svmradial <-
   variable_importance(
-    explainer.classif_svm,
+    explainer.classif_svmradial,
     loss_function = loss_one_minus_auc,
     label = "Support Vector Machine",
     type = "difference"
   )
 
-vi.classif_xgb <-
-  variable_importance(
-    explainer.classif_xgb,
-    loss_function = loss_one_minus_auc,
-    label = "eXtreme Gradient Boosting",
-    type = "difference"
+# Create resamples for cut-off
+resample.classif_svmradial <-
+  thresholder(
+    model.classif_svmradial,
+    threshold = seq(0, 1, 0.01),
+    final = TRUE
   )
 
+```
+
+<!-- #### eXtreme Gradient Boosting Machine -->
+
+```{r ml_xgb,echo=FALSE}
+# 
+# # Create trainControl helper ----
+# helper.trainControl_xgb <-
+#   trainControl(
+#     method = "repeatedcv",
+#     number = 10,
+#     repeats = 10,
+#     allowParallel = TRUE,
+#     returnData = FALSE, 
+#     classProbs = TRUE,
+#     savePredictions = "all",
+#     summaryFunction = twoClassSummary
+#   )
+# 
+# # Load model, otherwise create it ----
+# if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))) {
+#   model.classif_xgb <-
+#     read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))
+# } else {
+#   model.classif_xgb <-
+#     train(
+#       helper.model_formula,
+#       data = tibble.oak_bleeding_model_train,
+#       method="xgbTree",
+#       preProcess = c("center", "scale"),
+#       tuneLength = 10,
+#       trControl = helper.trainControl_xgb,
+#       metric = "ROC"
+#     ) %>%
+#     write_rds(
+#       path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds")
+#     )
+# }
+# 
+# # Create explainer ----
+# explainer.classif_xgb <-
+#   explain(
+#     model.classif_xgb,
+#     label = "eXtreme Gradient Boosting Machine",
+#     data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+#     y = helper.y_test,
+#     predict_function = p_fun
+#   )
+# 
+# # Create model performance object ----
+# mp.classif_xgb <-
+#   model_performance(explainer.classif_xgb)
+# 
+# # Create variable importance object ----
+# vi.classif_xgb <-
+#   variable_importance(
+#     explainer.classif_xgb,
+#     loss_function = loss_one_minus_auc,
+#     label = "eXtreme Gradient Boosting Machine",
+#     type = "difference"
+#   )
+# 
+# # Create resamples for cut-off
+# resample.classif_xgb <-
+#   thresholder(
+#     model.classif_xgb,
+#     threshold = seq(0, 1, 0.01),
+#     final = TRUE
+#   )
+
+```
+
+#### Model performance
+
+```{r model_performance,echo=FALSE}
+
 list(
-  mp.model_glm,
-  mp.classif_xgb,
-  mp.classif_glm,
+  mp.classif_glmstep,
   mp.classif_rf,
-  mp.classif_svm
+  mp.classif_glmnet,
+  mp.classif_svmradial #,
+  # mp.classif_xgb
 ) %>%
 map_dfr(pluck, "measures") %>%
 add_column(
   tibble(
     name = c(
-      "Logistic Regression",
-      "eXtreme Gradient Boosting",
-      "Elastic Net Logistic Regression",
+      "Stepwise Logistic Regression",
       "Random Forest",
-      "Support Vector Machine"
+      "Elastic Net Logistic Regression",
+      "Support Vector Machine" #,
+      # "eXtreme Gradient Boosting Machine"
     )
   ),
   .before = 1
@@ -690,11 +753,53 @@ knitr::kable()
 ```{r ml_importance,echo=FALSE}
 
 plot(
-  vi.model_glm,
-  vi.classif_xgb,
-  vi.classif_glm,
+  vi.classif_glmstep,
   vi.classif_rf,
-  vi.classif_svm
+  vi.classif_glmnet,
+  vi.classif_svmradial #,
+  # vi.classif_xgb
 )
 
+```
+
+#### Optimal cutpoint
+
+Cutpoint by distance to optimal model (sensitivity and specificity = 1)
+
+```{r ml_cutpoint_distance,echo=FALSE}
+
+list(
+  "Stepwise Logistic Regression" = resample.classif_glmstep,
+  "Random Forest" = resample.classif_rf,
+  "Elastic Net Logistic Regression" = resample.classif_glmnet,
+  "Support Vector Machine" = resample.classif_svmradial
+) %>%
+  bind_rows(.id = "model") %>%
+  ggplot(aes(x = prob_threshold, y = Dist, colour = model)) +
+  geom_line() +
+  scale_colour_viridis_d()
+  
+```
+
+Cutpoint by sensitivity and specificity
+
+```{r ml_cutpoint,echo=FALSE}
+
+list(
+  "Stepwise Logistic Regression" = resample.classif_glmstep,
+  "Random Forest" = resample.classif_rf,
+  "Elastic Net Logistic Regression" = resample.classif_glmnet,
+  "Support Vector Machine" = resample.classif_svmradial
+) %>%
+  bind_rows(.id = "model") %>%
+  ggplot(aes(x = prob_threshold, y = Sensitivity)) +
+  facet_wrap(vars(model)) +
+  geom_line() +
+  geom_line(aes(y = Specificity), colour = "red")
+  
+```
+
+
+```{r ml_predictions,echo=FALSE}
+# predict(list("Stepwise Logistic Regression" = model.classif_glmstep, "Random Forest" = model.classif_rf, "Elastic Net Logistic Regression" = model.classif_glmnet, "Support Vector Machine" = model.classif_svmradial), newdata = tibble.oak_bleeding_model_test, type = "prob") %>% map(function(prediction_p) {p_class <- ifelse(prediction_p$X1 > 0.9, "X1", "X0")})
 ```
