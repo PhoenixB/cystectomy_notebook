@@ -1,7 +1,7 @@
 ---
 title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
-date: "11th August 2020"
+date: "30th August 2020"
 output:
   bookdown::gitbook:
     config:
@@ -648,73 +648,73 @@ resample.classif_svmradial <-
 
 ```
 
-<!-- #### eXtreme Gradient Boosting Machine -->
+#### eXtreme Gradient Boosting Machine
 
 ```{r ml_xgb,echo=FALSE}
-# 
-# # Create trainControl helper ----
-# helper.trainControl_xgb <-
-#   trainControl(
-#     method = "repeatedcv",
-#     number = 10,
-#     repeats = 10,
-#     allowParallel = TRUE,
-#     returnData = FALSE, 
-#     classProbs = TRUE,
-#     savePredictions = "all",
-#     summaryFunction = twoClassSummary
-#   )
-# 
-# # Load model, otherwise create it ----
-# if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))) {
-#   model.classif_xgb <-
-#     read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))
-# } else {
-#   model.classif_xgb <-
-#     train(
-#       helper.model_formula,
-#       data = tibble.oak_bleeding_model_train,
-#       method="xgbTree",
-#       preProcess = c("center", "scale"),
-#       tuneLength = 10,
-#       trControl = helper.trainControl_xgb,
-#       metric = "ROC"
-#     ) %>%
-#     write_rds(
-#       path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds")
-#     )
-# }
-# 
-# # Create explainer ----
-# explainer.classif_xgb <-
-#   explain(
-#     model.classif_xgb,
-#     label = "eXtreme Gradient Boosting Machine",
-#     data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
-#     y = helper.y_test,
-#     predict_function = p_fun
-#   )
-# 
-# # Create model performance object ----
-# mp.classif_xgb <-
-#   model_performance(explainer.classif_xgb)
-# 
-# # Create variable importance object ----
-# vi.classif_xgb <-
-#   variable_importance(
-#     explainer.classif_xgb,
-#     loss_function = loss_one_minus_auc,
-#     label = "eXtreme Gradient Boosting Machine",
-#     type = "difference"
-#   )
-# 
-# # Create resamples for cut-off
-# resample.classif_xgb <-
-#   thresholder(
-#     model.classif_xgb,
-#     threshold = seq(0, 1, 0.01),
-#     final = TRUE
-#   )
+
+# Create trainControl helper ----
+helper.trainControl_xgb <-
+  trainControl(
+    method = "repeatedcv",
+    number = 10,
+    repeats = 10,
+    allowParallel = TRUE,
+    returnData = FALSE,
+    classProbs = TRUE,
+    savePredictions = "all",
+    summaryFunction = twoClassSummary
+  )
+
+# Load model, otherwise create it ----
+if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))) {
+  model.classif_xgb <-
+    read_rds(path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds"))
+} else {
+  model.classif_xgb <-
+    train(
+      helper.model_formula,
+      data = tibble.oak_bleeding_model_train,
+      method="xgbTree",
+      preProcess = c("center", "scale"),
+      tuneLength = 10,
+      trControl = helper.trainControl_xgb,
+      metric = "ROC"
+    ) %>%
+    write_rds(
+      path = path_wd("paper", "notebook", "notebook_files", "models", "model.classif_xgb", ext = "rds")
+    )
+}
+
+# Create explainer ----
+explainer.classif_xgb <-
+  explain(
+    model.classif_xgb,
+    label = "eXtreme Gradient Boosting Machine",
+    data = tibble.oak_bleeding_model_test %>% select(-intraop_transfusion),
+    y = helper.y_test,
+    predict_function = p_fun
+  )
+
+# Create model performance object ----
+mp.classif_xgb <-
+  model_performance(explainer.classif_xgb)
+
+# Create variable importance object ----
+vi.classif_xgb <-
+  variable_importance(
+    explainer.classif_xgb,
+    loss_function = loss_one_minus_auc,
+    label = "eXtreme Gradient Boosting Machine",
+    type = "difference"
+  )
+
+# Create resamples for cut-off
+resample.classif_xgb <-
+  thresholder(
+    model.classif_xgb,
+    threshold = seq(0, 1, 0.01),
+    final = TRUE
+  )
 
 ```
 
@@ -726,24 +726,25 @@ list(
   mp.classif_glmstep,
   mp.classif_rf,
   mp.classif_glmnet,
-  mp.classif_svmradial #,
-  # mp.classif_xgb
+  mp.classif_svmradial,
+  mp.classif_xgb
 ) %>%
 map_dfr(pluck, "measures") %>%
 add_column(
   tibble(
-    name = c(
+    Model = c(
       "Stepwise Logistic Regression",
       "Random Forest",
       "Elastic Net Logistic Regression",
-      "Support Vector Machine" #,
-      # "eXtreme Gradient Boosting Machine"
+      "Support Vector Machine",
+      "eXtreme Gradient Boosting Machine"
     )
   ),
   .before = 1
 ) %>%
 arrange(desc(auc)) %>%
 modify_at(vars(recall, precision, f1, accuracy, auc), round, 2) %>%
+select(Model, Recall = recall, Precision = precision, F1 = f1, Accuracy = accuracy, AUC = auc) %>%
 knitr::kable()
 
 ```
@@ -756,13 +757,31 @@ plot(
   vi.classif_glmstep,
   vi.classif_rf,
   vi.classif_glmnet,
-  vi.classif_svmradial #,
-  # vi.classif_xgb
+  vi.classif_svmradial,
+  vi.classif_xgb
 )
 
 ```
 
 #### Optimal cutpoint
+
+Cutpoint table
+
+```{r ml_cutpoint_table,echo=FALSE}
+
+list(
+  "Stepwise Logistic Regression" = resample.classif_glmstep,
+  "Random Forest" = resample.classif_rf,
+  "Elastic Net Logistic Regression" = resample.classif_glmnet,
+  "Support Vector Machine" = resample.classif_svmradial,
+  "eXtreme Gradient Boosting Machine" = resample.classif_xgb
+) %>%
+  bind_rows(.id = "model") %>%
+  group_by(model) %>%
+  filter(Dist == min(Dist)) %>%
+  select(Model = model, Threshold = prob_threshold, Sensitivity, Specificity, `Balanced Accuracy`, J, Dist)
+  
+```
 
 Cutpoint by distance to optimal model (sensitivity and specificity = 1)
 
@@ -772,7 +791,8 @@ list(
   "Stepwise Logistic Regression" = resample.classif_glmstep,
   "Random Forest" = resample.classif_rf,
   "Elastic Net Logistic Regression" = resample.classif_glmnet,
-  "Support Vector Machine" = resample.classif_svmradial
+  "Support Vector Machine" = resample.classif_svmradial,
+  "eXtreme Gradient Boosting Machine" = resample.classif_xgb
 ) %>%
   bind_rows(.id = "model") %>%
   ggplot(aes(x = prob_threshold, y = Dist, colour = model)) +
@@ -789,7 +809,8 @@ list(
   "Stepwise Logistic Regression" = resample.classif_glmstep,
   "Random Forest" = resample.classif_rf,
   "Elastic Net Logistic Regression" = resample.classif_glmnet,
-  "Support Vector Machine" = resample.classif_svmradial
+  "Support Vector Machine" = resample.classif_svmradial,
+  "eXtreme Gradient Boosting Machine" = resample.classif_xgb
 ) %>%
   bind_rows(.id = "model") %>%
   ggplot(aes(x = prob_threshold, y = Sensitivity)) +
@@ -801,5 +822,5 @@ list(
 
 
 ```{r ml_predictions,echo=FALSE}
-# predict(list("Stepwise Logistic Regression" = model.classif_glmstep, "Random Forest" = model.classif_rf, "Elastic Net Logistic Regression" = model.classif_glmnet, "Support Vector Machine" = model.classif_svmradial), newdata = tibble.oak_bleeding_model_test, type = "prob") %>% map(function(prediction_p) {p_class <- ifelse(prediction_p$X1 > 0.9, "X1", "X0")})
+# predict(list("Stepwise Logistic Regression" = model.classif_glmstep, "Random Forest" = model.classif_rf, "Elastic Net Logistic Regression" = model.classif_glmnet, "Support Vector Machine" = model.classif_svmradial), newdata = tibble.oak_bleeding_model_test, type = "prob") %>% map(function(prediction_p) {p_class <- ifelse(prediction_p$yes > 0.71, "yes", "no")})
 ```

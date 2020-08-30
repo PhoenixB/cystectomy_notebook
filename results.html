@@ -249,19 +249,50 @@
 #&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Pos Pred Value&#39;, &#39;Precision&#39;, &#39;F1&#39;.
 
 #&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Pos Pred Value&#39;, &#39;Precision&#39;, &#39;F1&#39;.</code></pre>
-<!-- #### eXtreme Gradient Boosting Machine -->
+</div>
+<div id="extreme-gradient-boosting-machine" class="section level4">
+<h4><span class="header-section-number">3.2.1.5</span> eXtreme Gradient Boosting Machine</h4>
+<pre><code>#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  eXtreme Gradient Boosting Machine 
+#&gt;   -&gt; data              :  232  rows  16  cols 
+#&gt;   -&gt; data              :  tibbble converted into a data.frame 
+#&gt;   -&gt; target variable   :  232  values 
+#&gt;   -&gt; model_info        :  package caret , ver. 6.0.86 , task Classification ( [33m default [39m ) 
+#&gt;   -&gt; predict function  :  p_fun 
+#&gt;   -&gt; predicted values  :  numerical, min =  0.009291291 , mean =  0.2604141 , max =  0.9937686  
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.8330444 , mean =  0.05424111 , max =  0.9609448  
+#&gt;  [32m A new explainer has been created! [39m
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Neg Pred Value&#39;.
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Pos Pred Value&#39;, &#39;Precision&#39;, &#39;F1&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Pos Pred Value&#39;, &#39;Precision&#39;, &#39;F1&#39;.
+
+#&gt; Warning in .fun(piece, ...): The following columns have missing values (NA), which have been removed: &#39;Pos Pred Value&#39;, &#39;Precision&#39;, &#39;F1&#39;.</code></pre>
 </div>
 <div id="model-performance" class="section level4">
-<h4><span class="header-section-number">3.2.1.5</span> Model performance</h4>
+<h4><span class="header-section-number">3.2.1.6</span> Model performance</h4>
 <table>
 <thead>
 <tr class="header">
-<th align="left">name</th>
-<th align="right">recall</th>
-<th align="right">precision</th>
-<th align="right">f1</th>
-<th align="right">accuracy</th>
-<th align="right">auc</th>
+<th align="left">Model</th>
+<th align="right">Recall</th>
+<th align="right">Precision</th>
+<th align="right">F1</th>
+<th align="right">Accuracy</th>
+<th align="right">AUC</th>
 </tr>
 </thead>
 <tbody>
@@ -282,6 +313,14 @@
 <td align="right">0.88</td>
 </tr>
 <tr class="odd">
+<td align="left">eXtreme Gradient Boosting Machine</td>
+<td align="right">0.45</td>
+<td align="right">0.77</td>
+<td align="right">0.57</td>
+<td align="right">0.78</td>
+<td align="right">0.87</td>
+</tr>
+<tr class="even">
 <td align="left">Random Forest</td>
 <td align="right">0.44</td>
 <td align="right">0.73</td>
@@ -289,7 +328,7 @@
 <td align="right">0.77</td>
 <td align="right">0.87</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Support Vector Machine</td>
 <td align="right">0.53</td>
 <td align="right">0.76</td>
@@ -301,11 +340,21 @@
 </table>
 </div>
 <div id="feature-importance" class="section level4">
-<h4><span class="header-section-number">3.2.1.6</span> Feature importance</h4>
+<h4><span class="header-section-number">3.2.1.7</span> Feature importance</h4>
 <p><img src="notebook_files/figure-html/ml_importance-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="optimal-cutpoint" class="section level4">
-<h4><span class="header-section-number">3.2.1.7</span> Optimal cutpoint</h4>
+<h4><span class="header-section-number">3.2.1.8</span> Optimal cutpoint</h4>
+<p>Cutpoint table</p>
+<pre><code>#&gt; # A tibble: 5 x 7
+#&gt; # Groups:   Model [5]
+#&gt;   Model           Threshold Sensitivity Specificity `Balanced Accur…     J  Dist
+#&gt;   &lt;chr&gt;               &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 Stepwise Logis…      0.71       0.784       0.780            0.782 0.564 0.316
+#&gt; 2 Random Forest        0.67       0.780       0.762            0.771 0.542 0.331
+#&gt; 3 Elastic Net Lo…      0.68       0.802       0.781            0.791 0.583 0.302
+#&gt; 4 Support Vector…      0.62       0.825       0.741            0.783 0.566 0.320
+#&gt; 5 eXtreme Gradie…      0.69       0.787       0.773            0.780 0.560 0.319</code></pre>
 <p>Cutpoint by distance to optimal model (sensitivity and specificity = 1)</p>
 <p><img src="notebook_files/figure-html/ml_cutpoint_distance-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Cutpoint by sensitivity and specificity</p>
