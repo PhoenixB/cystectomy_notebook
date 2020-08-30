@@ -779,7 +779,8 @@ list(
   bind_rows(.id = "model") %>%
   group_by(model) %>%
   filter(Dist == min(Dist)) %>%
-  select(Model = model, Threshold = prob_threshold, Sensitivity, Specificity, `Balanced Accuracy`, J, Dist)
+  select(Model = model, Threshold = prob_threshold, Sensitivity, Specificity, `Balanced Accuracy`, J, Dist) %>%
+  knitr::kable()
   
 ```
 

@@ -346,15 +346,66 @@
 <div id="optimal-cutpoint" class="section level4">
 <h4><span class="header-section-number">3.2.1.8</span> Optimal cutpoint</h4>
 <p>Cutpoint table</p>
-<pre><code>#&gt; # A tibble: 5 x 7
-#&gt; # Groups:   Model [5]
-#&gt;   Model           Threshold Sensitivity Specificity `Balanced Accur…     J  Dist
-#&gt;   &lt;chr&gt;               &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 Stepwise Logis…      0.71       0.784       0.780            0.782 0.564 0.316
-#&gt; 2 Random Forest        0.67       0.780       0.762            0.771 0.542 0.331
-#&gt; 3 Elastic Net Lo…      0.68       0.802       0.781            0.791 0.583 0.302
-#&gt; 4 Support Vector…      0.62       0.825       0.741            0.783 0.566 0.320
-#&gt; 5 eXtreme Gradie…      0.69       0.787       0.773            0.780 0.560 0.319</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Model</th>
+<th align="right">Threshold</th>
+<th align="right">Sensitivity</th>
+<th align="right">Specificity</th>
+<th align="right">Balanced Accuracy</th>
+<th align="right">J</th>
+<th align="right">Dist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Stepwise Logistic Regression</td>
+<td align="right">0.71</td>
+<td align="right">0.7840675</td>
+<td align="right">0.7802759</td>
+<td align="right">0.7821717</td>
+<td align="right">0.5643433</td>
+<td align="right">0.3163227</td>
+</tr>
+<tr class="even">
+<td align="left">Random Forest</td>
+<td align="right">0.67</td>
+<td align="right">0.7801637</td>
+<td align="right">0.7615172</td>
+<td align="right">0.7708405</td>
+<td align="right">0.5416809</td>
+<td align="right">0.3311773</td>
+</tr>
+<tr class="odd">
+<td align="left">Elastic Net Logistic Regression</td>
+<td align="right">0.68</td>
+<td align="right">0.8015848</td>
+<td align="right">0.7811379</td>
+<td align="right">0.7913614</td>
+<td align="right">0.5827228</td>
+<td align="right">0.3018388</td>
+</tr>
+<tr class="even">
+<td align="left">Support Vector Machine</td>
+<td align="right">0.62</td>
+<td align="right">0.8245461</td>
+<td align="right">0.7412644</td>
+<td align="right">0.7829052</td>
+<td align="right">0.5658105</td>
+<td align="right">0.3196440</td>
+</tr>
+<tr class="odd">
+<td align="left">eXtreme Gradient Boosting Machine</td>
+<td align="right">0.69</td>
+<td align="right">0.7870759</td>
+<td align="right">0.7730115</td>
+<td align="right">0.7800437</td>
+<td align="right">0.5600874</td>
+<td align="right">0.3187253</td>
+</tr>
+</tbody>
+</table>
 <p>Cutpoint by distance to optimal model (sensitivity and specificity = 1)</p>
 <p><img src="notebook_files/figure-html/ml_cutpoint_distance-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>Cutpoint by sensitivity and specificity</p>
