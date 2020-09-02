@@ -1,7 +1,7 @@
 ---
 title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
-date: "30th August 2020"
+date: "2nd September 2020"
 output:
   bookdown::gitbook:
     config:
@@ -796,7 +796,8 @@ helper.cutpoint_table <-
   group_by(model) %>%
   filter(Dist == min(Dist)) %>%
   arrange(Dist) %>%
-  select(Model = model, Threshold = prob_threshold, Sensitivity, Specificity, `Balanced Accuracy`, `Youdens J` = J, Distance = Dist)
+  select(Model = model, Threshold = prob_threshold, Sensitivity, Specificity, `Balanced Accuracy`, `Youdens J` = J, Distance = Dist) %>%
+  modify_at(vars(Sensitivity, Specificity, `Balanced Accuracy`, `Youdens J`, Distance), round, 3)
 
 helper.cutpoint_table %>%
   knitr::kable(caption = "Optimal probability threshold by distance to optimal model (sensitivity and specificity = 1")
@@ -834,10 +835,13 @@ list(
   # "eXtreme Gradient Boosting Machine" = resample.classif_xgb
 ) %>%
   bind_rows(.id = "model") %>%
-  ggplot(aes(x = prob_threshold, y = Sensitivity)) +
+  pivot_longer(Sensitivity:sigma, names_to = "Parameter", values_to = "Value") %>%
+  filter(Parameter == "Sensitivity" | Parameter == "Specificity") %>%
+  ggplot(aes(x = prob_threshold, y = Value, colour = Parameter)) +
   facet_wrap(vars(model)) +
   geom_line() +
-  geom_line(aes(y = Specificity), colour = "red")
+  scale_colour_viridis_d(direction = -1) +
+  labs(title = "Sensitivity vs. Specificity", x = "Probability threshold", y = "Sensitivity/Specificity", colour = "Parameter")
   
 ```
 
