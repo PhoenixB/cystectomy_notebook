@@ -426,13 +426,15 @@ vi.classif_glmstep <-
   )
 
 # Create resamples for cut-off
-resample.classif_glmstep <-
-  thresholder(
-    model.classif_glmstep,
-    threshold = seq(0, 1, 0.01),
-    final = TRUE
-  )
-
+suppressWarnings(
+  resample.classif_glmstep <-
+    thresholder(
+      model.classif_glmstep,
+      threshold = seq(0, 1, 0.01),
+      final = TRUE
+     )
+)
+  
 # model.glm.intraoptransfusion_full <-
 #   glm(
 #     formula = helper.glm_formula_full,
@@ -518,12 +520,14 @@ vi.classif_rf <-
   )
 
 # Create resamples for cut-off
-resample.classif_rf <-
-  thresholder(
-    model.classif_rf,
-    threshold = seq(0, 1, 0.01),
-    final = TRUE
-  )
+suppressWarnings(
+  resample.classif_rf <-
+    thresholder(
+      model.classif_rf,
+      threshold = seq(0, 1, 0.01),
+      final = TRUE
+    )
+)
 
 ```
 
@@ -588,13 +592,14 @@ vi.classif_glmnet <-
   )
 
 # Create resamples for cut-off
-resample.classif_glmnet <-
-  thresholder(
-    model.classif_glmnet,
-    threshold = seq(0, 1, 0.01),
-    final = TRUE
-  )
-
+suppressWarnings(
+  resample.classif_glmnet <-
+    thresholder(
+      model.classif_glmnet,
+      threshold = seq(0, 1, 0.01),
+      final = TRUE
+    )
+)
 ```
 
 #### Support Vector Machine (RBF)
@@ -658,12 +663,14 @@ vi.classif_svmradial <-
   )
 
 # Create resamples for cut-off
-resample.classif_svmradial <-
-  thresholder(
-    model.classif_svmradial,
-    threshold = seq(0, 1, 0.01),
-    final = TRUE
-  )
+suppressWarnings(
+  resample.classif_svmradial <-
+    thresholder(
+      model.classif_svmradial,
+      threshold = seq(0, 1, 0.01),
+      final = TRUE
+    )
+)
 
 ```
 
@@ -727,13 +734,15 @@ resample.classif_svmradial <-
 #     type = "difference"
 #   )
 # 
-# # Create resamples for cut-off
-# resample.classif_xgb <-
-#   thresholder(
-#     model.classif_xgb,
-#     threshold = seq(0, 1, 0.01),
-#     final = TRUE
-#   )
+# Create resamples for cut-off
+# suppressWarnings(
+#   resample.classif_xgb <-
+#     thresholder(
+#       model.classif_xgb,
+#       threshold = seq(0, 1, 0.01),
+#       final = TRUE
+#     )
+# )
 
 ```
 
