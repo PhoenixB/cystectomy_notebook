@@ -1,7 +1,7 @@
 ---
 title: "R Notebook for the cystectomy study"
 author: "Pascal Jerney"
-date: "28th September 2020"
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
 output:
   bookdown::gitbook:
     config:
