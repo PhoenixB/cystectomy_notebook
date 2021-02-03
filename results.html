@@ -124,8 +124,100 @@
 #&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.8354279 , mean =  0.007789202 , max =  0.9503014  
 #&gt;  [32m A new explainer has been created! [39m</code></pre>
+<div id="model-performance" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.1</span> Model performance</h5>
+<table>
+<caption>(#tab:ml_glm_mp)Metrics from bootstrapping</caption>
+<thead>
+<tr class="header">
+<th align="left">.metric</th>
+<th align="right">.estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">accuracy</td>
+<td align="right">0.8264810</td>
+</tr>
+<tr class="even">
+<td align="left">my_brier</td>
+<td align="right">0.1270424</td>
+</tr>
+<tr class="odd">
+<td align="left">roc_auc</td>
+<td align="right">0.8718406</td>
+</tr>
+<tr class="even">
+<td align="left">sens</td>
+<td align="right">0.6507487</td>
+</tr>
+<tr class="odd">
+<td align="left">spec</td>
+<td align="right">0.9080614</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>(#tab:ml_glm_mp)Metrics from testing dataset</caption>
+<thead>
+<tr class="header">
+<th align="left">.metric</th>
+<th align="left">.estimator</th>
+<th align="right">.estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">accuracy</td>
+<td align="left">binary</td>
+<td align="right">0.8000000</td>
+</tr>
+<tr class="even">
+<td align="left">sens</td>
+<td align="left">binary</td>
+<td align="right">0.5555556</td>
+</tr>
+<tr class="odd">
+<td align="left">spec</td>
+<td align="left">binary</td>
+<td align="right">0.9113924</td>
+</tr>
+<tr class="even">
+<td align="left">roc_auc</td>
+<td align="left">binary</td>
+<td align="right">0.8639241</td>
+</tr>
+<tr class="odd">
+<td align="left">my_brier</td>
+<td align="left">binary</td>
+<td align="right">0.1362278</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>(#tab:ml_glm_mp)Optimal threshold</caption>
+<thead>
+<tr class="header">
+<th align="right">.threshold</th>
+<th align="right">distance</th>
+<th align="right">sens</th>
+<th align="right">spec</th>
+<th align="right">distance_abs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.3192258</td>
+<td align="right">0.0978444</td>
+<td align="right">0.784584</td>
+<td align="right">0.7828071</td>
+<td align="right">0.0099861</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="coefficients" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.1</span> Coefficients</h5>
+<h5><span class="header-section-number">3.2.1.1.2</span> Coefficients</h5>
 <p><img src="notebook_files/figure-html/ml_glm_coef_plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 
@@ -275,7 +367,7 @@
 </table>
 </div>
 <div id="estimated-marginal-means" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.2</span> Estimated marginal means</h5>
+<h5><span class="header-section-number">3.2.1.1.3</span> Estimated marginal means</h5>
 <table>
 <thead>
 <tr class="header">
@@ -446,12 +538,12 @@
 </table>
 </div>
 <div id="binned-residuals" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.3</span> Binned residuals</h5>
+<h5><span class="header-section-number">3.2.1.1.4</span> Binned residuals</h5>
 <pre><code>#&gt; Ok: About 95% of the residuals are inside the error bounds.</code></pre>
 <p><img src="notebook_files/figure-html/ml_glm_binnedresiduals-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="variance-inflation-factor" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.4</span> Variance inflation factor</h5>
+<h5><span class="header-section-number">3.2.1.1.5</span> Variance inflation factor</h5>
 <pre><code>#&gt;                                      GVIF Df GVIF^(1/(2*Df))
 #&gt; blood_loss_ratio                 1.467803  1        1.211529
 #&gt; oak                              1.040799  1        1.020196
@@ -465,7 +557,7 @@
 #&gt; blood_loss_ratio_x_gender_female 1.137761  1        1.066659</code></pre>
 </div>
 <div id="hosmer" class="section level5">
-<h5><span class="header-section-number">3.2.1.1.5</span> Hosmer</h5>
+<h5><span class="header-section-number">3.2.1.1.6</span> Hosmer</h5>
 <pre><code>#&gt; $C
 #&gt; 
 #&gt;  Hosmer-Lemeshow C statistic
@@ -565,7 +657,7 @@
 <h4><span class="header-section-number">3.2.1.6</span> Support Vector Machine (RBF)</h4>
 <!-- #### eXtreme Gradient Boosting Machine -->
 </div>
-<div id="model-performance" class="section level4">
+<div id="model-performance-1" class="section level4">
 <h4><span class="header-section-number">3.2.1.7</span> Model performance</h4>
 </div>
 <div id="feature-importance" class="section level4">

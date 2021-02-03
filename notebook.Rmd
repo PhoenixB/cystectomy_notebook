@@ -640,6 +640,21 @@ tibble.transfusion_cf_grid <-
 
 ```
 
+##### Model performance
+
+```{r ml_glm_mp,echo=FALSE}
+
+rsmetrics.glm %>%
+  knitr::kable(caption = "Metrics from bootstrapping")
+
+testmetrics.glm %>%
+  knitr::kable(caption = "Metrics from testing dataset")
+
+thresholds.glm %>%
+  knitr::kable(caption = "Optimal threshold")
+
+```
+
 ##### Coefficients
 
 ```{r ml_glm_coef_plot,echo=FALSE}
