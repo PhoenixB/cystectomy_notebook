@@ -647,24 +647,218 @@
 #&gt; [[16]]</code></pre>
 <p><img src="notebook_files/figure-html/ml_glm_cf_preds-16.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
+<div id="nomogram" class="section level4">
+<h4><span class="header-section-number">3.2.1.4</span> Nomogram</h4>
+<p><img src="notebook_files/figure-html/ml_glm_nomogram-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; Points per unit of linear predictor: 9.69036 
+#&gt; Linear predictor units per point   : 0.1031953 
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=80) Points
+#&gt;  0.0                                        59    
+#&gt;  0.1                                        65    
+#&gt;  0.2                                        71    
+#&gt;  0.3                                        78    
+#&gt;  0.4                                        84    
+#&gt;  0.5                                        90    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=80) Points
+#&gt;  0.0                                           50   
+#&gt;  0.1                                           60   
+#&gt;  0.2                                           70   
+#&gt;  0.3                                           80   
+#&gt;  0.4                                           90   
+#&gt;  0.5                                          100   
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=90) Points
+#&gt;  0.0                                        50    
+#&gt;  0.1                                        58    
+#&gt;  0.2                                        65    
+#&gt;  0.3                                        72    
+#&gt;  0.4                                        79    
+#&gt;  0.5                                        86    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=90) Points
+#&gt;  0.0                                          42    
+#&gt;  0.1                                          53    
+#&gt;  0.2                                          63    
+#&gt;  0.3                                          74    
+#&gt;  0.4                                          85    
+#&gt;  0.5                                          96    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=100) Points
+#&gt;  0.0                                         42    
+#&gt;  0.1                                         50    
+#&gt;  0.2                                         58    
+#&gt;  0.3                                         66    
+#&gt;  0.4                                         74    
+#&gt;  0.5                                         83    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=100) Points
+#&gt;  0.0                                           33    
+#&gt;  0.1                                           45    
+#&gt;  0.2                                           57    
+#&gt;  0.3                                           69    
+#&gt;  0.4                                           80    
+#&gt;  0.5                                           92    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=110) Points
+#&gt;  0.0                                         34    
+#&gt;  0.1                                         43    
+#&gt;  0.2                                         52    
+#&gt;  0.3                                         61    
+#&gt;  0.4                                         70    
+#&gt;  0.5                                         79    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=110) Points
+#&gt;  0.0                                           25    
+#&gt;  0.1                                           38    
+#&gt;  0.2                                           50    
+#&gt;  0.3                                           63    
+#&gt;  0.4                                           76    
+#&gt;  0.5                                           88    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=120) Points
+#&gt;  0.0                                         25    
+#&gt;  0.1                                         35    
+#&gt;  0.2                                         45    
+#&gt;  0.3                                         55    
+#&gt;  0.4                                         65    
+#&gt;  0.5                                         75    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=120) Points
+#&gt;  0.0                                           17    
+#&gt;  0.1                                           30    
+#&gt;  0.2                                           44    
+#&gt;  0.3                                           57    
+#&gt;  0.4                                           71    
+#&gt;  0.5                                           84    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=130) Points
+#&gt;  0.0                                         17    
+#&gt;  0.1                                         28    
+#&gt;  0.2                                         39    
+#&gt;  0.3                                         49    
+#&gt;  0.4                                         60    
+#&gt;  0.5                                         71    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=130) Points
+#&gt;  0.0                                            8    
+#&gt;  0.1                                           23    
+#&gt;  0.2                                           37    
+#&gt;  0.3                                           52    
+#&gt;  0.4                                           66    
+#&gt;  0.5                                           81    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=male preop_hb=140) Points
+#&gt;  0.0                                          9    
+#&gt;  0.1                                         20    
+#&gt;  0.2                                         32    
+#&gt;  0.3                                         44    
+#&gt;  0.4                                         55    
+#&gt;  0.5                                         67    
+#&gt; 
+#&gt; 
+#&gt;  blood_loss_ratio (gender=female preop_hb=140) Points
+#&gt;  0.0                                            0    
+#&gt;  0.1                                           15    
+#&gt;  0.2                                           31    
+#&gt;  0.3                                           46    
+#&gt;  0.4                                           61    
+#&gt;  0.5                                           77    
+#&gt; 
+#&gt; 
+#&gt;  age Points
+#&gt;   10  0    
+#&gt;   20  4    
+#&gt;   30  8    
+#&gt;   40 12    
+#&gt;   50 16    
+#&gt;   60 20    
+#&gt;   70 24    
+#&gt;   80 28    
+#&gt;   90 32    
+#&gt;  100 36    
+#&gt; 
+#&gt; 
+#&gt;  op_duration_min Points
+#&gt;   100             0    
+#&gt;   200             2    
+#&gt;   300             3    
+#&gt;   400             5    
+#&gt;   500             6    
+#&gt;   600             8    
+#&gt;   700             9    
+#&gt;   800            11    
+#&gt;   900            12    
+#&gt;  1000            14    
+#&gt; 
+#&gt; 
+#&gt;  oak Points
+#&gt;  no   0    
+#&gt;  yes 10    
+#&gt; 
+#&gt; 
+#&gt;  p_tumor Points
+#&gt;  0       0     
+#&gt;  1       1     
+#&gt;  2       0     
+#&gt;  3       4     
+#&gt;  4       9     
+#&gt; 
+#&gt; 
+#&gt;  norepinephrine Points
+#&gt;  no             3     
+#&gt;  yes            0     
+#&gt; 
+#&gt; 
+#&gt;  Total Points Probability of transfusion
+#&gt;            20                      0.001
+#&gt;            43                      0.010
+#&gt;            59                      0.050
+#&gt;            66                      0.100
+#&gt;            74                      0.200
+#&gt;            79                      0.300
+#&gt;            83                      0.400
+#&gt;            87                      0.500
+#&gt;            91                      0.600
+#&gt;            96                      0.700
+#&gt;           101                      0.800
+#&gt;           109                      0.900
+#&gt;           116                      0.950
+#&gt;           132                      0.990
+#&gt;           154                      0.999</code></pre>
+</div>
 <div id="elastic-net-logistic-regression" class="section level4">
-<h4><span class="header-section-number">3.2.1.4</span> Elastic Net Logistic Regression</h4>
+<h4><span class="header-section-number">3.2.1.5</span> Elastic Net Logistic Regression</h4>
 </div>
 <div id="random-forest" class="section level4">
-<h4><span class="header-section-number">3.2.1.5</span> Random Forest</h4>
+<h4><span class="header-section-number">3.2.1.6</span> Random Forest</h4>
 </div>
 <div id="support-vector-machine-rbf" class="section level4">
-<h4><span class="header-section-number">3.2.1.6</span> Support Vector Machine (RBF)</h4>
+<h4><span class="header-section-number">3.2.1.7</span> Support Vector Machine (RBF)</h4>
 <!-- #### eXtreme Gradient Boosting Machine -->
 </div>
 <div id="model-performance-1" class="section level4">
-<h4><span class="header-section-number">3.2.1.7</span> Model performance</h4>
+<h4><span class="header-section-number">3.2.1.8</span> Model performance</h4>
 </div>
 <div id="feature-importance" class="section level4">
-<h4><span class="header-section-number">3.2.1.8</span> Feature importance</h4>
+<h4><span class="header-section-number">3.2.1.9</span> Feature importance</h4>
 </div>
 <div id="optimal-cutpoint" class="section level4">
-<h4><span class="header-section-number">3.2.1.9</span> Optimal cutpoint</h4>
+<h4><span class="header-section-number">3.2.1.10</span> Optimal cutpoint</h4>
 <!-- Cutpoint by absolute distance to optimal model (sensitivity and specificity = 1) -->
 <!-- Cutpoint by sensitivity and specificity -->
 </div>

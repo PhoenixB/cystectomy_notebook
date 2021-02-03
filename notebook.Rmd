@@ -72,7 +72,8 @@ pacman::p_load(
   "easystats",
   "DescTools",
   "givitiR",
-  "slider"
+  "slider",
+  "rms"
 )
 pacman::p_unload("MASS")
 
@@ -100,6 +101,7 @@ conflict_prefer("filter", "dplyr")
 conflict_prefer("explain", "DALEX")
 conflict_prefer("spec", "yardstick")
 conflict_prefer("sens", "yardstick")
+conflict_prefer("vif", "car")
 
 # Use second level from outcome factors for GLM compliance ----
 # (deprecated, will be removed in future!)
@@ -885,6 +887,36 @@ plot(cb.glm_external, main = "CysTrans external calibration",
 )
 
 # grid.arrange(grobs = helper.cf_plot_list, ncol = 2)
+
+```
+
+#### Nomogram
+
+```{r ml_glm_nomogram, echo=FALSE}
+
+helper.ddist <- datadist(tibble.transfusion)
+
+options(datadist = "helper.ddist")
+
+rms.glm <-
+  lrm(
+    intraop_transfusion ~ blood_loss_ratio + oak + scored(p_tumor) + age + op_duration_min + gender + norepinephrine + preop_hb + blood_loss_ratio:gender + blood_loss_ratio:preop_hb,
+    data = tibble.transfusion
+  )
+
+nomogram.rms_glm <-
+  nomogram(
+    rms.glm,
+    fun = plogis,
+    fun.at = c(.001, .01, .05, seq(.1, .9, by = .1), .95, .99, .999),
+    funlabel = "Probability of transfusion",
+    interact = list(preop_hb = seq(80, 140, by = 10)),
+    blood_loss_ratio = seq(0, .5, by = .1)
+  )
+
+plot(nomogram.rms_glm)
+
+print(nomogram.rms_glm)
 
 ```
 
