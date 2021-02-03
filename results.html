@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Results | R Notebook for the cystectomy study</title>
   <meta name="description" content="3 Results | R Notebook for the cystectomy study" />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Results | R Notebook for the cystectomy study" />
   <meta property="og:type" content="book" />
@@ -107,6 +107,31 @@
 <h3><span class="header-section-number">3.2.1</span> Models with intraoperative transfusion as response</h3>
 <div id="stepwise-logistic-regression" class="section level4">
 <h4><span class="header-section-number">3.2.1.1</span> Stepwise Logistic Regression</h4>
+<pre><code>#&gt; Warning: The `yardstick.event_first` option has been deprecated as of yardstick 0.0.7 and will be completely ignored in a future version.
+#&gt; Instead, set the following argument directly in the metric function:
+#&gt; `options(yardstick.event_first = TRUE)`  -&gt; `event_level = &#39;first&#39;` (the default)
+#&gt; `options(yardstick.event_first = FALSE)` -&gt; `event_level = &#39;second&#39;`
+#&gt; This warning is displayed once per session.
+#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  Stepwise Logistic Regression 
+#&gt;   -&gt; data              :  115  rows  15  cols 
+#&gt;   -&gt; data              :  tibble converted into a data.frame 
+#&gt;   -&gt; target variable   :  115  values 
+#&gt;   -&gt; predict function  :  yhat.workflow  will be used ( [33m default [39m )
+#&gt;   -&gt; predicted values  :  numerical, min =  0.000498781 , mean =  0.3052543 , max =  0.9999999  
+#&gt;   -&gt; model_info        :  package tidymodels , ver. 0.1.2 , task classification ( [33m default [39m ) 
+#&gt;   -&gt; model_info        :  type set to  classification 
+#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+#&gt;   -&gt; residuals         :  numerical, min =  -0.8354279 , mean =  0.007789202 , max =  0.9503014  
+#&gt;  [32m A new explainer has been created! [39m</code></pre>
+<div id="coefficients" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.1</span> Coefficients</h5>
+<p><img src="notebook_files/figure-html/ml_glm_coef_plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -122,93 +147,188 @@
 <tbody>
 <tr class="odd">
 <td align="left">(Intercept)</td>
-<td align="right">0.3969</td>
-<td align="right">0.1491</td>
-<td align="right">-6.1960</td>
+<td align="right">0.3840</td>
+<td align="right">0.1559</td>
+<td align="right">-6.1391</td>
 <td align="right">0.0000</td>
-<td align="right">0.2949</td>
-<td align="right">0.5294</td>
-</tr>
-<tr class="even">
-<td align="left">oakyes</td>
-<td align="right">2.5145</td>
-<td align="right">0.4159</td>
-<td align="right">2.2171</td>
-<td align="right">0.0266</td>
-<td align="right">1.0985</td>
-<td align="right">5.6550</td>
-</tr>
-<tr class="odd">
-<td align="left">preop_hb</td>
-<td align="right">0.2971</td>
-<td align="right">0.1083</td>
-<td align="right">-11.2100</td>
-<td align="right">0.0000</td>
-<td align="right">0.2388</td>
-<td align="right">0.3652</td>
-</tr>
-<tr class="even">
-<td align="left">age</td>
-<td align="right">1.5154</td>
-<td align="right">0.0949</td>
-<td align="right">4.3787</td>
-<td align="right">0.0000</td>
-<td align="right">1.2617</td>
-<td align="right">1.8316</td>
-</tr>
-<tr class="odd">
-<td align="left">norepinephrineyes</td>
-<td align="right">0.7476</td>
-<td align="right">0.1845</td>
-<td align="right">-1.5770</td>
-<td align="right">0.1148</td>
-<td align="right">0.5207</td>
-<td align="right">1.0740</td>
-</tr>
-<tr class="even">
-<td align="left">p_tumor.L</td>
-<td align="right">2.1679</td>
-<td align="right">0.2229</td>
-<td align="right">3.4712</td>
-<td align="right">0.0005</td>
-<td align="right">1.4032</td>
-<td align="right">3.3660</td>
-</tr>
-<tr class="odd">
-<td align="left">p_tumor.Q</td>
-<td align="right">1.4311</td>
-<td align="right">0.2149</td>
-<td align="right">1.6684</td>
-<td align="right">0.0952</td>
-<td align="right">0.9394</td>
-<td align="right">2.1831</td>
-</tr>
-<tr class="even">
-<td align="left">p_tumor.C</td>
-<td align="right">1.1414</td>
-<td align="right">0.2105</td>
-<td align="right">0.6285</td>
-<td align="right">0.5297</td>
-<td align="right">0.7525</td>
-<td align="right">1.7194</td>
-</tr>
-<tr class="odd">
-<td align="left">p_tumor^4</td>
-<td align="right">0.8068</td>
-<td align="right">0.1984</td>
-<td align="right">-1.0821</td>
-<td align="right">0.2792</td>
-<td align="right">0.5461</td>
-<td align="right">1.1902</td>
+<td align="right">0.2813</td>
+<td align="right">0.5188</td>
 </tr>
 <tr class="even">
 <td align="left">blood_loss_ratio</td>
-<td align="right">6.5846</td>
-<td align="right">0.1437</td>
-<td align="right">13.1201</td>
+<td align="right">6.5717</td>
+<td align="right">0.1520</td>
+<td align="right">12.3828</td>
 <td align="right">0.0000</td>
-<td align="right">5.0131</td>
-<td align="right">8.8088</td>
+<td align="right">4.9224</td>
+<td align="right">8.9387</td>
+</tr>
+<tr class="odd">
+<td align="left">oakyes</td>
+<td align="right">2.7007</td>
+<td align="right">0.4297</td>
+<td align="right">2.3120</td>
+<td align="right">0.0208</td>
+<td align="right">1.1524</td>
+<td align="right">6.2622</td>
+</tr>
+<tr class="even">
+<td align="left">preop_hb</td>
+<td align="right">0.3155</td>
+<td align="right">0.1097</td>
+<td align="right">-10.5167</td>
+<td align="right">0.0000</td>
+<td align="right">0.2530</td>
+<td align="right">0.3891</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">1.6782</td>
+<td align="right">0.1000</td>
+<td align="right">5.1758</td>
+<td align="right">0.0000</td>
+<td align="right">1.3843</td>
+<td align="right">2.0500</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor.L</td>
+<td align="right">2.0670</td>
+<td align="right">0.2300</td>
+<td align="right">3.1574</td>
+<td align="right">0.0016</td>
+<td align="right">1.3194</td>
+<td align="right">3.2538</td>
+</tr>
+<tr class="odd">
+<td align="left">p_tumor.Q</td>
+<td align="right">1.6233</td>
+<td align="right">0.2181</td>
+<td align="right">2.2213</td>
+<td align="right">0.0263</td>
+<td align="right">1.0595</td>
+<td align="right">2.4937</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor.C</td>
+<td align="right">0.9408</td>
+<td align="right">0.2201</td>
+<td align="right">-0.2770</td>
+<td align="right">0.7818</td>
+<td align="right">0.6076</td>
+<td align="right">1.4422</td>
+</tr>
+<tr class="odd">
+<td align="left">p_tumor^4</td>
+<td align="right">0.9705</td>
+<td align="right">0.2013</td>
+<td align="right">-0.1489</td>
+<td align="right">0.8816</td>
+<td align="right">0.6541</td>
+<td align="right">1.4417</td>
+</tr>
+<tr class="even">
+<td align="left">op_duration_min</td>
+<td align="right">1.2011</td>
+<td align="right">0.1031</td>
+<td align="right">1.7764</td>
+<td align="right">0.0757</td>
+<td align="right">0.9829</td>
+<td align="right">1.4735</td>
+</tr>
+<tr class="odd">
+<td align="left">norepinephrineyes</td>
+<td align="right">0.7220</td>
+<td align="right">0.1846</td>
+<td align="right">-1.7646</td>
+<td align="right">0.0776</td>
+<td align="right">0.5026</td>
+<td align="right">1.0373</td>
+</tr>
+<tr class="even">
+<td align="left">gender_female</td>
+<td align="right">1.0356</td>
+<td align="right">0.0909</td>
+<td align="right">0.3851</td>
+<td align="right">0.7002</td>
+<td align="right">0.8659</td>
+<td align="right">1.2371</td>
+</tr>
+<tr class="odd">
+<td align="left">blood_loss_ratio_x_preop_hb</td>
+<td align="right">1.2619</td>
+<td align="right">0.1335</td>
+<td align="right">1.7424</td>
+<td align="right">0.0814</td>
+<td align="right">0.9712</td>
+<td align="right">1.6391</td>
+</tr>
+<tr class="even">
+<td align="left">blood_loss_ratio_x_gender_female</td>
+<td align="right">1.3443</td>
+<td align="right">0.1453</td>
+<td align="right">2.0370</td>
+<td align="right">0.0417</td>
+<td align="right">1.0182</td>
+<td align="right">1.8011</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="estimated-marginal-means" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.2</span> Estimated marginal means</h5>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="left">contrast</th>
+<th align="right">null.value</th>
+<th align="right">odds.ratio</th>
+<th align="right">std.error</th>
+<th align="right">df</th>
+<th align="right">z.ratio</th>
+<th align="right">adj.p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">p_tumor</td>
+<td align="left">1 / 0</td>
+<td align="right">0</td>
+<td align="right">0.8197</td>
+<td align="right">0.2755</td>
+<td align="right">Inf</td>
+<td align="right">-0.5914</td>
+<td align="right">0.8987</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor</td>
+<td align="left">2 / 0</td>
+<td align="right">0</td>
+<td align="right">0.9086</td>
+<td align="right">0.2513</td>
+<td align="right">Inf</td>
+<td align="right">-0.3466</td>
+<td align="right">0.9710</td>
+</tr>
+<tr class="odd">
+<td align="left">p_tumor</td>
+<td align="left">3 / 0</td>
+<td align="right">0</td>
+<td align="right">1.4016</td>
+<td align="right">0.3527</td>
+<td align="right">Inf</td>
+<td align="right">1.3415</td>
+<td align="right">0.4648</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor</td>
+<td align="left">4 / 0</td>
+<td align="right">0</td>
+<td align="right">2.4106</td>
+<td align="right">0.7884</td>
+<td align="right">Inf</td>
+<td align="right">2.6905</td>
+<td align="right">0.0260</td>
 </tr>
 </tbody>
 </table>
@@ -230,203 +350,229 @@
 <td align="left">p_tumor</td>
 <td align="left">1 / 0</td>
 <td align="right">0</td>
-<td align="right">1.2349888</td>
-<td align="right">0.3959609</td>
+<td align="right">0.8197</td>
+<td align="right">0.2755</td>
 <td align="right">Inf</td>
-<td align="right">0.6582950</td>
-<td align="right">0.9186596</td>
+<td align="right">-0.5914</td>
+<td align="right">0.9421</td>
 </tr>
 <tr class="even">
 <td align="left">p_tumor</td>
 <td align="left">2 / 1</td>
 <td align="right">0</td>
-<td align="right">0.8258085</td>
-<td align="right">0.2601882</td>
+<td align="right">1.1084</td>
+<td align="right">0.3611</td>
 <td align="right">Inf</td>
-<td align="right">-0.6074582</td>
-<td align="right">0.9371001</td>
+<td align="right">0.3158</td>
+<td align="right">0.9938</td>
 </tr>
 <tr class="odd">
 <td align="left">p_tumor</td>
 <td align="left">3 / 2</td>
 <td align="right">0</td>
-<td align="right">1.6710379</td>
-<td align="right">0.4087998</td>
+<td align="right">1.5426</td>
+<td align="right">0.3727</td>
 <td align="right">Inf</td>
-<td align="right">2.0987926</td>
-<td align="right">0.1236627</td>
+<td align="right">1.7941</td>
+<td align="right">0.2353</td>
 </tr>
 <tr class="even">
 <td align="left">p_tumor</td>
 <td align="left">4 / 3</td>
 <td align="right">0</td>
-<td align="right">1.6977139</td>
-<td align="right">0.4871272</td>
+<td align="right">1.7199</td>
+<td align="right">0.5044</td>
 <td align="right">Inf</td>
-<td align="right">1.8446320</td>
-<td align="right">0.2131697</td>
+<td align="right">1.8492</td>
+<td align="right">0.2111</td>
 </tr>
 </tbody>
 </table>
-<pre><code>#&gt; Warning: The `yardstick.event_first` option has been deprecated as of yardstick 0.0.7 and will be completely ignored in a future version.
-#&gt; Instead, set the following argument directly in the metric function:
-#&gt; `options(yardstick.event_first = TRUE)`  -&gt; `event_level = &#39;first&#39;` (the default)
-#&gt; `options(yardstick.event_first = FALSE)` -&gt; `event_level = &#39;second&#39;`
-#&gt; This warning is displayed once per session.
-#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  Stepwise Logistic Regression 
-#&gt;   -&gt; data              :  115  rows  171  cols 
-#&gt;   -&gt; data              :  tibble converted into a data.frame 
-#&gt;   -&gt; target variable   :  115  values 
-#&gt;   -&gt; predict function  :  yhat.workflow  will be used ( [33m default [39m )
-#&gt;   -&gt; predicted values  :  numerical, min =  0.00704458 , mean =  0.2955113 , max =  0.9999991  
-#&gt;   -&gt; model_info        :  package tidymodels , ver. 0.1.1 , task classification ( [33m default [39m ) 
-#&gt;   -&gt; model_info        :  type set to  classification 
-#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
-#&gt;   -&gt; residuals         :  numerical, min =  -0.7274198 , mean =  0.0175322 , max =  0.9738698  
-#&gt;  [32m A new explainer has been created! [39m</code></pre>
-<p><img src="notebook_files/figure-html/glm_stepwise-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="left">contrast</th>
+<th align="right">null.value</th>
+<th align="right">odds.ratio</th>
+<th align="right">std.error</th>
+<th align="right">df</th>
+<th align="right">z.ratio</th>
+<th align="right">adj.p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">p_tumor</td>
+<td align="left">0|1</td>
+<td align="right">0</td>
+<td align="right">1.2595</td>
+<td align="right">0.2906</td>
+<td align="right">Inf</td>
+<td align="right">1.0000</td>
+<td align="right">0.6774</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor</td>
+<td align="left">1|2</td>
+<td align="right">0</td>
+<td align="right">1.6052</td>
+<td align="right">0.3294</td>
+<td align="right">Inf</td>
+<td align="right">2.3060</td>
+<td align="right">0.0659</td>
+</tr>
+<tr class="odd">
+<td align="left">p_tumor</td>
+<td align="left">2|3</td>
+<td align="right">0</td>
+<td align="right">2.0278</td>
+<td align="right">0.4051</td>
+<td align="right">Inf</td>
+<td align="right">3.5389</td>
+<td align="right">0.0015</td>
+</tr>
+<tr class="even">
+<td align="left">p_tumor</td>
+<td align="left">3|4</td>
+<td align="right">0</td>
+<td align="right">2.3849</td>
+<td align="right">0.6594</td>
+<td align="right">Inf</td>
+<td align="right">3.1435</td>
+<td align="right">0.0058</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="binned-residuals" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.3</span> Binned residuals</h5>
+<pre><code>#&gt; Ok: About 95% of the residuals are inside the error bounds.</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_binnedresiduals-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="variance-inflation-factor" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.4</span> Variance inflation factor</h5>
+<pre><code>#&gt;                                      GVIF Df GVIF^(1/(2*Df))
+#&gt; blood_loss_ratio                 1.467803  1        1.211529
+#&gt; oak                              1.040799  1        1.020196
+#&gt; preop_hb                         1.321543  1        1.149584
+#&gt; age                              1.180337  1        1.086433
+#&gt; p_tumor                          1.154516  4        1.018122
+#&gt; op_duration_min                  1.326033  1        1.151535
+#&gt; norepinephrine                   1.071437  1        1.035102
+#&gt; gender_female                    1.090726  1        1.044378
+#&gt; blood_loss_ratio_x_preop_hb      1.109232  1        1.053201
+#&gt; blood_loss_ratio_x_gender_female 1.137761  1        1.066659</code></pre>
+</div>
+<div id="hosmer" class="section level5">
+<h5><span class="header-section-number">3.2.1.1.5</span> Hosmer</h5>
+<pre><code>#&gt; $C
+#&gt; 
+#&gt;  Hosmer-Lemeshow C statistic
+#&gt; 
+#&gt; data:  fit.glm %&gt;% pull_workflow_fit() %&gt;% pluck(&quot;fit&quot;, &quot;fitted.values&quot;) and helper.glm_datamatrix[, &quot;..y&quot;]
+#&gt; X-squared = 6.2741, df = 8, p-value = 0.6166
+#&gt; 
+#&gt; 
+#&gt; $H
+#&gt; 
+#&gt;  Hosmer-Lemeshow H statistic
+#&gt; 
+#&gt; data:  fit.glm %&gt;% pull_workflow_fit() %&gt;% pluck(&quot;fit&quot;, &quot;fitted.values&quot;) and helper.glm_datamatrix[, &quot;..y&quot;]
+#&gt; X-squared = 13.359, df = 8, p-value = 0.1001
+#&gt; 
+#&gt; 
+#&gt; $gof
+#&gt; 
+#&gt;  le Cessie-van Houwelingen-Copas-Hosmer global goodness of fit test
+#&gt; 
+#&gt; data:  fit.glm %&gt;% pull_workflow_fit() %&gt;% pluck(&quot;fit&quot;, &quot;fitted.values&quot;) and helper.glm_datamatrix[, &quot;..y&quot;]
+#&gt; z = -0.63511, p-value = 0.5254</code></pre>
+</div>
+</div>
+<div id="calibration-plot" class="section level4">
+<h4><span class="header-section-number">3.2.1.2</span> Calibration plot</h4>
+<p><img src="notebook_files/figure-html/ml_glm_calibration-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; $m
+#&gt; [1] 2
+#&gt; 
+#&gt; $p.value
+#&gt; [1] 0.2396317</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_calibration-2.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; $m
+#&gt; [1] 1
+#&gt; 
+#&gt; $p.value
+#&gt; [1] 0.9361738</code></pre>
+</div>
+<div id="counterfactual-predictions" class="section level4">
+<h4><span class="header-section-number">3.2.1.3</span> Counterfactual predictions</h4>
+<pre><code>#&gt; [[1]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[2]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-2.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[3]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-3.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[4]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-4.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[5]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-5.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[6]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-6.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[7]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-7.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[8]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-8.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[9]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-9.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[10]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-10.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[11]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-11.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[12]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-12.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[13]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-13.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[14]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-14.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[15]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-15.png" width="100%" style="display: block; margin: auto;" /></p>
+<pre><code>#&gt; 
+#&gt; [[16]]</code></pre>
+<p><img src="notebook_files/figure-html/ml_glm_cf_preds-16.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="elastic-net-logistic-regression" class="section level4">
-<h4><span class="header-section-number">3.2.1.2</span> Elastic Net Logistic Regression</h4>
-<pre><code>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  Elastic Net Logistic Regression 
-#&gt;   -&gt; data              :  115  rows  171  cols 
-#&gt;   -&gt; data              :  tibble converted into a data.frame 
-#&gt;   -&gt; target variable   :  115  values 
-#&gt;   -&gt; predict function  :  yhat.workflow  will be used ( [33m default [39m )
-#&gt;   -&gt; predicted values  :  numerical, min =  0.01726955 , mean =  0.2951403 , max =  0.9999944  
-#&gt;   -&gt; model_info        :  package tidymodels , ver. 0.1.1 , task classification ( [33m default [39m ) 
-#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
-#&gt;   -&gt; residuals         :  numerical, min =  -0.7034869 , mean =  0.01790322 , max =  0.9577324  
-#&gt;  [32m A new explainer has been created! [39m</code></pre>
+<h4><span class="header-section-number">3.2.1.4</span> Elastic Net Logistic Regression</h4>
 </div>
 <div id="random-forest" class="section level4">
-<h4><span class="header-section-number">3.2.1.3</span> Random Forest</h4>
-<pre><code>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  Random Forest 
-#&gt;   -&gt; data              :  115  rows  171  cols 
-#&gt;   -&gt; data              :  tibble converted into a data.frame 
-#&gt;   -&gt; target variable   :  115  values 
-#&gt;   -&gt; predict function  :  yhat.workflow  will be used ( [33m default [39m )
-#&gt;   -&gt; predicted values  :  numerical, min =  0.00836172 , mean =  0.2907463 , max =  0.8754321  
-#&gt;   -&gt; model_info        :  package tidymodels , ver. 0.1.1 , task classification ( [33m default [39m ) 
-#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
-#&gt;   -&gt; residuals         :  numerical, min =  -0.6476345 , mean =  0.02229717 , max =  0.9594582  
-#&gt;  [32m A new explainer has been created! [39m</code></pre>
+<h4><span class="header-section-number">3.2.1.5</span> Random Forest</h4>
 </div>
 <div id="support-vector-machine-rbf" class="section level4">
-<h4><span class="header-section-number">3.2.1.4</span> Support Vector Machine (RBF)</h4>
-<pre><code>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  Support Vector Machine (RBF) 
-#&gt;   -&gt; data              :  115  rows  171  cols 
-#&gt;   -&gt; data              :  tibble converted into a data.frame 
-#&gt;   -&gt; target variable   :  115  values 
-#&gt;   -&gt; predict function  :  yhat.workflow  will be used ( [33m default [39m )
-#&gt;   -&gt; predicted values  :  numerical, min =  0.0129083 , mean =  0.2976744 , max =  0.9999929  
-#&gt;   -&gt; model_info        :  package tidymodels , ver. 0.1.1 , task classification ( [33m default [39m ) 
-#&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
-#&gt;   -&gt; residuals         :  numerical, min =  -0.7628738 , mean =  0.01536906 , max =  0.9726944  
-#&gt;  [32m A new explainer has been created! [39m</code></pre>
+<h4><span class="header-section-number">3.2.1.6</span> Support Vector Machine (RBF)</h4>
 <!-- #### eXtreme Gradient Boosting Machine -->
 </div>
 <div id="model-performance" class="section level4">
-<h4><span class="header-section-number">3.2.1.5</span> Model performance</h4>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Model</th>
-<th align="right">Recall</th>
-<th align="right">Precision</th>
-<th align="right">F1</th>
-<th align="right">Accuracy</th>
-<th align="right">AUC</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Stepwise Logistic Regression</td>
-<td align="right">0.722</td>
-<td align="right">0.667</td>
-<td align="right">0.693</td>
-<td align="right">0.800</td>
-<td align="right">0.859</td>
-</tr>
-<tr class="even">
-<td align="left">Random Forest</td>
-<td align="right">0.667</td>
-<td align="right">0.649</td>
-<td align="right">0.658</td>
-<td align="right">0.783</td>
-<td align="right">0.858</td>
-</tr>
-<tr class="odd">
-<td align="left">Elastic Net Logistic Regression</td>
-<td align="right">0.722</td>
-<td align="right">0.650</td>
-<td align="right">0.684</td>
-<td align="right">0.791</td>
-<td align="right">0.853</td>
-</tr>
-<tr class="even">
-<td align="left">Support Vector Machine</td>
-<td align="right">0.722</td>
-<td align="right">0.650</td>
-<td align="right">0.684</td>
-<td align="right">0.791</td>
-<td align="right">0.852</td>
-</tr>
-</tbody>
-</table>
+<h4><span class="header-section-number">3.2.1.7</span> Model performance</h4>
 </div>
 <div id="feature-importance" class="section level4">
-<h4><span class="header-section-number">3.2.1.6</span> Feature importance</h4>
-<p><img src="notebook_files/figure-html/ml_importance-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<h4><span class="header-section-number">3.2.1.8</span> Feature importance</h4>
 </div>
 <div id="optimal-cutpoint" class="section level4">
-<h4><span class="header-section-number">3.2.1.7</span> Optimal cutpoint</h4>
-<table>
-<caption>(#tab:ml_cutpoint_table)Optimal probability threshold by absolute distance to optimal model (sensitivity and specificity = 1</caption>
-<thead>
-<tr class="header">
-<th align="left">Model</th>
-<th align="right">Threshold</th>
-<th align="right">Sensitivity</th>
-<th align="right">Specificity</th>
-<th align="right">Distance</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Stepwise Logistic Regression</td>
-<td align="right">0.3201714</td>
-<td align="right">0.7923708</td>
-<td align="right">0.7908440</td>
-<td align="right">0.0082724</td>
-</tr>
-<tr class="even">
-<td align="left">Elastic Net Logistic Regression</td>
-<td align="right">0.3174359</td>
-<td align="right">0.7930836</td>
-<td align="right">0.7918560</td>
-<td align="right">0.0091146</td>
-</tr>
-<tr class="odd">
-<td align="left">Support Vector Machine</td>
-<td align="right">0.3149697</td>
-<td align="right">0.7945120</td>
-<td align="right">0.7951261</td>
-<td align="right">0.0092939</td>
-</tr>
-<tr class="even">
-<td align="left">Random Forest</td>
-<td align="right">0.3494245</td>
-<td align="right">0.7849229</td>
-<td align="right">0.7846765</td>
-<td align="right">0.0131046</td>
-</tr>
-</tbody>
-</table>
+<h4><span class="header-section-number">3.2.1.9</span> Optimal cutpoint</h4>
 <!-- Cutpoint by absolute distance to optimal model (sensitivity and specificity = 1) -->
 <!-- Cutpoint by sensitivity and specificity -->
 </div>

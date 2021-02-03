@@ -30,11 +30,12 @@ output:
         vk: no
         all: ['facebook', 'twitter', 'linkedin', 'weibo', 'instapaper']
       info: yes
-  html_notebook: default
+  bookdown::word_document2: default
   bookdown::pdf_document2:
     toc: false
     keep_tex: true
     latex_engine: xelatex
+  html_notebook: default
 ---
 
 ```{r setup, echo=FALSE}
@@ -67,7 +68,11 @@ pacman::p_load(
   "probably",
   "ModelMetrics",
   "emmeans",
-  "sjPlot"
+  "sjPlot",
+  "easystats",
+  "DescTools",
+  "givitiR",
+  "slider"
 )
 pacman::p_unload("MASS")
 
@@ -88,7 +93,9 @@ knitr::opts_chunk$set(
 )
 
 # Preferred function names ----
+conflict_prefer("select", "dplyr")
 conflict_prefer("model_performance", "DALEX")
+conflict_prefer("collapse", "dplyr")
 conflict_prefer("filter", "dplyr")
 conflict_prefer("explain", "DALEX")
 conflict_prefer("spec", "yardstick")
@@ -156,26 +163,6 @@ table.transfusion <-
     "crystalloids_mlkgh"
   ), printToggle = FALSE, noSpaces = TRUE)
 
-# Load helper for variable selection ----
-helper.variable_selection <- c(
-  "blood_loss_ratio",
-  "oak",
-  # "tcaggr",
-  "preop_hb",
-  "preop_tc",
-  "bmi",
-  "age",
-  "cci_5plus",
-  "gender",
-  "p_tumor",
-  "p_node_pos",
-  "op_duration_min",
-  "previous_op",
-  "norepinephrine",
-  "crystalloids_mlkgh",
-  "neoadj_chemo"
-)
-
 # Create variable name helper for model formula generation ----
 helper.variable_names <- c(
   "blood_loss_ratio",
@@ -194,7 +181,42 @@ helper.variable_names <- c(
   "norepinephrine",
   "crystalloids_mlkgh",
   "neoadj_chemo"
+  # "op_year"
 )
+
+tibble.transfusion <-
+  tibble.transfusion %>%
+  select(intraop_transfusion, all_of(helper.variable_names))
+
+# Create new counterfactual observations for predictions ----
+tibble.transfusion_cf <-
+  tibble.transfusion %>%
+  slice_sample(n = 0) %>%
+  select(-intraop_transfusion) %>%
+  add_row(
+    expand_grid(
+      blood_loss_ratio = c(0.1, 0.4),
+      preop_hb = c(104, 137),
+      age = c(52, 80)
+    ),
+    gender = "female",
+    p_tumor = "3",
+    norepinephrine = "yes",
+    oak = "no",
+    op_duration_min = 386
+  ) %>%
+  add_row(
+    expand_grid(
+      blood_loss_ratio = c(0.1, 0.4),
+      preop_hb = c(113, 152),
+      age = c(57, 79)
+    ),
+    gender = "male",
+    p_tumor = "3",
+    norepinephrine = "yes",
+    oak = "no",
+    op_duration_min = 393
+  )
 
 # Create formula helper for models ----
 helper.model_formula <-
@@ -258,6 +280,8 @@ helper.y_train <-
   modify_at(vars(intraop_transfusion), as.numeric) %>%
   mutate(intraop_transfusion = intraop_transfusion - 1) %>%
   pull(intraop_transfusion)
+
+
 
 ```
 
@@ -334,7 +358,7 @@ theme_light()
 
 #### Stepwise Logistic Regression
 
-```{r glm_stepwise,echo=FALSE}
+```{r glm_stepwise, echo=FALSE}
 
 # Create recipe for data preparation ----
 recipe.glm_raw <-
@@ -343,13 +367,14 @@ recipe.glm_raw <-
     data = tibble.transfusion_train
   ) %>%
   # step_relevel(all_outcomes(), ref_level = "no") %>%
-  step_rm(-any_of(helper.variable_names), -all_outcomes()) %>%
+  # step_rm(-any_of(helper.variable_names), -all_outcomes()) %>%
   step_corr(all_numeric()) %>%
-  # step_dummy(all_nominal(), -all_outcomes()) %>%
+  step_dummy("gender") %>%
   step_zv(all_predictors()) %>%
   # step_nzv(all_predictors()) %>%
   step_lincomb(all_numeric()) %>%
-  step_normalize(all_numeric()) # %>%
+  step_normalize(all_numeric()) %>%
+  step_interact(~ (blood_loss_ratio + preop_hb + age + gender_female)^2)
 
 tibble.transfusion_train_glm_raw <-
   recipe.glm_raw %>%
@@ -358,10 +383,16 @@ tibble.transfusion_train_glm_raw <-
 
 fit.glm_raw <-
   glm(
-    helper.model_formula,
+    intraop_transfusion ~ .,
     data = tibble.transfusion_train_glm_raw,
     family = binomial()
   )
+
+# fit.glm_noyear_raw <-
+#   fit.glm_raw %>%
+#   update(
+#     formula. = . ~ . - op_year
+#   )
 
 # Create stepwise regression
 fit.glmstep_raw <-
@@ -375,57 +406,57 @@ fit.glmstep_raw <-
     trace = FALSE
   )
 
+# fit.glmstep_noyear_raw <-
+#   MASS::stepAIC(
+#     fit.glm_noyear_raw,
+#     scope = list(
+#       upper = ~ .,
+#       lower = ~ 1
+#     ),
+#     direction = "both",
+#     trace = FALSE
+#   )
+
 helper.variable_names_reduced <-
   names(attr(fit.glmstep_raw$terms, "dataClasses")[-1])
 
-# helper.model_formula_reduced <-
-#   as.formula(
-#     glue(
-#       "intraop_transfusion ~ ",
-#       paste(names(attr(fit.glmstep_raw$terms, "dataClasses")[-1]), collapse = " + ")
-#     )
-#   )
+# helper.noyear_variable_names_reduced <-
+#   names(attr(fit.glmstep_noyear_raw$terms, "dataClasses")[-1])
 
 # Create recipe for data preparation ----
 recipe.glm <-
-  recipe(
-    formula = intraop_transfusion ~ .,
-    data = tibble.transfusion_train
-  ) %>%
-  # step_relevel(all_outcomes(), ref_level = "no") %>% # , skip = TRUE
-  step_rm(-any_of(helper.variable_names_reduced), -all_outcomes()) %>%
-  step_corr(all_numeric()) %>%
-  # step_dummy(all_nominal(), -all_outcomes()) %>%
-  step_zv(all_predictors()) %>%
-  # step_nzv(all_predictors()) %>%
-  step_lincomb(all_numeric()) %>%
-  step_normalize(all_numeric()) # %>%
+  recipe.glm_raw %>%
+  step_rm(-any_of(helper.variable_names_reduced), -"gender_female", -all_outcomes()) # %>%
+
+# recipe.glm_noyear <-
+#   recipe.glm_raw %>%
+#   step_rm(-any_of(helper.noyear_variable_names_reduced), -"gender_female", -all_outcomes()) # %>%
 
 model.glm <-
   logistic_reg() %>%
   set_engine("glm")
+
+# model.glm_noyear <-
+#   logistic_reg() %>%
+#   set_engine("glm")
 
 workflow.glm <-
   workflow() %>%
   add_recipe(recipe.glm) %>%
   add_model(model.glm)
 
+# workflow.glm_noyear <-
+#   workflow() %>%
+#   add_recipe(recipe.glm_noyear) %>%
+#   add_model(model.glm_noyear)
+
 fit.glm <-
   workflow.glm %>%
   fit(data = tibble.transfusion_train)
 
-fit.glm %>%
-  tidy(exponentiate = TRUE, conf.int = TRUE) %>% 
-  mutate_if(is.numeric, round, 4) %>%
-  knitr::kable()
-
-fit.glm %>%
-  pull_workflow_fit() %>%
-  pluck("fit") %>%
-  emmeans(~ p_tumor, data = tibble.transfusion_train) %>%
-  contrast("consec", options = list(type = "response", adjust = "mvt")) %>%
-  tidy() %>%
-  knitr::kable()
+# fit.glm_noyear <-
+#   workflow.glm_noyear %>%
+#   fit(data = tibble.transfusion_train)
 
 # Create cross-validation resamples ----
 if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "resamples.glm", ext = "rds"))) {
@@ -445,13 +476,39 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "
     write_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "resamples.glm", ext = "rds"))
 }
 
+# if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "resamples.glm_noyear", ext = "rds"))) {
+#   resamples.glm_noyear <-
+#     read_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "resamples.glm_noyear", ext = "rds"))
+# } else {
+#   resamples.glm_noyear <-
+#     workflow.glm_noyear %>%
+#     fit_resamples(
+#       helper.training_folds,
+#       metrics = helper.multi_metric,
+#       control = control_resamples(
+#         save_pred = TRUE,
+#         event_level = "second"
+#       )
+#     ) %>%
+#     write_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "resamples.glm_noyear", ext = "rds"))
+# }
+
 # Calculate resampled metrics
 rsmetrics.glm <-
-  collect_predictions(resamples.glm) %>%
+  resamples.glm %>%
+  collect_predictions() %>%
   group_by(id, id2) %>%
   helper.multi_metric(truth = intraop_transfusion, .pred_yes, estimate = .pred_class, event_level = "second") %>%
   group_by(.metric) %>%
   summarise(.estimate = mean(.estimate), .groups = "drop_last")
+
+# rsmetrics.glm_noyear <-
+#   resamples.glm_noyear %>%
+#   collect_predictions() %>%
+#   group_by(id, id2) %>%
+#   helper.multi_metric(truth = intraop_transfusion, .pred_yes, estimate = .pred_class, event_level = "second") %>%
+#   group_by(.metric) %>%
+#   summarise(.estimate = mean(.estimate), .groups = "drop_last")
 
 # Calculate optimal thresholds resample-wise and average the results ----
 thresholds.glm <-
@@ -477,6 +534,29 @@ thresholds.glm <-
     distance_abs = mean(distance_abs)
   )
 
+# thresholds.glm_noyear <-
+#   resamples.glm_noyear %>%
+#   collect_predictions(summarize = FALSE) %>%
+#   group_by(id, id2) %>%
+#   threshold_perf(
+#     truth = intraop_transfusion,
+#     estimate = .pred_yes,
+#     thresholds = seq(0, 1, by = 0.01)
+#   ) %>% 
+#   filter(.metric %in% c("spec", "sens", "distance")) %>%
+#   spread(.metric, .estimate) %>%
+#   mutate(distance_abs = abs(sens - spec)) %>%
+#   group_by(id, id2) %>%
+#   filter(distance_abs == min(distance_abs)) %>%
+#   ungroup() %>%
+#   summarise(
+#     .threshold = mean(.threshold),
+#     distance = mean(distance),
+#     sens = mean(sens),
+#     spec = mean(spec),
+#     distance_abs = mean(distance_abs)
+#   )
+
 # Create reduced test dataset
 # tibble.transfusion_test_reduced <-
 #   recipe.glm %>%
@@ -490,6 +570,12 @@ testmetrics.glm <-
   bind_cols(tibble.transfusion_test %>% select(intraop_transfusion)) %>%
   helper.multi_metric(truth = intraop_transfusion, .pred_yes, estimate = .pred_class, event_level = "second")
 
+# testmetrics.glm_noyear <-
+#   predict(fit.glm_noyear, tibble.transfusion_test, type = "prob") %>%
+#   bind_cols(predict(fit.glm_noyear, tibble.transfusion_test)) %>%
+#   bind_cols(tibble.transfusion_test %>% select(intraop_transfusion)) %>%
+#   helper.multi_metric(truth = intraop_transfusion, .pred_yes, estimate = .pred_class, event_level = "second")
+
 # Create explainer ----
 explainer.glm <-
   explain_tidymodels(
@@ -500,10 +586,21 @@ explainer.glm <-
     type = "classification"
   )
 
+# explainer.glm_noyear <-
+#   explain_tidymodels(
+#     fit.glm_noyear,
+#     label = "Stepwise Logistic Regression",
+#     data = tibble.transfusion_test %>% select(-intraop_transfusion),
+#     y = helper.y_test,
+#     type = "classification"
+#   )
 
 # Create model performance object ----
 mp.glm <-
   model_performance(explainer.glm, cutoff = pluck(thresholds.glm, ".threshold"))
+
+# mp.glm_noyear <-
+#   model_performance(explainer.glm_noyear, cutoff = pluck(thresholds.glm_noyear, ".threshold"))
 
 # Create variable importance object ----
 vi.glm <-
@@ -514,6 +611,38 @@ vi.glm <-
     type = "difference",
     N = NULL # use whole dataset
   )
+
+# vi.glm_noyear <-
+#   feature_importance(
+#     explainer.glm_noyear,
+#     loss_function = loss_one_minus_auc,
+#     label = "Stepwise Logistic Regression",
+#     type = "difference",
+#     N = NULL # use whole dataset
+#   )
+
+# Create counterfactual data grid ----
+tibble.transfusion_cf_grid <-
+  recipe.glm_raw %>%
+  prep(training = tibble.transfusion) %>%
+  juice() %>%
+  group_by(gender_female) %>%
+  data_grid(
+    age = seq_range(age, n = 9, trim = 0.3173),
+    preop_hb = seq_range(preop_hb, n = 9, trim = 0.3173),
+    blood_loss_ratio = seq(0, 0.5, by = 0.1),
+    p_tumor = "3",
+    # op_year = "2016",
+    # .model = fit.glm_raw
+    .model = fit.glm %>% pull_workflow_fit() %>% chuck("fit")
+  )
+
+
+```
+
+##### Coefficients
+
+```{r ml_glm_coef_plot,echo=FALSE}
 
 plot_model(
   fit.glm %>% pull_workflow_fit() %>% pluck("fit"),
@@ -526,11 +655,224 @@ plot_model(
 ) +
 theme_ema()
 
+# plot_model(
+#   fit.glm_noyear %>% pull_workflow_fit() %>% pluck("fit"),
+#   sort.est = TRUE,
+#   title = "Odds ratios",
+#   show.values = TRUE,
+#   value.offset = 0.2,
+#   digits = 3,
+#   vline.color = "black"
+# ) +
+# theme_ema()
+
+```
+
+```{r ml_glm_summary,echo=FALSE}
+
+fit.glm %>%
+  tidy(exponentiate = TRUE, conf.int = TRUE) %>%
+  mutate_if(is.numeric, round, 4) %>%
+  knitr::kable()
+
+# fit.glm_noyear %>%
+#   tidy(exponentiate = TRUE, conf.int = TRUE) %>%
+#   mutate_if(is.numeric, round, 4) %>%
+#   knitr::kable()
+
+```
+
+##### Estimated marginal means
+
+```{r ml_glm_emmeans,echo=FALSE}
+
+fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit") %>%
+  emmeans(
+    trt.vs.ctrl ~ p_tumor,
+    data = fit.glm %>% pull_workflow_prepped_recipe() %>% bake(new_data = tibble.transfusion_train),
+    options = list(type = "response", adjust = "mvt")
+  ) %>%
+  pluck("contrasts") %>%
+  tidy() %>% 
+  mutate_if(is.numeric, round, 4) %>%
+  knitr::kable()
+
+fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit") %>%
+  emmeans(
+    consec ~ p_tumor,
+    data = fit.glm %>% pull_workflow_prepped_recipe() %>% bake(new_data = tibble.transfusion_train),
+    options = list(type = "response", adjust = "mvt")
+  ) %>%
+  pluck("contrasts") %>%
+  tidy() %>% 
+  mutate_if(is.numeric, round, 4) %>%
+  knitr::kable()
+
+fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit") %>%
+  emmeans(
+    mean_chg ~ p_tumor,
+    data = fit.glm %>% pull_workflow_prepped_recipe() %>% bake(new_data = tibble.transfusion_train),
+    options = list(type = "response", adjust = "mvt")
+  ) %>%
+  pluck("contrasts") %>%
+  tidy() %>% 
+  mutate_if(is.numeric, round, 4) %>%
+  knitr::kable()
+
+# fit.glm %>%
+#   pull_workflow_fit() %>%
+#   pluck("fit") %>%
+#   emmeans(
+#     consec ~ op_year,
+#     data = fit.glm %>% pull_workflow_prepped_recipe() %>% bake(new_data = tibble.transfusion_train),
+#     options = list(type = "response", adjust = "mvt")
+#   ) %>%
+#   pluck("contrasts") %>%
+#   tidy() %>% 
+#   mutate_if(is.numeric, round, 4) %>%
+#   knitr::kable()
+# 
+# fit.glm %>%
+#   pull_workflow_fit() %>%
+#   pluck("fit") %>%
+#   emmeans(
+#     mean_chg ~ op_year,
+#     data = fit.glm %>% pull_workflow_prepped_recipe() %>% bake(new_data = tibble.transfusion_train),
+#     options = list(type = "response", adjust = "mvt")
+#   ) %>%
+#   pluck("contrasts") %>%
+#   tidy() %>% 
+#   mutate_if(is.numeric, round, 4) %>%
+#   knitr::kable()
+
+```
+
+##### Binned residuals
+
+```{r ml_glm_binnedresiduals,echo=FALSE}
+
+fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit") %>%
+  binned_residuals(n_bins = 20)
+
+# fit.glm_noyear %>%
+#   pull_workflow_fit() %>%
+#   pluck("fit") %>%
+#   binned_residuals(n_bins = 32)
+
+```
+
+##### Variance inflation factor
+
+```{r ml_glm_vif,echo=FALSE}
+
+fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit") %>%
+  vif()
+
+# fit.glm_noyear %>%
+#   pull_workflow_fit() %>%
+#   pluck("fit") %>%
+#   vif()
+
+```
+
+##### Hosmer
+
+```{r ml_glm_hosmer,echo=FALSE}
+
+# Create helpers for le Cessie-van Houwelingen-Copas-Hosmer unweighted sum of squares test for global goodness of fit ----
+# helper.glm_noyear_datamatrix <-
+#   fit.glm_noyear %>%
+#   pull_workflow_fit() %>%
+#   pluck("fit", "data") %>%
+#   modify_if(is.factor, ~ as.numeric(.x) - 1) %>%
+#   data.matrix()
+
+helper.glm_datamatrix <-
+  fit.glm %>%
+  pull_workflow_fit() %>%
+  pluck("fit", "data") %>%
+  modify_if(is.factor, ~ as.numeric(.x) - 1) %>%
+  data.matrix()
+
+# hosmer.glm_noyear <-
+#   HosmerLemeshowTest(
+#     fit = fit.glm_noyear %>%
+#       pull_workflow_fit() %>%
+#       pluck("fit", "fitted.values"),
+#     obs = helper.glm_noyear_datamatrix[,"..y"],
+#     X = helper.glm_noyear_datamatrix[, colnames(helper.glm_noyear_datamatrix) != "..y"]
+#   )
+
+(hosmer.glm <-
+  HosmerLemeshowTest(
+    fit = fit.glm %>%
+      pull_workflow_fit() %>%
+      pluck("fit", "fitted.values"),
+    obs = helper.glm_datamatrix[,"..y"],
+    X = helper.glm_datamatrix[, colnames(helper.glm_datamatrix) != "..y"]
+  )
+)
+
+
+```
+
+#### Calibration plot
+
+```{r ml_glm_calibration,echo=FALSE}
+
+cb.glm_internal <-
+  givitiCalibrationBelt(
+    o = helper.y_train,
+    e = predict(fit.glm, tibble.transfusion_train, type = "prob") %>% pull(.pred_yes),
+    devel = "internal"
+  )
+
+cb.glm_external <-
+  givitiCalibrationBelt(
+    o = helper.y_test,
+    e = predict(fit.glm, tibble.transfusion_test, type = "prob") %>% pull(.pred_yes),
+    devel = "external"
+  )
+
+plot(cb.glm_internal, main = "CysTrans internal calibration",
+                          xlab = "CysTrans predicted probability",
+                          ylab = "Observed transfusion")
+
+plot(cb.glm_external, main = "CysTrans external calibration",
+                          xlab = "CysTrans predicted probability",
+                          ylab = "Observed transfusion")
+
+```
+
+#### Counterfactual predictions
+
+```{r ml_glm_cf_preds, echo=FALSE}
+
+(helper.cf_plot_list <-
+  slide(
+    tibble.transfusion_cf,
+    ~ predict_parts(explainer = explainer.glm, new_observation = .x, type = "break_down", interactions = TRUE)
+  ) %>%
+  map(plot, max_features = 12, interactions = TRUE)
+)
+
+# grid.arrange(grobs = helper.cf_plot_list, ncol = 2)
+
 ```
 
 #### Elastic Net Logistic Regression
 
-```{r ml_elasticnet,echo=FALSE}
+```{r ml_elasticnet, eval=FALSE, include=FALSE}
 
 # Create recipe for data preparation ----
 recipe.glmnet <-
@@ -674,7 +1016,7 @@ vi.glmnet <-
 
 #### Random Forest
 
-```{r ml_randomforest,echo=FALSE}
+```{r ml_randomforest, eval=FALSE, include=FALSE}
 
 # Detect cores for parallelization ----
 helper.cores <- parallel::detectCores()
@@ -822,7 +1164,7 @@ vi.rf <-
 
 #### Support Vector Machine (RBF)
 
-```{r ml_svmradial,echo=FALSE}
+```{r ml_svmradial, eval=FALSE, include=FALSE}
 
 # Create recipe for data preparation ----
 recipe.svm <-
@@ -960,7 +1302,7 @@ vi.svm <-
 
 <!-- #### eXtreme Gradient Boosting Machine -->
 
-```{r ml_xgb,echo=FALSE}
+```{r ml_xgb, eval=FALSE, include=FALSE}
 # 
 # # Create trainControl helper ----
 # helper.trainControl_xgb <-
@@ -1033,31 +1375,31 @@ vi.svm <-
 
 #### Model performance
 
-```{r model_performance,echo=FALSE}
+```{r model_performance, eval=FALSE, include=FALSE}
 
 # Assemble performances
 helper.performance_list <- list(
-  "Stepwise Logistic Regression" = mp.glm,
-  "Elastic Net Logistic Regression" = mp.glmnet,
-  "Random Forest" = mp.rf,
-  "Support Vector Machine" = mp.svm #,
+  "Stepwise Logistic Regression" = testmetrics.glm,
+  "Elastic Net Logistic Regression" = testmetrics.glmnet,
+  "Random Forest" = testmetrics.rf,
+  "Support Vector Machine" = testmetrics.svm #,
   # "eXtreme Gradient Boosting Machine" = mp.classif_xgb
 )
 
 # Create performance table
 helper.performance_list %>%
-map(pluck, "measures") %>%
 bind_rows(.id = "Model") %>%
-arrange(desc(auc)) %>%
-modify_at(vars(recall, precision, f1, accuracy, auc), round, 3) %>%
-select(Model, Recall = recall, Precision = precision, F1 = f1, Accuracy = accuracy, AUC = auc) %>%
+pivot_wider(id_cols = Model, names_from = .metric, values_from = .estimate) %>%
+arrange(desc(roc_auc)) %>%
+mutate(across(where(is.numeric), round, digits = 3)) %>%
+select(Model, Accuracy = accuracy, AUC = roc_auc, Brier = my_brier) %>%
 knitr::kable()
 
 ```
 
 #### Feature importance
 
-```{r ml_importance,echo=FALSE}
+```{r ml_importance, eval=FALSE, include=FALSE}
 
 plot(
   vi.glm,
@@ -1072,7 +1414,7 @@ plot(
 
 #### Optimal cutpoint
 
-```{r ml_cutpoint_table,echo=FALSE}
+```{r ml_cutpoint_table, eval=FALSE, include=FALSE}
 
 helper.cutpoint_table <-
   list(
@@ -1093,7 +1435,7 @@ helper.cutpoint_table %>%
 
 <!-- Cutpoint by absolute distance to optimal model (sensitivity and specificity = 1) -->
 
-```{r ml_cutpoint_distance,echo=FALSE}
+```{r ml_cutpoint_distance, eval=FALSE, include=FALSE}
 
 # list(
 #   "Stepwise Logistic Regression" = thresholds.glm,
@@ -1112,7 +1454,7 @@ helper.cutpoint_table %>%
 
 <!-- Cutpoint by sensitivity and specificity -->
 
-```{r ml_cutpoint,echo=FALSE}
+```{r ml_cutpoint, eval=FALSE, include=FALSE}
 
 # list(
 #   "Stepwise Logistic Regression" = resample.classif_glmstep,
@@ -1133,7 +1475,7 @@ helper.cutpoint_table %>%
 ```
 
 
-```{r ml_predictions,echo=FALSE}
+```{r ml_predictions, eval=FALSE, include=FALSE}
 
 # list(
 #   "Stepwise Logistic Regression" = model.classif_glmstep,
