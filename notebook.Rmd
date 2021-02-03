@@ -645,12 +645,15 @@ tibble.transfusion_cf_grid <-
 ```{r ml_glm_mp,echo=FALSE}
 
 rsmetrics.glm %>%
+  mutate_if(is.numeric, round, 3) %>%
   knitr::kable(caption = "Metrics from bootstrapping")
 
 testmetrics.glm %>%
+  mutate_if(is.numeric, round, 3) %>%
   knitr::kable(caption = "Metrics from testing dataset")
 
 thresholds.glm %>%
+  mutate_if(is.numeric, round, 3) %>%
   knitr::kable(caption = "Optimal threshold")
 
 ```
