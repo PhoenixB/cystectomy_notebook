@@ -102,6 +102,8 @@ conflict_prefer("explain", "DALEX")
 conflict_prefer("spec", "yardstick")
 conflict_prefer("sens", "yardstick")
 conflict_prefer("vif", "car")
+conflict_prefer("parameters", "dials")
+conflict_prefer("get_weights", "yardstick")
 
 # Use second level from outcome factors for GLM compliance ----
 # (deprecated, will be removed in future!)
@@ -261,7 +263,7 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "data", "he
 
 # Create metric helper
 helper.multi_metric <-
-  metric_set(accuracy, sens, spec, roc_auc, my_brier)
+  metric_set(accuracy, sens, spec, roc_auc, my_brier, mn_log_loss)
 
 # Remnant
 #     modify_at(vars(cci_5plus), `contrasts<-`, value = MASS::contr.sdif(6)) %>%
@@ -283,7 +285,10 @@ helper.y_train <-
   mutate(intraop_transfusion = intraop_transfusion - 1) %>%
   pull(intraop_transfusion)
 
+# Data distribution for rms and nomogram
+helper.ddist <- datadist(tibble.transfusion)
 
+options(datadist = "helper.ddist")
 
 ```
 
@@ -639,6 +644,14 @@ tibble.transfusion_cf_grid <-
     .model = fit.glm %>% pull_workflow_fit() %>% chuck("fit")
   )
 
+rms.glm <-
+  lrm(
+    intraop_transfusion ~ blood_loss_ratio + oak + scored(p_tumor) + age + op_duration_min + gender + norepinephrine + preop_hb + blood_loss_ratio:gender + blood_loss_ratio:preop_hb,
+    data = tibble.transfusion,
+    scale = TRUE,
+    x = TRUE,
+    y = TRUE
+  )
 
 ```
 
@@ -846,7 +859,7 @@ helper.glm_datamatrix <-
 
 ```
 
-#### Calibration plot
+##### Calibration plots
 
 ```{r ml_glm_calibration,echo=FALSE}
 
@@ -872,9 +885,18 @@ plot(cb.glm_external, main = "CysTrans external calibration",
                           xlab = "CysTrans predicted probability",
                           ylab = "Observed transfusion")
 
+cb.rms <-
+  calibrate(
+    rms.glm,
+    method = "crossvalidation",
+    rule = "aic"
+  )
+
+plot(cb.rms)
+
 ```
 
-#### Counterfactual predictions
+##### Counterfactual predictions
 
 ```{r ml_glm_cf_preds, echo=FALSE}
 
@@ -890,31 +912,25 @@ plot(cb.glm_external, main = "CysTrans external calibration",
 
 ```
 
-#### Nomogram
+##### Nomogram
 
 ```{r ml_glm_nomogram, echo=FALSE}
-
-helper.ddist <- datadist(tibble.transfusion)
-
-options(datadist = "helper.ddist")
-
-rms.glm <-
-  lrm(
-    intraop_transfusion ~ blood_loss_ratio + oak + scored(p_tumor) + age + op_duration_min + gender + norepinephrine + preop_hb + blood_loss_ratio:gender + blood_loss_ratio:preop_hb,
-    data = tibble.transfusion
-  )
 
 nomogram.rms_glm <-
   nomogram(
     rms.glm,
     fun = plogis,
-    fun.at = c(.001, .01, .05, seq(.1, .9, by = .1), .95, .99, .999),
+    # fun.at = c(.001, .01, .05, seq(.1, .9, by = .1), .95, .99, .999),
+    fun.at = c(.01, .319, .99),
     funlabel = "Probability of transfusion",
-    interact = list(preop_hb = seq(80, 140, by = 10)),
-    blood_loss_ratio = seq(0, .5, by = .1)
+    interact = list(preop_hb = seq(100, 160, by = 30)),
+    blood_loss_ratio = seq(.1, .4, by = .15),
+    age = seq(55, 80, by = 5),
+    op_duration_min = seq(100, 900, by = 100),
+    maxscale = 16
   )
 
-plot(nomogram.rms_glm)
+plot(nomogram.rms_glm, xfrac = .45, ia.space = 1, col.grid = gray(c(0.8, 0.95)))
 
 print(nomogram.rms_glm)
 
@@ -922,7 +938,7 @@ print(nomogram.rms_glm)
 
 #### Elastic Net Logistic Regression
 
-```{r ml_elasticnet, eval=FALSE, include=FALSE}
+```{r ml_elasticnet, echo=FALSE}
 
 # Create recipe for data preparation ----
 recipe.glmnet <-
@@ -952,11 +968,18 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "
   tune.glmnet <-
     read_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "tune.glmnet", ext = "rds"))
 } else {
+  helper.glmnet_grid <-
+    grid_max_entropy(
+      parameters(model.glmnet),
+      size = 50
+    ) %>%
+    write_rds(file = path_wd("paper", "notebook", "notebook_files", "data", "helper.glmnet_grid", ext = "rds"))
+
   tune.glmnet <-
     workflow.glmnet %>%
     tune_grid(
       resamples = helper.training_folds,
-      grid = grid_regular(penalty(), mixture(), levels = 11),
+      grid = helper.glmnet_grid,
       control = control_grid(save_pred = TRUE, event_level = "second"),
       metrics = helper.multi_metric
     ) %>%
@@ -1064,9 +1087,27 @@ vi.glmnet <-
 
 ```
 
+##### Model performance
+
+```{r ml_glmnet_mp, echo=FALSE}
+
+rsmetrics.glmnet %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Metrics from bootstrapping")
+
+testmetrics.glmnet %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Metrics from testing dataset")
+
+thresholds.glmnet %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Optimal threshold")
+
+```
+
 #### Random Forest
 
-```{r ml_randomforest, eval=FALSE, include=FALSE}
+```{r ml_randomforest, echo=FALSE}
 
 # Detect cores for parallelization ----
 helper.cores <- parallel::detectCores()
@@ -1100,11 +1141,24 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "
   tune.rf <-
     read_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "tune.rf", ext = "rds"))
 } else {
+  helper.rf_grid <-
+    grid_max_entropy(
+      update(
+        parameters(model.rf),
+        mtry = finalize(
+          mtry(),
+          recipe.rf %>% prep(tibble.transfusion_train) %>% bake(tibble.transfusion_train) %>% select(-intraop_transfusion)
+        )
+      ),
+    size = 100
+    ) %>%
+  write_rds(file = path_wd("paper", "notebook", "notebook_files", "data", "helper.rf_grid", ext = "rds"))
+
   tune.rf <-
     workflow.rf %>%
     tune_grid(
       resamples = helper.training_folds,
-      grid = 25,
+      grid = helper.rf_grid,
       control = control_grid(save_pred = TRUE, event_level = "second"),
       metrics = helper.multi_metric
     ) %>%
@@ -1212,9 +1266,27 @@ vi.rf <-
 
 ```
 
+##### Model performance
+
+```{r ml_rf_mp, echo=FALSE}
+
+rsmetrics.rf %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Metrics from bootstrapping")
+
+testmetrics.rf %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Metrics from testing dataset")
+
+thresholds.rf %>%
+  mutate_if(is.numeric, round, 3) %>%
+  knitr::kable(caption = "Optimal threshold")
+
+```
+
 #### Support Vector Machine (RBF)
 
-```{r ml_svmradial, eval=FALSE, include=FALSE}
+```{r ml_svmradial, echo=FALSE}
 
 # Create recipe for data preparation ----
 recipe.svm <-
@@ -1228,8 +1300,8 @@ recipe.svm <-
   # step_dummy(all_nominal(), -all_outcomes()) %>%
   step_zv(all_predictors()) %>%
   # step_nzv(all_predictors()) %>%
-  step_lincomb(all_numeric()) # %>%
-  # step_normalize(all_numeric()) # %>%
+  step_lincomb(all_numeric()) %>%
+  step_normalize(all_numeric()) # %>%
 
 model.svm <- 
   svm_rbf(cost = tune(), rbf_sigma = tune()) %>% 
@@ -1245,11 +1317,18 @@ if(file_exists(path = path_wd("paper", "notebook", "notebook_files", "models", "
   tune.svm <-
     read_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "tune.svm", ext = "rds"))
 } else {
+  helper.svm_grid <-
+    grid_max_entropy(
+      parameters(model.svm),
+      size = 100
+    ) %>%
+  write_rds(file = path_wd("paper", "notebook", "notebook_files", "data", "helper.svm_grid", ext = "rds"))
+
   tune.svm <-
     workflow.svm %>%
     tune_grid(
       resamples = helper.training_folds,
-      grid = grid_regular(cost(), rbf_sigma(), levels = 10),
+      grid = helper.svm_grid,
       control = control_grid(save_pred = TRUE, event_level = "second"),
       metrics = helper.multi_metric) %>%
     write_rds(file = path_wd("paper", "notebook", "notebook_files", "models", "tune.svm", ext = "rds"))
@@ -1336,7 +1415,7 @@ explainer.svm <-
 
 # Create model performance object ----
 mp.svm <-
-  model_performance(explainer.svm, cutoff = pluck(thresholds.rf, ".threshold"))
+  model_performance(explainer.svm, cutoff = pluck(thresholds.svm, ".threshold"))
 
 # Create variable importance object ----
 vi.svm <-
@@ -1425,7 +1504,7 @@ vi.svm <-
 
 #### Model performance
 
-```{r model_performance, eval=FALSE, include=FALSE}
+```{r model_performance, echo=FALSE}
 
 # Assemble performances
 helper.performance_list <- list(
@@ -1449,7 +1528,7 @@ knitr::kable()
 
 #### Feature importance
 
-```{r ml_importance, eval=FALSE, include=FALSE}
+```{r ml_importance, echo=FALSE}
 
 plot(
   vi.glm,
@@ -1464,7 +1543,7 @@ plot(
 
 #### Optimal cutpoint
 
-```{r ml_cutpoint_table, eval=FALSE, include=FALSE}
+```{r ml_cutpoint_table, echo=FALSE}
 
 helper.cutpoint_table <-
   list(
