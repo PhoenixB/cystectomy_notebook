@@ -32,6 +32,7 @@
   
 <link rel="prev" href="prerequisites.html"/>
 <link rel="next" href="methods.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -49,7 +50,6 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -65,19 +65,29 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Index</a><ul>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Index</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#table-1"><i class="fa fa-check"></i><b>1.1</b> Table 1</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>2</b> Prerequisites</a><ul>
+<li class="chapter" data-level="2" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>2</b> Prerequisites</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="prerequisites.html"><a href="prerequisites.html#formulas"><i class="fa fa-check"></i><b>2.1</b> Formulas</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>3</b> Results</a><ul>
+<li class="chapter" data-level="3" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>3</b> Results</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="results.html"><a href="results.html#data-plots"><i class="fa fa-check"></i><b>3.1</b> Data plots</a></li>
-<li class="chapter" data-level="3.2" data-path="results.html"><a href="results.html#model-outputs"><i class="fa fa-check"></i><b>3.2</b> Model outputs</a><ul>
+<li class="chapter" data-level="3.2" data-path="results.html"><a href="results.html#model-outputs"><i class="fa fa-check"></i><b>3.2</b> Model outputs</a>
+<ul>
 <li class="chapter" data-level="3.2.1" data-path="results.html"><a href="results.html#models-with-intraoperative-transfusion-as-response"><i class="fa fa-check"></i><b>3.2.1</b> Models with intraoperative transfusion as response</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="methods.html"><a href="methods.html#study-population"><i class="fa fa-check"></i><b>4.1</b> Study population</a></li>
+<li class="chapter" data-level="4.2" data-path="methods.html"><a href="methods.html#intraoperative-blood-loss"><i class="fa fa-check"></i><b>4.2</b> Intraoperative blood loss</a></li>
+<li class="chapter" data-level="4.3" data-path="methods.html"><a href="methods.html#statistical-analysis"><i class="fa fa-check"></i><b>4.3</b> Statistical analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="results-1.html"><a href="results-1.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 </ul>
 
       </nav>
@@ -95,17 +105,17 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="results" class="section level1">
+<div id="results" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Results</h1>
-<div id="data-plots" class="section level2">
+<div id="data-plots" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Data plots</h2>
 <p><img src="notebook_files/figure-html/data_plots-1.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/data_plots-2.png" width="100%" style="display: block; margin: auto;" /><img src="notebook_files/figure-html/data_plots-3.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="model-outputs" class="section level2">
+<div id="model-outputs" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Model outputs</h2>
-<div id="models-with-intraoperative-transfusion-as-response" class="section level3">
+<div id="models-with-intraoperative-transfusion-as-response" class="section level3" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> Models with intraoperative transfusion as response</h3>
-<div id="stepwise-logistic-regression" class="section level4">
+<div id="stepwise-logistic-regression" class="section level4" number="3.2.1.1">
 <h4><span class="header-section-number">3.2.1.1</span> Stepwise Logistic Regression</h4>
 <pre><code>#&gt; Warning: The `yardstick.event_first` option has been deprecated as of yardstick 0.0.7 and will be completely ignored in a future version.
 #&gt; Instead, set the following argument directly in the metric function:
@@ -124,40 +134,54 @@
 #&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.8354279 , mean =  0.007789202 , max =  0.9503014  
 #&gt;  [32m A new explainer has been created! [39m</code></pre>
-<div id="model-performance" class="section level5">
+<div id="model-performance" class="section level5" number="3.2.1.1.1">
 <h5><span class="header-section-number">3.2.1.1.1</span> Model performance</h5>
 <table>
-<caption>(#tab:ml_glm_mp)Metrics from bootstrapping</caption>
+<caption>(#tab:ml_glm_mp)Metrics from repeated 10-fold cross-validation</caption>
 <thead>
 <tr class="header">
-<th align="left">.metric</th>
-<th align="right">.estimate</th>
+<th align="left">Metric</th>
+<th align="right">N</th>
+<th align="right">Mean</th>
+<th align="right">Standard Error</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">accuracy</td>
-<td align="right">0.826</td>
+<td align="right">100</td>
+<td align="right">0.82648</td>
+<td align="right">0.00335</td>
 </tr>
 <tr class="even">
 <td align="left">mn_log_loss</td>
-<td align="right">0.403</td>
+<td align="right">100</td>
+<td align="right">0.40262</td>
+<td align="right">0.00502</td>
 </tr>
 <tr class="odd">
 <td align="left">my_brier</td>
-<td align="right">0.127</td>
+<td align="right">100</td>
+<td align="right">0.12704</td>
+<td align="right">0.00180</td>
 </tr>
 <tr class="even">
 <td align="left">roc_auc</td>
-<td align="right">0.872</td>
+<td align="right">100</td>
+<td align="right">0.87184</td>
+<td align="right">0.00359</td>
 </tr>
 <tr class="odd">
 <td align="left">sens</td>
-<td align="right">0.651</td>
+<td align="right">100</td>
+<td align="right">0.65075</td>
+<td align="right">0.00772</td>
 </tr>
 <tr class="even">
 <td align="left">spec</td>
-<td align="right">0.908</td>
+<td align="right">100</td>
+<td align="right">0.90806</td>
+<td align="right">0.00342</td>
 </tr>
 </tbody>
 </table>
@@ -165,67 +189,56 @@
 <caption>(#tab:ml_glm_mp)Metrics from testing dataset</caption>
 <thead>
 <tr class="header">
-<th align="left">.metric</th>
-<th align="left">.estimator</th>
-<th align="right">.estimate</th>
+<th align="left">Metric</th>
+<th align="right">Estimate</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">accuracy</td>
-<td align="left">binary</td>
-<td align="right">0.800</td>
+<td align="right">0.80000</td>
 </tr>
 <tr class="even">
 <td align="left">sens</td>
-<td align="left">binary</td>
-<td align="right">0.556</td>
+<td align="right">0.55556</td>
 </tr>
 <tr class="odd">
 <td align="left">spec</td>
-<td align="left">binary</td>
-<td align="right">0.911</td>
+<td align="right">0.91139</td>
 </tr>
 <tr class="even">
 <td align="left">roc_auc</td>
-<td align="left">binary</td>
-<td align="right">0.864</td>
+<td align="right">0.86392</td>
 </tr>
 <tr class="odd">
 <td align="left">my_brier</td>
-<td align="left">binary</td>
-<td align="right">0.136</td>
+<td align="right">0.13623</td>
 </tr>
 <tr class="even">
 <td align="left">mn_log_loss</td>
-<td align="left">binary</td>
-<td align="right">0.414</td>
+<td align="right">0.41403</td>
 </tr>
 </tbody>
 </table>
 <table>
-<caption>(#tab:ml_glm_mp)Optimal threshold</caption>
+<caption>(#tab:ml_glm_mp)Optimal threshold for distance to perfect model</caption>
 <thead>
 <tr class="header">
-<th align="right">.threshold</th>
-<th align="right">distance</th>
-<th align="right">sens</th>
-<th align="right">spec</th>
-<th align="right">distance_abs</th>
+<th align="right">Threshold</th>
+<th align="right">Sensitivity</th>
+<th align="right">Specificity</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="right">0.319</td>
-<td align="right">0.098</td>
 <td align="right">0.785</td>
 <td align="right">0.783</td>
-<td align="right">0.01</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="coefficients" class="section level5">
+<div id="coefficients" class="section level5" number="3.2.1.1.2">
 <h5><span class="header-section-number">3.2.1.1.2</span> Coefficients</h5>
 <p><img src="notebook_files/figure-html/ml_glm_coef_plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
@@ -375,7 +388,7 @@
 </tbody>
 </table>
 </div>
-<div id="estimated-marginal-means" class="section level5">
+<div id="estimated-marginal-means" class="section level5" number="3.2.1.1.3">
 <h5><span class="header-section-number">3.2.1.1.3</span> Estimated marginal means</h5>
 <table>
 <thead>
@@ -546,12 +559,12 @@
 </tbody>
 </table>
 </div>
-<div id="binned-residuals" class="section level5">
+<div id="binned-residuals" class="section level5" number="3.2.1.1.4">
 <h5><span class="header-section-number">3.2.1.1.4</span> Binned residuals</h5>
 <pre><code>#&gt; Ok: About 95% of the residuals are inside the error bounds.</code></pre>
 <p><img src="notebook_files/figure-html/ml_glm_binnedresiduals-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="variance-inflation-factor" class="section level5">
+<div id="variance-inflation-factor" class="section level5" number="3.2.1.1.5">
 <h5><span class="header-section-number">3.2.1.1.5</span> Variance inflation factor</h5>
 <pre><code>#&gt;                                      GVIF Df GVIF^(1/(2*Df))
 #&gt; blood_loss_ratio                 1.467803  1        1.211529
@@ -565,7 +578,7 @@
 #&gt; blood_loss_ratio_x_preop_hb      1.109232  1        1.053201
 #&gt; blood_loss_ratio_x_gender_female 1.137761  1        1.066659</code></pre>
 </div>
-<div id="hosmer" class="section level5">
+<div id="hosmer" class="section level5" number="3.2.1.1.6">
 <h5><span class="header-section-number">3.2.1.1.6</span> Hosmer</h5>
 <pre><code>#&gt; $C
 #&gt; 
@@ -590,7 +603,7 @@
 #&gt; data:  fit.glm %&gt;% pull_workflow_fit() %&gt;% pluck(&quot;fit&quot;, &quot;fitted.values&quot;) and helper.glm_datamatrix[, &quot;..y&quot;]
 #&gt; z = -0.63511, p-value = 0.5254</code></pre>
 </div>
-<div id="calibration-plots" class="section level5">
+<div id="calibration-plots" class="section level5" number="3.2.1.1.7">
 <h5><span class="header-section-number">3.2.1.1.7</span> Calibration plots</h5>
 <p><img src="notebook_files/figure-html/ml_glm_calibration-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; $m
@@ -609,7 +622,7 @@
 #&gt; n=1168   Mean absolute error=0.019   Mean squared error=0.00054
 #&gt; 0.9 Quantile of absolute error=0.041</code></pre>
 </div>
-<div id="counterfactual-predictions" class="section level5">
+<div id="counterfactual-predictions" class="section level5" number="3.2.1.1.8">
 <h5><span class="header-section-number">3.2.1.1.8</span> Counterfactual predictions</h5>
 <pre><code>#&gt; [[1]]</code></pre>
 <p><img src="notebook_files/figure-html/ml_glm_cf_preds-1.png" width="100%" style="display: block; margin: auto;" /></p>
@@ -659,7 +672,7 @@
 #&gt; [[16]]</code></pre>
 <p><img src="notebook_files/figure-html/ml_glm_cf_preds-16.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="nomogram" class="section level5">
+<div id="nomogram" class="section level5" number="3.2.1.1.9">
 <h5><span class="header-section-number">3.2.1.1.9</span> Nomogram</h5>
 <p><img src="notebook_files/figure-html/ml_glm_nomogram-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; Points per unit of linear predictor: 1.938702 
@@ -747,7 +760,7 @@
 #&gt;            23                      0.990</code></pre>
 </div>
 </div>
-<div id="elastic-net-logistic-regression" class="section level4">
+<div id="elastic-net-logistic-regression" class="section level4" number="3.2.1.2">
 <h4><span class="header-section-number">3.2.1.2</span> Elastic Net Logistic Regression</h4>
 <pre><code>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  Elastic Net Logistic Regression 
@@ -760,7 +773,7 @@
 #&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.588666 , mean =  0.007963318 , max =  0.8671085  
 #&gt;  [32m A new explainer has been created! [39m</code></pre>
-<div id="model-performance-1" class="section level5">
+<div id="model-performance-1" class="section level5" number="3.2.1.2.1">
 <h5><span class="header-section-number">3.2.1.2.1</span> Model performance</h5>
 <table>
 <caption>(#tab:ml_glmnet_mp)Metrics from bootstrapping</caption>
@@ -862,7 +875,7 @@
 </table>
 </div>
 </div>
-<div id="random-forest" class="section level4">
+<div id="random-forest" class="section level4" number="3.2.1.3">
 <h4><span class="header-section-number">3.2.1.3</span> Random Forest</h4>
 <pre><code>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  Random Forest 
@@ -875,7 +888,7 @@
 #&gt;   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
 #&gt;   -&gt; residuals         :  numerical, min =  -0.7112242 , mean =  0.006412809 , max =  0.9651584  
 #&gt;  [32m A new explainer has been created! [39m</code></pre>
-<div id="model-performance-2" class="section level5">
+<div id="model-performance-2" class="section level5" number="3.2.1.3.1">
 <h5><span class="header-section-number">3.2.1.3.1</span> Model performance</h5>
 <table>
 <caption>(#tab:ml_rf_mp)Metrics from bootstrapping</caption>
@@ -977,7 +990,7 @@
 </table>
 </div>
 </div>
-<div id="support-vector-machine-rbf" class="section level4">
+<div id="support-vector-machine-rbf" class="section level4" number="3.2.1.4">
 <h4><span class="header-section-number">3.2.1.4</span> Support Vector Machine (RBF)</h4>
 <pre><code>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  Support Vector Machine (RBF) 
@@ -992,7 +1005,7 @@
 #&gt;  [32m A new explainer has been created! [39m</code></pre>
 <!-- #### eXtreme Gradient Boosting Machine -->
 </div>
-<div id="model-performance-3" class="section level4">
+<div id="model-performance-3" class="section level4" number="3.2.1.5">
 <h4><span class="header-section-number">3.2.1.5</span> Model performance</h4>
 <table>
 <thead>
@@ -1031,11 +1044,11 @@
 </tbody>
 </table>
 </div>
-<div id="feature-importance" class="section level4">
+<div id="feature-importance" class="section level4" number="3.2.1.6">
 <h4><span class="header-section-number">3.2.1.6</span> Feature importance</h4>
 <p><img src="notebook_files/figure-html/ml_importance-1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="optimal-cutpoint" class="section level4">
+<div id="optimal-cutpoint" class="section level4" number="3.2.1.7">
 <h4><span class="header-section-number">3.2.1.7</span> Optimal cutpoint</h4>
 <table>
 <caption>(#tab:ml_cutpoint_table)Optimal probability threshold by absolute distance to optimal model (sensitivity and specificity = 1</caption>
